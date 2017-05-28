@@ -1,4 +1,6 @@
-# SCIM-2.0-Complience-Test-Suite
+# SCIM 2.0 Complience Test Suite
+
+Developer : Vindula Jayawardana
 
 This is a SCIM 2.0 compliance test suite which can be run on both the cloud and on premise by eliminating the limitations that can be seen in SCIM 1.1 compliance test suite. In this test suite, the test verify the validity of the supportability of a provided service provider, in terms of the SCIM 2.0 core specification and protocol specification.
 
