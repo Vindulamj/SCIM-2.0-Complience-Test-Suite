@@ -34,29 +34,29 @@ $(document).ready(
         };
 
         var handleError = function(event) {
-            $("#spinner-container").empty();
-            $("#compliance-error").text("An error occurred. " + event.statusText);
-            $("#compliance-error-container").show();
+            $("#spinner-container2").empty();
+            $("#compliance-error2").text("An error occurred. " + event.statusText);
+            $("#compliance-error-container2").show();
         };
 
         var handleResponse = function(data) {
-            $("#spinner-container").empty();
+            $("#spinner-container2").empty();
 
             if (data.authRequired === "true") {
                 var template = $('#authMethodTemplate').html();
                 var html = Mustache.to_html(template, data);
-                $("#authMethod").html = html;
-          
-                $("#authenticationAlert").show();
-                $("#settingsArrow").removeClass("icon-chevron-right");
-                $("#settingsArrow").addClass("icon-chevron-down");
-                $("#settings").slideDown();
+                $("#authMethod2").html = html;
+
+                $("#authenticationAlert2").show();
+                $("#settingsArrow2").removeClass("icon-chevron-right");
+                $("#settingsArrow2").addClass("icon-chevron-down");
+                $("#settings2").slideDown();
             } else {
                 data.index = getIndex();
                 data.color = getColor();
-                var template = $('#testTemplate').html();
+                var template = $('#testTemplate2').html();
                 var html = Mustache.to_html(template, data);
-                $("#compliance-result-container").html(html);
+                $("#compliance-result-container2").html(html);
                 $(".label-info").click(toggleWire);
                 $("[rel=tooltip]").tooltip();
 
@@ -70,7 +70,7 @@ $(document).ready(
                     failed : failed,
                     skipped : skipped
                 });
-                $("#compliance-statistics-text").html(html);
+                $("#compliance-statistics-text2").html(html);
 
                 var options = {
                     legend : 'none',
@@ -90,36 +90,35 @@ $(document).ready(
                     .getElementById('compliance-chart')).draw(chartData, options);
 
                 prettyPrint();
-                $("#result-container").show();
+                $("#result-container2").show();
             }
         };
 
         var authMethodChanged = function() {
-            $("#authMethod option:selected").each(function() {
-                $(".authMethod").hide();
+            $("#authMethod2 option:selected").each(function() {
+                $(".authMethod2").hide();
                 $("." + $(this).val()).show();
             });
         };
 
-
         var sendRequest = function() {
             var data = {
-                url : $("#complianceUrl").val(),
-                authMethod : $("#authMethod option:selected").val(),
-                username : $("#username").val(),
-                password : $("#password").val(),
-                clientId : $("#oauthClientId").val(),
-                clientSecret : $("#oauthClientSecret").val(),
-                authorizationServer : $("#oauthAuthorizationServer").val(),
-                authorizationHeader : $("#rawAuthorizationHeader").val()
+                url : $("#complianceUrl2").val(),
+                authMethod : $("#authMethod2 option:selected").val(),
+                username : $("#username2").val(),
+                password : $("#password2").val(),
+                clientId : $("#oauthClientId2").val(),
+                clientSecret : $("#oauthClientSecret2").val(),
+                authorizationServer : $("#oauthAuthorizationServer2").val(),
+                authorizationHeader : $("#rawAuthorizationHeader2").val()
             };
 
-            $("#authenticationAlert").hide();
-            $("#result-container").hide();
-            $("#compliance-error").hide();
-            $("#compliance-error-container").hide();
+            $("#authenticationAlert2").hide();
+            $("#result-container2").hide();
+            $("#compliance-error2").hide();
+            $("#compliance-error-container2").hide();
 
-            $("#spinner-container").spin({
+            $("#spinner-container2").spin({
                 lines : 13,
                 length : 30,
                 width : 10,
@@ -135,13 +134,13 @@ $(document).ready(
                 top : 'auto',
                 left : 'auto'
             });
-            $.post("/compliance/test", data, handleResponse).error(handleError);
+            $.post("/compliance2/test", data, handleResponse).error(handleError);
 
             return false;
         };
 
-        $("#toggleAddImplementation").click(function(){toggleWire({currentTarget:$("#toggleAddImplementation")})});
-        $("#toggleSettings").click(function(){toggleWire({currentTarget:$("#toggleSettings")})});
-        $("#sendCompliance").click(sendRequest);
-        $("#authMethod").change(authMethodChanged).change();
+        $("#toggleAddImplementation2").click(function(){toggleWire({currentTarget:$("#toggleAddImplementation2")})});
+        $("#toggleSettings2").click(function(){toggleWire({currentTarget:$("#toggleSettings2")})});
+        $("#sendCompliance2").click(sendRequest);
+        $("#authMethod2").change(authMethodChanged).change();
     });
