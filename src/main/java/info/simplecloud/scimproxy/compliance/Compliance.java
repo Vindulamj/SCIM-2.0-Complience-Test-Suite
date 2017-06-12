@@ -44,7 +44,7 @@ public class Compliance extends HttpServlet {
 
         // TODO: remove when done coding!
         if (url == null || url.isEmpty()) {
-            url = "http://127.0.0.1:8080";
+            url = "http://127.0.0.1:9443";
         }
 
         ArrayList<TestResult> results = new ArrayList<TestResult>();

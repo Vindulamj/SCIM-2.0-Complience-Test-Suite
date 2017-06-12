@@ -142,6 +142,7 @@ $(document).ready(
 
       $("#toggleAddImplementation").click(function(){toggleWire({currentTarget:$("#toggleAddImplementation")})});
       $("#toggleSettings").click(function(){toggleWire({currentTarget:$("#toggleSettings")})});
+      $("#toggleSettings2").click(function(){toggleWire({currentTarget:$("#toggleSettings2")})});
       $("#sendCompliance").click(sendRequest);
       $("#authMethod").change(authMethodChanged).change();
     });
