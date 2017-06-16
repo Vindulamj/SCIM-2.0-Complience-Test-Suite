@@ -40,10 +40,11 @@ $(document).ready(
         };
 
         var handleResponse = function(data) {
+
             $("#spinner-container2").empty();
 
             if (data.authRequired === "true") {
-                var template = $('#authMethodTemplate').html();
+                var template = $('#authMethodTemplate2').html();
                 var html = Mustache.to_html(template, data);
                 $("#authMethod2").html = html;
 
@@ -54,7 +55,7 @@ $(document).ready(
             } else {
                 data.index = getIndex();
                 data.color = getColor();
-                var template = $('#testTemplate2').html();
+                var template = $('#testTemplate').html();
                 var html = Mustache.to_html(template, data);
                 $("#compliance-result-container2").html(html);
                 $(".label-info").click(toggleWire);
