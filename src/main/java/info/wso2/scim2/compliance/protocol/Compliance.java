@@ -1,9 +1,11 @@
-package info.wso2.scim2.compliance;
+package info.wso2.scim2.compliance.protocol;
 
 import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.ComplianceException;
+import info.wso2.scim2.compliance.exception.CritialComplienceException;
+import info.wso2.scim2.compliance.tests.ConfigTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.validator.routines.UrlValidator;
 
@@ -44,8 +46,8 @@ public class Compliance extends HttpServlet {
 
         ArrayList<TestResult> results = new ArrayList<TestResult>();
 
-        String[] schemes = { ComplianceConstants.RequestCodeConstants.HTTP,
-                ComplianceConstants.RequestCodeConstants.HTTPS };
+        String[] schemes = {ComplianceConstants.RequestCodeConstants.HTTP,
+                ComplianceConstants.RequestCodeConstants.HTTPS};
 
         UrlValidator urlValidator = new UrlValidator(schemes);
         if (!urlValidator.isValid(url)) {
@@ -61,6 +63,51 @@ public class Compliance extends HttpServlet {
             return new Result(statistics, results);
         }
 
+        // create a CSP to use to connect to the server
+        CSP csp = new CSP();
+        csp.setUrl(url);
+        csp.setVersion("/scim2");
+        csp.setAuthentication(authMethod);
+        csp.setUsername(username);
+        csp.setPassword(password);
+        csp.setOAuth2AuthorizationServer(authorizationServer);
+        csp.setoAuth2ClientId(clientId);
+        csp.setoAuth2ClientSecret(clientSecret);
+        csp.setoAuth2GrantType("password");
+        csp.setAuthorizationHeader(authorizationHeader);
+/*
+        // get the configuration
+        try {
+            // start with the critical tests (will throw exception and test will
+            // stop if fails)
+            ConfigTest configTest = new ConfigTest();
+
+            results.add(configTest.getConfiguration(csp));
+
+    } catch (CritialComplienceException e) {
+        results.add(((CritialComplienceException) e).getResult());
+    } catch (Throwable e) {
+        results.add(new TestResult(TestResult.ERROR, "Unknown Test", e.getMessage(), null));
+    }
+
+    Statistics statistics = new Statistics();
+        for (TestResult result : results) {
+
+        switch (result.getStatus()) {
+            case TestResult.ERROR:
+                statistics.incFailed();
+                break;
+            case TestResult.SUCCESS:
+                statistics.incSuccess();
+                break;
+            case TestResult.SKIPPED:
+                statistics.incSkipped();
+                break;
+        }
+    }
+        return new Result(statistics, results);
+    }
+    */
         return null;
     }
 }
