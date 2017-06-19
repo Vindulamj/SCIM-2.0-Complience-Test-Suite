@@ -1,13 +1,13 @@
 package info.wso2.scim2.compliance.httpclient;
 
-import feign.Headers;
-import feign.RequestLine;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-import java.util.List;
-
-@Headers("Accept: application/json")
+@Path("/")
 public interface SCIMResourceFeign {
-
-    @RequestLine("GET /scim2/Users/5777a1ab-7c26-422d-8f54-9928138eac80?attributes=userName")
-    List<SPC> getAllBooks();
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    SPC getAllBooks();
 }

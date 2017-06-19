@@ -120,9 +120,19 @@
 			<version>8.18.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>2.4.5</version>
+			<groupId>com.netflix.feign</groupId>
+			<artifactId>feign-jaxrs</artifactId>
+			<version>8.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.feign</groupId>
+			<artifactId>feign-jackson</artifactId>
+			<version>8.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.feign</groupId>
+			<artifactId>feign-gson</artifactId>
+			<version>8.18.0</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -190,6 +200,14 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

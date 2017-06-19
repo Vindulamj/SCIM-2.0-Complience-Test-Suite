@@ -1,11 +1,17 @@
 package info.wso2.scim2.compliance.httpclient;
 
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.List;
 
-@JacksonXmlRootElement(localName = "SPC")
 public class SPC {
-    private String userName;
-    private String id;
-    private String schemas;
+    private Object patch;
+    private List<String> schemas;
+    @Override
+    public String toString() {
+        return "SPC{" +
+                "userName='" + patch.toString() + '\'' +
+                "schemas='" + schemas.get(0) + '\'' +
+
+                '}';
+    }
 }
