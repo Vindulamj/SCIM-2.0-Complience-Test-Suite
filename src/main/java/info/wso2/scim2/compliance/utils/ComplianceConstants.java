@@ -15,6 +15,7 @@ public class ComplianceConstants {
         public static final String HTTP = "http";
         public static final String HTTPS = "https";
     }
+
     public static class ResponseCodeConstants {
 
         public static final int CODE_BAD_REQUEST = 400;

@@ -8,8 +8,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
-public interface SCIMResourceFeign {
+public interface HttpClient {
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    SCIMServiceProviderConfig getAllBooks();
+    SCIMServiceProviderConfig GetServiceProviderConfig();
 }

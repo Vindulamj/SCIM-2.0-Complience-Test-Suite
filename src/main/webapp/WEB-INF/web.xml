@@ -15,7 +15,7 @@
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-supported>info.simplecloud.scimproxy.compliance</param-supported>
+			<param-value>info.simplecloud.scimproxy.compliance</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -29,7 +29,7 @@
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-supported>info.wso2.scim2.compliance</param-supported>
+			<param-value>info.wso2.scim2.compliance.protocol</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

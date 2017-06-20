@@ -1,6 +1,5 @@
 package info.wso2.scim2.compliance.scimcore.objects.ServiceProviderConfig;
 
-
 import java.util.List;
 
 public class SCIMServiceProviderConfig {

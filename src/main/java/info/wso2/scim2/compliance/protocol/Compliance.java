@@ -1,10 +1,12 @@
 package info.wso2.scim2.compliance.protocol;
 
+import com.sun.xml.bind.v2.TODO;
 import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CritialComplienceException;
+import info.wso2.scim2.compliance.httpclient.HttpClientImpl;
 import info.wso2.scim2.compliance.tests.ConfigTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -41,7 +43,7 @@ public class Compliance extends HttpServlet {
 
         // TODO: remove when done coding!
         if (url == null || url.isEmpty()) {
-            url = "http://127.0.0.1:9443";
+            url = "https://localhost:9443/";
         }
 
         ArrayList<TestResult> results = new ArrayList<TestResult>();
@@ -50,6 +52,9 @@ public class Compliance extends HttpServlet {
                 ComplianceConstants.RequestCodeConstants.HTTPS};
 
         UrlValidator urlValidator = new UrlValidator(schemes);
+
+        //TODO: Uncomment this when deploying
+        /*
         if (!urlValidator.isValid(url)) {
 
             ComplianceException BadRequestException = new ComplianceException();
@@ -62,30 +67,33 @@ public class Compliance extends HttpServlet {
 
             return new Result(statistics, results);
         }
+        */
 
         // create a CSP to use to connect to the server
-        CSP csp = new CSP();
-        csp.setUrl(url);
-        csp.setVersion("/scim2");
-        csp.setAuthentication(authMethod);
-        csp.setUsername(username);
-        csp.setPassword(password);
-        csp.setOAuth2AuthorizationServer(authorizationServer);
-        csp.setoAuth2ClientId(clientId);
-        csp.setoAuth2ClientSecret(clientSecret);
-        csp.setoAuth2GrantType("password");
-        csp.setAuthorizationHeader(authorizationHeader);
-/*
-        // get the configuration
+        ComplianceTestMetaDataHolder complianceTestMetaDataHolder = new ComplianceTestMetaDataHolder();
+        complianceTestMetaDataHolder.setUrl(url);
+        complianceTestMetaDataHolder.setVersion("/scim2");
+        complianceTestMetaDataHolder.setUsername(username);
+        complianceTestMetaDataHolder.setPassword(password);
+        complianceTestMetaDataHolder.setAuthorization_server(authorizationServer);
+        complianceTestMetaDataHolder.setAuthorization_header(authorizationHeader);
+        complianceTestMetaDataHolder.setAuthorization_method(authMethod);
+        complianceTestMetaDataHolder.setClient_id(clientId);
+        complianceTestMetaDataHolder.setClient_secret(clientSecret);
+
+        //create a httpclient
+        HttpClientImpl HttpClient = new HttpClientImpl(complianceTestMetaDataHolder);
+
+        //get the service provider Config
         try {
             // start with the critical tests (will throw exception and test will
             // stop if fails)
-            ConfigTest configTest = new ConfigTest();
+            ConfigTest configTest = new ConfigTest(HttpClient, complianceTestMetaDataHolder);
 
-            results.add(configTest.getConfiguration(csp));
+            results.add(configTest.getConfiguration());
 
     } catch (CritialComplienceException e) {
-        results.add(((CritialComplienceException) e).getResult());
+        results.add(e.getResult());
     } catch (Throwable e) {
         results.add(new TestResult(TestResult.ERROR, "Unknown Test", e.getMessage(), null));
     }
@@ -106,8 +114,5 @@ public class Compliance extends HttpServlet {
         }
     }
         return new Result(statistics, results);
-    }
-    */
-        return null;
     }
 }
