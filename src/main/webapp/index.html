@@ -136,13 +136,13 @@
                     "userName":"bjensen",
                     "phoneNumbers":[
                     {
-                    "value":"555-555-8377",
+                    "supported":"555-555-8377",
                     "type":"work"
                     }
                     ],
                     "emails":[
                     {
-                    "value":"bjensen@example.com",
+                    "supported":"bjensen@example.com",
                     "type":"work",
                     "primary": true
                     }
@@ -162,13 +162,13 @@
                     "displayName": "Tour Guides",
                     "members":[
                     {
-                    "value": "2819c223-7f76-453a-919d-413861904646",
+                    "supported": "2819c223-7f76-453a-919d-413861904646",
                     "$ref":
                     "https://example.com/v2/Users/2819c223-7f76-453a-919d-413861904646",
                     "display": "Babs Jensen"
                     },
                     {
-                    "value": "902c246b-6245-4190-8e05-00816be7344a",
+                    "supported": "902c246b-6245-4190-8e05-00816be7344a",
                     "$ref":
                     "https://example.com/v2/Users/902c246b-6245-4190-8e05-00816be7344a",
                     "display": "Mandy Pepperidge"
@@ -197,7 +197,7 @@
                     <li>Replace = PUT https://example.com/{v}/{resource}/{id}</li>
                     <li>Delete = DELETE https://example.com/{v}/{resource}/{id}</li>
                     <li>Update = PATCH https://example.com/{v}/{resource}/{id}</li>
-                    <li>Search = GET https://example.com/{v}/{resource}?ﬁlter={attribute}{op}{value}&sortBy={attributeName}&sortOrder={ascending|descending}</li>
+                    <li>Search = GET https://example.com/{v}/{resource}?ﬁlter={attribute}{op}{supported}&sortBy={attributeName}&sortOrder={ascending|descending}</li>
                     <li>Bulk = POST https://example.com/{v}/Bulk</li>
                 </ul>
 
@@ -325,7 +325,7 @@
                     attributes of the resources, and return only a subset of the resources.
                 </p>
                 <ul>
-                    <li>https://example.com/{resource}?ﬁlter={attribute} {op} {value} & sortBy={attributeName}&sortOrder={ascending|descending}&attributes={attributes}</li>
+                    <li>https://example.com/{resource}?ﬁlter={attribute} {op} {supported} & sortBy={attributeName}&sortOrder={ascending|descending}&attributes={attributes}</li>
                     <li>https://example.com/Users?ﬁlter=title pr and userType eq “Employee”&sortBy=title&sortOrder=ascending&attributes=title,username</li>
                 </ul>
                 <h2>Filter Response</h2>
@@ -1630,9 +1630,9 @@
                       <label class="control-label" for="basicUsername">Method</label>
                       <div class="controls" id="authMethodContainer">
                         <select id="authMethod">
-                          <option value="basicAuth">HTTP-Basic</option>
-                          <option value="oauthAuth">OAuth 2.0 (password grant)</option>
-                          <option value="rawAuth">Raw Authorization header</option>
+                          <option supported="basicAuth">HTTP-Basic</option>
+                          <option supported="oauthAuth">OAuth 2.0 (password grant)</option>
+                          <option supported="rawAuth">Raw Authorization header</option>
                         </select>
                       </div>
                     </div>
@@ -1686,7 +1686,7 @@
                     <p>Under Construction!</p>
                   <!--
                     <input type="text" class="input-small" placeholder="attribute">
-                    <input type="text" class="input-small" placeholder="value">
+                    <input type="text" class="input-small" placeholdsupportedalue">
                    -->
                   </form>
                 </div>
@@ -1746,9 +1746,9 @@
                                   <label class="control-label">Method</label>
                                   <div class="controls" id="authMethodContainer2">
                                       <select id="authMethod2">
-                                          <option value="basicAuth">HTTP-Basic</option>
-                                          <option value="oauthAuth">OAuth 2.0 (password grant)</option>
-                                          <option value="rawAuth">Raw Authorization header</option>
+                                          <option supported="basicAuth">HTTP-Basic</option>
+                                          <option supported="oauthAuth">OAuth 2.0 (password grant)</option>
+                                          <option supported="rawAuth">Raw Authorization header</option>
                                       </select>
                                   </div>
                               </div>
@@ -1802,7 +1802,7 @@
                               <p>Under Construction!</p>
                               <!--
                                 <input type="text" class="input-small" placeholder="attribute">
-                                <input type="text" class="input-small" placeholder="value">
+                                <input type="text" class="input-small" placeholdsupportedalue">
                                -->
                           </form>
                       </div>
@@ -1878,7 +1878,7 @@
 
   <script id="authMethodTemplate" type="text/template">
   {{#authMethods}}
-  <option value="{{value}}">{{name}}</option>
+  <option supported="{{supported}}">{{name}}</option>
   {{/authMethods}}
   </script>
 

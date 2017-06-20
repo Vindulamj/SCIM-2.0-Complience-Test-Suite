@@ -5,11 +5,12 @@ import feign.auth.BasicAuthRequestInterceptor;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 import feign.jaxrs.JAXRSContract;
+import info.wso2.scim2.compliance.scimcore.objects.ServiceProviderConfig.SCIMServiceProviderConfig;
 
 public class SCIMResourceImplFeign {
     private static final String URI_BOOK = "https://localhost:9443";
 
-    public SPC getAllBooks() throws Exception {
+    public SCIMServiceProviderConfig getAllBooks() throws Exception {
         BasicAuthRequestInterceptor interceptor = new BasicAuthRequestInterceptor("admin",
                 "admin");
 

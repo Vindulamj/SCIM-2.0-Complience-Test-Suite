@@ -135,7 +135,7 @@ public class ComplienceUtils {
 		}
 		toServer.append(" HTTP/1.1\n");
 		for (Header header : method.getRequestHeaders()) {
-		    toServer.append(header.getName()).append(": ").append(header.getValue()).append("\n");
+		    toServer.append(header.getName()).append(": ").append(header.getSupported()).append("\n");
 		}
 		toServer.append("\n" + body);
 		
@@ -143,7 +143,7 @@ public class ComplienceUtils {
 		try {
 		    fromServer.append(method.getStatusLine()).append("\n"); 
 		    for (Header header : method.getResponseHeaders()) {
-		        fromServer.append(header.getName()).append(": ").append(header.getValue()).append("\n");
+		        fromServer.append(header.getName()).append(": ").append(header.getSupported()).append("\n");
 		    }
 		    fromServer.append("\n" + method.getResponseBodyAsString());
 		} catch (IOException e) {

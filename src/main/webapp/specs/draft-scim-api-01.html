@@ -562,13 +562,13 @@ ETag: W/"f250dd84f0671c3"
   "userName":"bjensen",
   "phoneNumbers":[
     {
-      "value":"555-555-8377",
+      "supported":"555-555-8377",
       "type":"work"
     }
   ],
   "emails":[
     {
-      "value":"bjensen@example.com",
+      "supported":"bjensen@example.com",
       "type":"work"
     }
   ]
@@ -632,7 +632,7 @@ Filtering</h3>
 <p>
                             The attribute name and attribute operator are case insensitive.
                             For example, the following two expressions will evaluate to the
-                            same logical value:
+                            same logical supported:
                         
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 filter=userName Eq "john"
@@ -642,7 +642,7 @@ filter=Username eq "john"
 <p>
                             The filter parameter MUST contain at least one valid Boolean
                             expression. Each expression MUST contain an attribute name
-                            followed by an attribute operator and optional value. Multiple
+                            followed by an attribute operator and optional supported. Multiple
                             expressions MAY be combined using the two logical operators.
                             Furthermore expressions can be grouped together using "()".
                         
@@ -666,29 +666,29 @@ filter=Username eq "john"
 <tr>
 <td align="left">co</td>
 <td align="left">contains</td>
-<td align="left">The entire operator value must be a substring of the attribute
-                                value for a match.
+<td align="left">The entire operator supported must be a substring of the attribute
+                                supported for a match.
                             </td>
 </tr>
 <tr>
 <td align="left">sw</td>
 <td align="left">starts with</td>
-<td align="left">The entire operator value must be a substring of the attribute
-                                value, starting at the beginning of the attribute value. This
+<td align="left">The entire operator supported must be a substring of the attribute
+                                supported, starting at the beginning of the attribute supported. This
                                 criterion is satisfied if the two strings are identical.
                             </td>
 </tr>
 <tr>
 <td align="left">pr</td>
-<td align="left">present (has value)</td>
-<td align="left">If the attribute has a non-empty value, or if it contains a
+<td align="left">present (has supported)</td>
+<td align="left">If the attribute has a non-empty supported, or if it contains a
                                 non-empty node for complex attributes there is a match.
                             </td>
 </tr>
 <tr>
 <td align="left">gt</td>
 <td align="left">greater than</td>
-<td align="left">If the attribute value is greater than operator value, there is
+<td align="left">If the attribute supported is greater than operator supported, there is
                                 a match. The actual comparison is dependent on the attribute
                                 type. For string attribute types, this is a lexicographical
                                 comparison and for DateTime types, it is a chronological
@@ -698,8 +698,8 @@ filter=Username eq "john"
 <tr>
 <td align="left">ge</td>
 <td align="left">greater than or equal</td>
-<td align="left">If the attribute value is greater than or equal to the operator
-                                value, there is a match. The actual comparison is dependent on
+<td align="left">If the attribute supported is greater than or equal to the operator
+                                supported, there is a match. The actual comparison is dependent on
                                 the attribute type. For string attribute types, this is a
                                 lexicographical comparison and for DateTime types, it is a
                                 chronological comparison.
@@ -708,7 +708,7 @@ filter=Username eq "john"
 <tr>
 <td align="left">lt</td>
 <td align="left">less than</td>
-<td align="left">If the attribute value is less than operator value, there is a
+<td align="left">If the attribute supported is less than operator supported, there is a
                                 match. The actual comparison is dependent on the attribute type.
                                 For string attribute types, this is a lexicographical comparison
                                 and for DateTime types, it is a chronological comparison.
@@ -717,8 +717,8 @@ filter=Username eq "john"
 <tr>
 <td align="left">le</td>
 <td align="left">less than or equal</td>
-<td align="left">If the attribute value is less than or equal to the operator
-                                value, there is a match. The actual comparison is dependent on
+<td align="left">If the attribute supported is less than or equal to the operator
+                                supported, there is a match. The actual comparison is dependent on
                                 the attribute type. For string attribute types, this is a
                                 lexicographical comparison and for DateTime types, it is a
                                 chronological comparison.
@@ -781,8 +781,8 @@ filter=Username eq "john"
                             multiple emails values, only one has to match for the entire User
                             to match. For complex attributes, a fully qualified Sub-Attribute MUST be specified using standard
                             <a class='info' href='#attribute-notation'>attribute notation<span> (</span><span class='info'>Attribute Notation</span><span>)</span></a>.  For example, to filter by
-                            userName the parameter value is userName and to filter by first name, the
-                            parameter value is name.givenName.
+                            userName the parameter supported is userName and to filter by first name, the
+                            parameter supported is name.givenName.
                         
 </p>
 <p>Providers MAY support additional filter operations if they
@@ -842,17 +842,17 @@ Sorting</h3>
 <blockquote class="text"><dl>
 <dt>sortBy:</dt>
 <dd>
-                                The sortBy parameter specifies the attribute whose value SHALL
+                                The sortBy parameter specifies the attribute whose supported SHALL
                                 be used to order the returned responses. If the sortBy attribute
                                 corresponds to a Singular Attribute, Resources are sorted
-                                according to that attribute's value; if it's a Multi-valued Attribute,
-                                Resources are sorted by the value of the primary attribute, if
-                                any, or else the first value in the list, if any. If the
+                                according to that attribute's supported; if it's a Multi-valued Attribute,
+                                Resources are sorted by the supported of the primary attribute, if
+                                any, or else the first supported in the list, if any. If the
                                 attribute is complex the attribute name must be a path to a
                                 Sub-Attribute in standard
                                 <a class='info' href='#attribute-notation'>attribute notation<span> (</span><span class='info'>Attribute Notation</span><span>)</span></a>
                                 ; e.g., sortBy=name.givenName. For all attribute
-                                types, if there is no data for the specified sortBy value they
+                                types, if there is no data for the specified sortBy supported they
                                 are sorted via the 'sortOrder' parameter; i.e., they are ordered
                                 last if ascending and first if descending.
                             
@@ -860,7 +860,7 @@ Sorting</h3>
 <dt>sortOrder:</dt>
 <dd>
                                 The order in which the sortBy parameter is applied. Allowed
-                                values are "ascending" and "descending". If a value for sortBy
+                                values are "ascending" and "descending". If a supported for sortBy
                                 is provided and no sortOrder is specified, the sortOrder SHALL
                                 default to ascending.  String type attributes are case
                                 insensitive by default unless the attribute type is defined
@@ -1032,10 +1032,10 @@ If-Match: W/"a330bc54f0671c9"
   },
   "emails":[
     {
-        "value":"bjensen@example.com"
+        "supported":"bjensen@example.com"
     },
     {
-        "value":"babs@jensen.org"
+        "supported":"babs@jensen.org"
     }
   ]
 }
@@ -1064,10 +1064,10 @@ Location:"https://example.com/v1/Users/2819c223-7f76-453a-919d-413861904646"
   },
   "emails":[
     {
-        "value":"bjensen@example.com"
+        "supported":"bjensen@example.com"
     },
     {
-        "value":"babs@jensen.org"
+        "supported":"babs@jensen.org"
     }
   ],
   "meta": {
@@ -1107,7 +1107,7 @@ Modifying with PATCH</h3>
 <p>The meta.attributes Sub-Attribute MAY contain a list of attributes
                         to be removed from the Resource.  If the PATCH request body contains
                         an attribute that is present in the meta.attributes list, the
-                        attribute on the Resource is replaced with the value from the PATCH
+                        attribute on the Resource is replaced with the supported from the PATCH
                         body.  If the attribute is complex the attribute name must be a path
                         to a Sub-Attribute in standard
                         <a class='info' href='#attribute-notation'>attribute notation<span> (</span><span class='info'>Attribute Notation</span><span>)</span></a>; e.g., name.givenName.
@@ -1133,21 +1133,21 @@ Modifying with PATCH</h3>
 </dd>
 <dt>Multi-valued attributes:</dt>
 <dd>
-                            An attribute value in the PATCH request body is added to the value collection if the value does not
-                            exist and merged if a matching value is present. Values are matched by
-                            comparing the value Sub-Attribute from the PATCH request body to
-                            the value Sub-Attribute of the Resource.  Attributes that
-                            do not have a value Sub-Attribute; e.g., addresses, or do not have unique value Sub-Attributes cannot
+                            An attribute supported in the PATCH request body is added to the supported collection if the supported does not
+                            exist and merged if a matching supported is present. Values are matched by
+                            comparing the supported Sub-Attribute from the PATCH request body to
+                            the supported Sub-Attribute of the Resource.  Attributes that
+                            do not have a supported Sub-Attribute; e.g., addresses, or do not have unique supported Sub-Attributes cannot
                             be matched and must instead be deleted then added.
 
-                            Specific values can be removed from a Resource by adding an "operation" Sub-Attribute with the value
-                            "delete" to the attribute in the PATCH request body.  As with adding/updating attribute value
-                            collections, the value to delete is determined by comparing the value Sub-Attribute from the PATCH
-                            request body to the value Sub-Attribute of the Resource.  Attributes that do not have a value
-                            Sub-Attribute or that have a non-unique value Sub-Attribute are matched by comparing all Sub-Attribute
+                            Specific values can be removed from a Resource by adding an "operation" Sub-Attribute with the supported
+                            "delete" to the attribute in the PATCH request body.  As with adding/updating attribute supported
+                            collections, the supported to delete is determined by comparing the supported Sub-Attribute from the PATCH
+                            request body to the supported Sub-Attribute of the Resource.  Attributes that do not have a supported
+                            Sub-Attribute or that have a non-unique supported Sub-Attribute are matched by comparing all Sub-Attribute
                             values from the PATCH request body to the Sub-Attribute values of the Resource. A delete operation
-                            is ignored if the attribute's name is in the meta.attributes list.  If the requested value to
-                            delete does not match a unique value on the Resource the server MAY return a HTTP 400 error.
+                            is ignored if the attribute's name is in the meta.attributes list.  If the requested supported to
+                            delete does not match a unique supported on the Resource the server MAY return a HTTP 400 error.
                         
 </dd>
 </dl></blockquote>
@@ -1166,13 +1166,13 @@ If-Match: W/"a330bc54f0671c9"
   "members": [
     {
       "display": "Babs Jensen",
-      "value": "2819c223-7f76-453a-919d-413861904646"
+      "supported": "2819c223-7f76-453a-919d-413861904646"
     }
   ]
 }
 </pre></div>
 <p>The "display" Sub-Attribute in this request is optional since the
-                        value attribute uniquely identifies the user to be added.  If the
+                        supported attribute uniquely identifies the user to be added.  If the
                         user was already a member of this group, no changes should be made
                         to the Resource and a success response should be returned.  The
                         server responds with either the entire updated Group or no response
@@ -1207,7 +1207,7 @@ If-Match: W/"a330bc54f0671c9"
   "members": [
     {
       "display": "Babs Jensen",
-      "value": "2819c223-7f76-453a-919d-413861904646"
+      "supported": "2819c223-7f76-453a-919d-413861904646"
       "operation": "delete"
     }
   ]
@@ -1254,11 +1254,11 @@ If-Match: W/"a330bc54f0671c9"
   "members": [
     {
       "display": "Babs Jensen",
-      "value": "2819c223-7f76-453a-919d-413861904646"
+      "supported": "2819c223-7f76-453a-919d-413861904646"
     },
     {
       "display": "James Smith",
-      "value": "08e1d05d-121c-4561-8b96-473d93df9210"
+      "supported": "08e1d05d-121c-4561-8b96-473d93df9210"
     }
   ]
 }
@@ -1279,12 +1279,12 @@ If-Match: W/"a330bc54f0671c9"
   "members": [
     {
       "display": "Babs Jensen",
-      "value": "2819c223-7f76-453a-919d-413861904646"
+      "supported": "2819c223-7f76-453a-919d-413861904646"
       "operation": "delete"
     },
     {
       "display": "James Smith",
-      "value": "08e1d05d-121c-4561-8b96-473d93df9210"
+      "supported": "08e1d05d-121c-4561-8b96-473d93df9210"
     }
   ]
 }
@@ -1307,14 +1307,14 @@ If-Match: W/"a330bc54f0671c9"
   "schemas": ["urn:scim:schemas:core:1.0"],
   "emails": [
     {
-      "value": "bjensen@example.com",
+      "supported": "bjensen@example.com",
       "primary": true
     }
   ]
 }
 </pre></div>
 <p>The following example shows how to change a User's address.  Since
-                        address does not have a value Sub-Attribute, the existing address
+                        address does not have a supported Sub-Attribute, the existing address
                         must be removed and the modified address added.
                     
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1539,7 +1539,7 @@ Bulk</h3>
 </dd>
 <dt>path</dt>
 <dd>
-                                    The Resource's relative path.  If the method is POST the value must specify a Resource type
+                                    The Resource's relative path.  If the method is POST the supported must specify a Resource type
                                     endpoint; e.g., /Users or /Groups whereas all other method values must specify the path to
                                     a specific Resource; e.g., /Users/2819c223-7f76-453a-919d-413861904646.  REQUIRED in a request.
                                 
@@ -1592,7 +1592,7 @@ Bulk</h3>
 <p>
                     The Service Provider MUST continue performing as many changes as
                     possible and disregard partial failures. The Consumer MAY override
-                    this behavior by specifying a value for failOnErrors attribute. The failOnErrors
+                    this behavior by specifying a supported for failOnErrors attribute. The failOnErrors
                     attribute defines the number of errors that the Service Provider
                     should accept before failing the remaining operations returning the
                     response.
@@ -1643,7 +1643,7 @@ Bulk</h3>
 <p>
                     The following example shows how to add, update, and remove a user. The failOnErrors
                     attribute is set to '1' indicating the Service Provider should return
-                    on the first error. The POST operation's bulkId value is set to 'qwerty' enabling the Consumer to match
+                    on the first error. The POST operation's bulkId supported is set to 'qwerty' enabling the Consumer to match
                     the new User with the returned Resource id '92b725cd-9465-4e7d-8c16-01f8e146b87a'.
                 
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -1833,8 +1833,8 @@ Content-Type: application/json
 <p>
                     The Consumer can, within one bulk operation, create a new User, a new Group and add the newly created User to
                     the newly created Group.  In order to add the new User to the Group
-                    the Consumer must use the surrogate id attribute, bulkId, to reference the User. The bulkId attribute value
-                    must be pre-pended with the literal "bulkId:"; e.g., if the bulkId is 'qwerty' the value is  “bulkId:qwerty”.
+                    the Consumer must use the surrogate id attribute, bulkId, to reference the User. The bulkId attribute supported
+                    must be pre-pended with the literal "bulkId:"; e.g., if the bulkId is 'qwerty' the supported is  “bulkId:qwerty”.
                     The Service Provider MUST replace the string “bulkId:qwerty” with the permanent Resource id once created.
                 
 </p>
@@ -1879,7 +1879,7 @@ Content-Length: ...
         "members": [
           {
             "type": "user",
-            "value": "bulkId:qwerty"
+            "supported": "bulkId:qwerty"
           }
         ]
       }
@@ -1947,7 +1947,7 @@ ETag: W/"lha5bbazU3fNvfe5"
   },
   "members": [
     {
-      "value": "92b725cd-9465-4e7d-8c16-01f8e146b87a",
+      "supported": "92b725cd-9465-4e7d-8c16-01f8e146b87a",
       "type": "user"
     }
   ]
@@ -2034,7 +2034,7 @@ Content-Length: ...
         "members": [
           {
             "type": "group",
-            "value": "bulkId:ytrewq"
+            "supported": "bulkId:ytrewq"
           }
         ]
       }
@@ -2051,7 +2051,7 @@ Content-Length: ...
         "members": [
           {
             "type": "group",
-            "value": "bulkId:qwerty"
+            "supported": "bulkId:qwerty"
           }
         ]
       }
@@ -2093,7 +2093,7 @@ Content-Type: application/json
       },
       "members": [
         {
-          "value": "6c5bb468-14b2-4183-baf2-06d523e03bd3",
+          "supported": "6c5bb468-14b2-4183-baf2-06d523e03bd3",
           "type": "group"
         }
       ]
@@ -2112,7 +2112,7 @@ Content-Type: application/json
       },
       "members": [
         {
-          "value": "c3a26dd3-27a0-4dec-a2ac-ce211e105f97",
+          "supported": "c3a26dd3-27a0-4dec-a2ac-ce211e105f97",
           "type": "group"
         }
       ]
@@ -2188,15 +2188,15 @@ Host: example.com
                 
 </p>
 <p>
-                    Singular attributes are encoded as string name-value-pairs in JSON;
+                    Singular attributes are encoded as string name-supported-pairs in JSON;
                     e.g.,
                 
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-"attribute": "value"
+"attribute": "supported"
 </pre></div>
 <p>and elements in XML; e.g.,
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-&lt;attribute&gt;value&lt;/attribute&gt;
+&lt;attribute&gt;supported&lt;/attribute&gt;
 </pre></div>
 <p>
                     Multi-valued attributes in JSON are encoded as arrays; e.g.,
@@ -2238,7 +2238,7 @@ Additional retrieval query parameters</h3>
                     returned MUST contain the minimal set of Resource attributes and, MUST
                     contain no other attributes or Sub-Attributes than those explicitly requested.
 
-                    The query parameter attributes value is a comma separated list of
+                    The query parameter attributes supported is a comma separated list of
                     Resource attribute names in standard,
                     <a class='info' href='#attribute-notation'>attribute notation<span> (</span><span class='info'>Attribute Notation</span><span>)</span></a> form (e.g. userName, name, emails).
                 

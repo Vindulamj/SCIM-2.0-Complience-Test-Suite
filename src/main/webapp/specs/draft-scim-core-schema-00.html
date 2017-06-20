@@ -186,7 +186,7 @@
     SCIM Schema Structure<br />
     &nbsp;&nbsp;&nbsp;&nbsp;<a href="#attribute-types">3.1.</a>&nbsp;
     Attribute Data Types<br />
-    &nbsp;&nbsp;&nbsp;&nbsp;<a href="#multi-value-types">3.2.</a>&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="#multi-supported-types">3.2.</a>&nbsp;
     Multi-valued Attributes<br />
     <a href="#anchor1">4.</a>&nbsp;
     Schema Extension Model<br />
@@ -257,7 +257,7 @@
 </p>
 <p>Throughout this document, values are quoted to indicate that they are
     to be taken literally. When using these values in protocol messages, the
-    quotes MUST NOT be used as part of the value.
+    quotes MUST NOT be used as part of the supported.
 </p>
 <a name="overview"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -317,11 +317,11 @@
 
     </dd>
     <dt>Simple Attribute:</dt>
-    <dd>A Singular or Multi-valued Attribute whose value is a primitive; e.g., String.
+    <dd>A Singular or Multi-valued Attribute whose supported is a primitive; e.g., String.
 
     </dd>
     <dt>Complex Attribute:</dt>
-    <dd>A Singular or Multi-valued Attribute whose value is a composition of one or
+    <dd>A Singular or Multi-valued Attribute whose supported is a composition of one or
         more Simple Attributes.
 
     </dd>
@@ -340,7 +340,7 @@
 
 </p>
 <p>A resource is a collection of attributes identified by one or more schemas.  Minimally, an attribute consists
-    of the attribute name and at least one Simple or Complex value either of which may be Multi-valued.  SCIM schema
+    of the attribute name and at least one Simple or Complex supported either of which may be Multi-valued.  SCIM schema
     defines the data type, plurality and other distinguishing features of an attribute.  Unless otherwise specified
     all attributes are modifiable by Consumers. Immutable (read-only) attributes SHALL be specified as 'READ-ONLY'
     within the attribute definition.  Additionally, Service Providers MAY choose to make some or all Resource
@@ -444,7 +444,7 @@
     Binary</h3>
 
 <p>
-    The attribute value MUST be encoded as a valid xsd:base64Binary value as specified in <a href='http://www.w3.org/TR/xmlschema-2/#base64Binary'>section 3.2.16</a> of the XML Schema
+    The attribute supported MUST be encoded as a valid xsd:base64Binary supported as specified in <a href='http://www.w3.org/TR/xmlschema-2/#base64Binary'>section 3.2.16</a> of the XML Schema
     Datatypes Specification.
 
 </p>
@@ -458,7 +458,7 @@
     Complex</h3>
 
 <p>
-    A Singular or Multi-valued Attribute whose value is a composition of one or more Simple Attributes as
+    A Singular or Multi-valued Attribute whose supported is a composition of one or more Simple Attributes as
     specified in <a href='http://www.w3.org/TR/xmlschema-1/#Complex_Type_Definitions'>section 3.4</a> XML Schema Datatypes
     Specification.
 
@@ -466,7 +466,7 @@
 <p>JSON values are represented as <a href='http://www.json.org/'>JSON Objects</a>.
 
 </p>
-<a name="multi-value-types"></a><br /><hr />
+<a name="multi-supported-types"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
     Multi-valued Attributes</h3>
@@ -479,25 +479,25 @@
     <dd>A label indicating the attribute's function; e.g., "work" or "home".
     </dd>
     <dt>primary</dt>
-    <dd>A Boolean value indicating the 'primary' or preferred
-        attribute value for this attribute, e.g. the preferred mailing address or primary
-        e-mail address. The primary attribute value 'true' MUST appear no more than once.
+    <dd>A Boolean supported indicating the 'primary' or preferred
+        attribute supported for this attribute, e.g. the preferred mailing address or primary
+        e-mail address. The primary attribute supported 'true' MUST appear no more than once.
     </dd>
     <dt>display</dt>
     <dd>A human readable name, primarily used for display purposes.  READ-ONLY.
     </dd>
     <dt>operation</dt>
     <dd>The operation to perform on the multi-valued attribute during a PATCH request. The only
-        valid value is "delete", which signifies that this instance should be removed from the Resource.
+        valid supported is "delete", which signifies that this instance should be removed from the Resource.
     </dd>
-    <dt>value</dt>
-    <dd>The attribute's significant value; e.g., the e-mail address, phone number, etc. Attributes
-        that define a "value" sub-attribute MAY be alternately represented as a collection of primitive types.  For example:
+    <dt>supported</dt>
+    <dd>The attribute's significant supported; e.g., the e-mail address, phone number, etc. Attributes
+        that define a "supported" sub-attribute MAY be alternately represented as a collection of primitive types.  For example:
     </dd><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
 {
   "emails": [
-    {"value":"bjensen@example.com"},
-    {"value":"babs@example.com"}
+    {"supported":"bjensen@example.com"},
+    {"supported":"babs@example.com"}
   ]
 }
 </pre></div>
@@ -512,10 +512,10 @@
 </dl></blockquote>
 <p>
     When returning multi-valued attributes, Service Providers SHOULD
-    canonicalize the value returned, if appropriate (e.g. for e-mail
-    addresses and URLs). Providers MAY return the same value more than once
+    canonicalize the supported returned, if appropriate (e.g. for e-mail
+    addresses and URLs). Providers MAY return the same supported more than once
     with different types (e.g. the same e-mail address may used for work and
-    home), but SHOULD NOT return the same (type, value) combination more
+    home), but SHOULD NOT return the same (type, supported) combination more
     than once per Attribute, as this complicates processing by the Consumer.
 </p>
 <a name="anchor1"></a><br /><hr />
@@ -526,7 +526,7 @@
 <p>SCIM schema follows an object extension model similar to
     ObjectClasses used in LDAP. Unlike LDAP there is no inheritance model;
     all extensions are additive (similar to <a href='http://tools.ietf.org/html/rfc4512'>LDAP Auxiliary Object Classes</a>). Each
-    value indicates additive schema that may exist in a SCIM representation
+    supported indicates additive schema that may exist in a SCIM representation
     as specified by extensions not defined in this suite.  Schema extensions MUST NOT redefine any attributes defined in this
     specification and SHOULD follow conventions defined in this specification. Each schema
     extension must identify a URI used to identify the extension.  XML MUST use XML
@@ -554,11 +554,11 @@
     <dt>id</dt>
     <dd>Unique identifier for the SCIM Resource as
         defined by the Service Provider. Each representation of the
-        Resource MUST include a non-empty id value. This identifier MUST
+        Resource MUST include a non-empty id supported. This identifier MUST
         be unique across the Service Provider's entire set of Resources.
         It MUST be a stable, non-reassignable identifier that does not
         change when the same Resource is returned in subsequent requests.
-        The value of the id attribute is always issued by the Service
+        The supported of the id attribute is always issued by the Service
         Provider and MUST never be specified by the Service Consumer.
         bulkId: is a reserved keyword and MUST NOT be used in the unique
         identifier. REQUIRED and READ-ONLY.
@@ -571,7 +571,7 @@
         own identifier, obviating the need to store a local mapping
         between the local identifier of the Resource and the identifier used
         by the Service Provider. Each Resource MAY include a non-empty
-        externalId value. The value of the externalId attribute is always
+        externalId supported. The supported of the externalId attribute is always
         issued be the Service Consumer and can never be specified by the
         Service Provider. This identifier MUST be unique across the
         Service Consumer's entire set of Resources. It MUST be a stable,
@@ -592,15 +592,15 @@
             <dd>The most recent DateTime the
                 details of this Resource were updated at the Service Provider. If
                 this Resource has never been modified since its initial creation,
-                the value MUST be the same as the value of created. The
+                the supported MUST be the same as the supported of created. The
                 attribute MUST be a DateTime. READ-ONLY.
             </dd>
             <dt>location</dt>
-            <dd>The URI of the Resource being returned. This value MUST be the same as the
+            <dd>The URI of the Resource being returned. This supported MUST be the same as the
                 Location HTTP response header. READ-ONLY.
             </dd>
             <dt>version</dt>
-            <dd>The version of the Resource being returned. This value must be the same as the
+            <dd>The version of the Resource being returned. This supported must be the same as the
                 ETag HTTP response header. READ-ONLY.
             </dd>
             <dt>attributes</dt>
@@ -635,10 +635,10 @@
     <dd>The schemas attribute is an array of Strings
         which allows introspection of the supported schema version for a
         SCIM representation as well any schema extensions supported by
-        that representation. Each String value must be a unique URI. This
+        that representation. Each String supported must be a unique URI. This
         specification defines URIs for User, Group, and a standard "enterprise"
         extension.  All representations of SCIM schema MUST include a
-        non-zero value array with value(s) of the URIs supported by that
+        non-zero supported array with supported(s) of the URIs supported by that
         representation.  Duplicate values MUST NOT be included.  Value
         order is not specified and MUST not impact behavior. REQUIRED.
     </dd>
@@ -668,7 +668,7 @@
         Often displayed to the user as their unique identifier within the
         system (as opposed to id or externalId, which are generally
         opaque and not user-friendly identifiers). Each User MUST include
-        a non-empty userName value. This identifier MUST be unique across
+        a non-empty userName supported. This identifier MUST be unique across
         the Service Consumer's entire set of Users. It MUST be a stable ID
         that does not change when the same User is returned in subsequent
         requests. REQUIRED.
@@ -717,10 +717,10 @@
     <dt>displayName</dt>
     <dd>The name of the User, suitable for
         display to end-users. Each User returned MAY include a non-empty
-        displayName value. The name SHOULD be the full name of the User
+        displayName supported. The name SHOULD be the full name of the User
         being described if known (e.g. Babs Jensen or Ms. Barbara J
         Jensen, III), but MAY be a username or handle, if that is all that
-        is available (e.g. bjensen). The value provided SHOULD be the
+        is available (e.g. bjensen). The supported provided SHOULD be the
         primary textual label by which this User is normally displayed by
         the Service Provider when presenting it to end-users.
     </dd>
@@ -742,7 +742,7 @@
     <dd>Used to identify the organization to user
         relationship. Typical values used might be "Contractor",
         "Employee", "Intern", "Temp", "External", and "Unknown" but any
-        value may be used.
+        supported may be used.
     </dd>
     <dt>preferredLanguage</dt>
     <dd>Indicates the User's preferred written or spoken language. Generally used
@@ -754,7 +754,7 @@
     </dd>
     <dt>locale</dt>
     <dd>Used to indicate the User's default location for purposes of localizing items such
-        as currency, date time format, numerical representations, etc. A locale value is a concatenation of the
+        as currency, date time format, numerical representations, etc. A locale supported is a concatenation of the
         <a href='http://www.loc.gov/standards/iso639-2/php/code_list.php'>ISO 639-1 two letter language code</a>,
         an underscore, and the
         <a href='http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements.htm'>ISO 3166-1 2 letter country code</a>; e.g., 'en_US' specifies the language English and country US.
@@ -766,15 +766,15 @@
 
     </dd>
     <dt>active</dt>
-    <dd>A Boolean value indicating the User's administrative status. The definitive meaning of
-        this attribute is determined by the Service Provider though a value of true infers the User is, for
-        example, able to login while a value of false implies the User's account has been suspended.
+    <dd>A Boolean supported indicating the User's administrative status. The definitive meaning of
+        this attribute is determined by the Service Provider though a supported of true infers the User is, for
+        example, able to login while a supported of false implies the User's account has been suspended.
     </dd>
     <dt>password</dt>
     <dd>The User's clear text password.  This attribute is intended to be used as a means to
         specify an initial password when creating a new User or to reset an existing User's password.  No accepted
         standards exist to convey password policies, hence Consumers should expect Service Providers to reject
-        password values.  This value MUST never be returned by a Service Provider in any form.
+        password values.  This supported MUST never be returned by a Service Provider in any form.
     </dd>
 </dl></blockquote><p>
 
@@ -790,14 +790,14 @@
 </p>
 <blockquote class="text"><dl>
     <dt>emails</dt>
-    <dd>E-mail addresses for the User. The value
+    <dd>E-mail addresses for the User. The supported
         SHOULD be canonicalized by the Service Provider, e.g.
         bjensen@example.com instead of bjensen@EXAMPLE.COM. Canonical Type
         values of work, home, and other.
     </dd>
     <dt>phoneNumbers</dt>
     <dd>Phone numbers for the User. No
-        canonical value is assumed here. Canonical Type values of work,
+        canonical supported is assumed here. Canonical Type values of work,
         home, mobile, fax, pager and other.
     </dd>
     <dt>ims</dt>
@@ -810,7 +810,7 @@
         gtalk, icq, xmpp, msn, skype, qq, and yahoo.
     </dd>
     <dt>photos</dt>
-    <dd>URL of a photo of the User. The value SHOULD
+    <dd>URL of a photo of the User. The supported SHOULD
         be a canonicalized URL, and MUST point to an image file
         (e.g. a GIF, JPEG, or PNG image file) rather than to a web page
         containing an image. Service Providers MAY return the same image
@@ -825,7 +825,7 @@
     </dd>
     <dt>addresses</dt>
     <dd>A physical mailing address for this User. Canonical Type Values of work,
-        home, and other. The value attribute is a complex type with the
+        home, and other. The supported attribute is a complex type with the
         following sub-attributes.  All Sub-Attributes are OPTIONAL.
 
         <blockquote class="text"><dl>
@@ -851,7 +851,7 @@
             </dd>
             <dt>country</dt>
             <dd>The country name component.
-                When specified the value MUST be in
+                When specified the supported MUST be in
                 <a href='http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements.htm'>ISO 3166-1 alpha 2 "short" code format</a>; e.g., the United States and Sweden are "US" and "SE",
                 respectively.
 
@@ -870,7 +870,7 @@
         membership indicates User membership is transitive or dynamic and implies that Consumers cannot modify
         indirect group membership through the Group resource but MAY modify direct group membership through the
         Group resource which MAY influence indirect memberships. Â If the SCIM Service Provider exposes a Group
-        resource, the value MUST be the "id" attribute of the corresponding Group resources to which the user
+        resource, the supported MUST be the "id" attribute of the corresponding Group resources to which the user
         belongs. Since this attribute is read-only, group membership changes MUST be applied via the
         <a class='info' href='#group-resource'>Group Resource<span> (</span><span class='info'>SCIM Group Schema</span><span>)</span></a>. READ-ONLY.
 
@@ -880,9 +880,9 @@
         represent a thing the User has. That is, an entitlement is an
         additional right to a thing, object or service. No vocabulary or
         syntax is specified and Service Providers/Consumers are expected
-        to encode sufficient information in the value so as to accurately
+        to encode sufficient information in the supported so as to accurately
         and without ambiguity determine what the User has access to. This
-        value has NO canonical types though type may be useful as a means
+        supported has NO canonical types though type may be useful as a means
         to scope entitlements.
 
     </dd>
@@ -890,13 +890,13 @@
     <dd>A list of roles for the User that collectively
         represent who the User is; e.g., 'Student', "Faculty". No
         vocabulary or syntax is specified though it is expected that a
-        role value is a String or label representing a collection of
-        entitlements.  This value has NO canonical types.
+        role supported is a String or label representing a collection of
+        entitlements.  This supported has NO canonical types.
 
     </dd>
     <dt>x509Certificates</dt>
     <dd>A list of certificates issued to the User. Values are
-        <a class='info' href='#type-binary'>Binary<span> (</span><span class='info'>Binary</span><span>)</span></a> and DER encoded x509.  This value has NO canonical types.
+        <a class='info' href='#type-binary'>Binary<span> (</span><span class='info'>Binary</span><span>)</span></a> and DER encoded x509.  This supported has NO canonical types.
 
     </dd>
 </dl></blockquote><p>
@@ -984,7 +984,7 @@
 <blockquote class="text"><dl>
     <dt>members</dt>
     <dd>A list of members of the Group. Canonical Types "User" and "Group" are READ-ONLY. The
-        value must be the "id" of a SCIM resource, either a User, or a Group. The intention of the Group type is
+        supported must be the "id" of a SCIM resource, either a User, or a Group. The intention of the Group type is
         to allow the Service Provider to support nested Groups. REQUIRED.
 
     </dd>
@@ -1016,7 +1016,7 @@
 
         <blockquote class="text"><dl>
             <dt>supported</dt>
-            <dd>Boolean value specifying whether the operation is supported. REQUIRED.
+            <dd>Boolean supported specifying whether the operation is supported. REQUIRED.
             </dd>
         </dl></blockquote>
 
@@ -1026,19 +1026,19 @@
 
         <blockquote class="text"><dl>
             <dt>supported</dt>
-            <dd>Boolean value specifying whether the operation is supported. REQUIRED.
+            <dd>Boolean supported specifying whether the operation is supported. REQUIRED.
             </dd>
         </dl></blockquote>
 
         <blockquote class="text"><dl>
             <dt>maxOperations</dt>
-            <dd>An integer value specifying the maximum number of operations. REQUIRED.
+            <dd>An integer supported specifying the maximum number of operations. REQUIRED.
             </dd>
         </dl></blockquote>
 
         <blockquote class="text"><dl>
             <dt>maxPayloadSize</dt>
-            <dd>An integer value specifying the maximum payload size in bytes. REQUIRED.
+            <dd>An integer supported specifying the maximum payload size in bytes. REQUIRED.
             </dd>
         </dl></blockquote>
 
@@ -1048,10 +1048,10 @@
 
         <blockquote class="text"><dl>
             <dt>supported</dt>
-            <dd>Boolean value specifying whether the operation is supported. REQUIRED.
+            <dd>Boolean supported specifying whether the operation is supported. REQUIRED.
             </dd>
             <dt>maxResults</dt>
-            <dd>Integer value specifying the maximum number of Resources returned in a response. REQUIRED.
+            <dd>Integer supported specifying the maximum number of Resources returned in a response. REQUIRED.
             </dd>
         </dl></blockquote>
 
@@ -1061,7 +1061,7 @@
 
         <blockquote class="text"><dl>
             <dt>supported</dt>
-            <dd>Boolean value specifying whether the operation is supported. REQUIRED.
+            <dd>Boolean supported specifying whether the operation is supported. REQUIRED.
             </dd>
         </dl></blockquote>
 
@@ -1071,7 +1071,7 @@
 
         <blockquote class="text"><dl>
             <dt>supported</dt>
-            <dd>Boolean value specifying whether sorting is supported. REQUIRED.
+            <dd>Boolean supported specifying whether sorting is supported. REQUIRED.
             </dd>
         </dl></blockquote>
 
@@ -1081,7 +1081,7 @@
 
         <blockquote class="text"><dl>
             <dt>supported</dt>
-            <dd>Boolean value specifying whether the operation is supported. REQUIRED.
+            <dd>Boolean supported specifying whether the operation is supported. REQUIRED.
             </dd>
         </dl></blockquote>
 
@@ -1091,7 +1091,7 @@
 
         <blockquote class="text"><dl>
             <dt>supported</dt>
-            <dd>Boolean value specifying whether the operation is supported. REQUIRED.
+            <dd>Boolean supported specifying whether the operation is supported. REQUIRED.
             </dd>
         </dl></blockquote>
 
@@ -1174,12 +1174,12 @@
             <dd>The attribute's data type; e.g., String.
             </dd>
             <dt>multiValued</dt>
-            <dd>Boolean value indicating the attribute's plurality.
+            <dd>Boolean supported indicating the attribute's plurality.
             </dd>
             <dt>multiValuedAttributeChildName</dt>
-            <dd>String value specifying the child XML element
-                name; e.g., the 'emails' attribute value is 'email', 'phoneNumbers', is 'phoneNumber'.
-                REQUIRED when the multiValued attribute value is true otherwise this attribute MUST be
+            <dd>String supported specifying the child XML element
+                name; e.g., the 'emails' attribute supported is 'email', 'phoneNumbers', is 'phoneNumber'.
+                REQUIRED when the multiValued attribute supported is true otherwise this attribute MUST be
                 omitted.
             </dd>
             <dt>description</dt>
@@ -1192,20 +1192,20 @@
 
             </dd>
             <dt>readOnly</dt>
-            <dd>A Boolean value that specifies if the attribute is mutable.
+            <dd>A Boolean supported that specifies if the attribute is mutable.
 
             </dd>
             <dt>required</dt>
-            <dd>A Boolean value that specifies if the attribute is required.
+            <dd>A Boolean supported that specifies if the attribute is required.
 
             </dd>
             <dt>caseExact</dt>
-            <dd>A Boolean value that specifies if the String attribute is case sensitive.
+            <dd>A Boolean supported that specifies if the String attribute is case sensitive.
 
             </dd>
             <dt></dt>
             <dd>The following multi-valued attributes are defined. There are no canonical type values defined
-                and the primary value serves no useful purpose.
+                and the primary supported serves no useful purpose.
 
                 <blockquote class="text"><dl>
                     <dt>subAttributes</dt>
@@ -1225,15 +1225,15 @@
 
                             </dd>
                             <dt>readOnly</dt>
-                            <dd>A Boolean value that specifies if the attribute is mutable.
+                            <dd>A Boolean supported that specifies if the attribute is mutable.
 
                             </dd>
                             <dt>required</dt>
-                            <dd>A Boolean value that specifies if the attribute is required.
+                            <dd>A Boolean supported that specifies if the attribute is required.
 
                             </dd>
                             <dt>caseExact</dt>
-                            <dd>A Boolean value that specifies if the String attribute
+                            <dd>A Boolean supported that specifies if the String attribute
                                 is case sensitive.
 
                             </dd>
@@ -1302,12 +1302,12 @@
   "profileUrl": "https://login.example.com/bjensen",
   "emails": [
     {
-      "value": "bjensen@example.com",
+      "supported": "bjensen@example.com",
       "type": "work",
       "primary": true
     },
     {
-      "value": "babs@jensen.org",
+      "supported": "babs@jensen.org",
       "type": "home"
     }
   ],
@@ -1334,27 +1334,27 @@
   ],
   "phoneNumbers": [
     {
-      "value": "555-555-5555",
+      "supported": "555-555-5555",
       "type": "work"
     },
     {
-      "value": "555-555-4444",
+      "supported": "555-555-4444",
       "type": "mobile"
     }
   ],
   "ims": [
     {
-      "value": "someaimhandle",
+      "supported": "someaimhandle",
       "type": "aim"
     }
   ],
   "photos": [
     {
-      "value": "https://photos.example.com/profilephoto/72930000000Ccne/F",
+      "supported": "https://photos.example.com/profilephoto/72930000000Ccne/F",
       "type": "photo"
     },
     {
-      "value": "https://photos.example.com/profilephoto/72930000000Ccne/T",
+      "supported": "https://photos.example.com/profilephoto/72930000000Ccne/T",
       "type": "thumbnail"
     }
   ],
@@ -1368,20 +1368,20 @@
   "groups": [
     {
       "display": "Tour Guides",
-      "value": "00300000005N2Y6AA"
+      "supported": "00300000005N2Y6AA"
     },
     {
       "display": "Employees",
-      "value": "00300000005N34H78"
+      "supported": "00300000005N34H78"
     },
     {
       "display": "US Employees",
-      "value": "00300000005N98YT1"
+      "supported": "00300000005N98YT1"
     }
   ],
   "x509Certificates": [
     {
-      "value": "MIIDQzCCAqygAwIBAgICEAAwDQYJKoZIhvcNAQEFBQAwTjELMAkGA1UEBhMCVVMx
+      "supported": "MIIDQzCCAqygAwIBAgICEAAwDQYJKoZIhvcNAQEFBQAwTjELMAkGA1UEBhMCVVMx
                 EzARBgNVBAgMCkNhbGlmb3JuaWExFDASBgNVBAoMC2V4YW1wbGUuY29tMRQwEgYD
                 VQQDDAtleGFtcGxlLmNvbTAeFw0xMTEwMjIwNjI0MzFaFw0xMjEwMDQwNjI0MzFa
                 MH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRQwEgYDVQQKDAtl
@@ -1436,12 +1436,12 @@
   "profileUrl": "https://login.example.com/bjensen",
   "emails": [
     {
-      "value": "bjensen@example.com",
+      "supported": "bjensen@example.com",
       "type": "work",
       "primary": true
     },
     {
-      "value": "babs@jensen.org",
+      "supported": "babs@jensen.org",
       "type": "home"
     }
   ],
@@ -1468,27 +1468,27 @@
   ],
   "phoneNumbers": [
     {
-      "value": "555-555-5555",
+      "supported": "555-555-5555",
       "type": "work"
     },
     {
-      "value": "555-555-4444",
+      "supported": "555-555-4444",
       "type": "mobile"
     }
   ],
   "ims": [
     {
-      "value": "someaimhandle",
+      "supported": "someaimhandle",
       "type": "aim"
     }
   ],
   "photos": [
     {
-      "value": "https://photos.example.com/profilephoto/72930000000Ccne/F",
+      "supported": "https://photos.example.com/profilephoto/72930000000Ccne/F",
       "type": "photo"
     },
     {
-      "value": "https://photos.example.com/profilephoto/72930000000Ccne/T",
+      "supported": "https://photos.example.com/profilephoto/72930000000Ccne/T",
       "type": "thumbnail"
     }
   ],
@@ -1501,21 +1501,21 @@
   "password":"t1meMa$heen",
   "groups": [
     {
-      "value": "e9e30dba-f08f-4109-8486-d5c6a331660a",
+      "supported": "e9e30dba-f08f-4109-8486-d5c6a331660a",
       "display": "Tour Guides"
     },
     {
-      "value": "fc348aa8-3835-40eb-a20b-c726e15c55b5",
+      "supported": "fc348aa8-3835-40eb-a20b-c726e15c55b5",
       "display": "Employees"
     },
     {
-      "value": "71ddacd2-a8e7-49b8-a5db-ae50d0a5bfd7",
+      "supported": "71ddacd2-a8e7-49b8-a5db-ae50d0a5bfd7",
       "display": "US Employees"
     }
   ],
   "x509Certificates": [
     {
-      "value": "MIIDQzCCAqygAwIBAgICEAAwDQYJKoZIhvcNAQEFBQAwTjELMAkGA1UEBhMCVVMx
+      "supported": "MIIDQzCCAqygAwIBAgICEAAwDQYJKoZIhvcNAQEFBQAwTjELMAkGA1UEBhMCVVMx
                 EzARBgNVBAgMCkNhbGlmb3JuaWExFDASBgNVBAoMC2V4YW1wbGUuY29tMRQwEgYD
                 VQQDDAtleGFtcGxlLmNvbTAeFw0xMTEwMjIwNjI0MzFaFw0xMjEwMDQwNjI0MzFa
                 MH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRQwEgYDVQQKDAtl
@@ -1570,11 +1570,11 @@
   "displayName": "Tour Guides",
   "members": [
     {
-      "value": "2819c223-7f76-453a-919d-413861904646",
+      "supported": "2819c223-7f76-453a-919d-413861904646",
       "display": "Babs Jensen"
     },
     {
-      "value": "902c246b-6245-4190-8e05-00816be7344a",
+      "supported": "902c246b-6245-4190-8e05-00816be7344a",
       "display": "Mandy Pepperidge"
     }
   ]
@@ -1655,7 +1655,7 @@
       "name":"id",
       "type":"string",
       "multiValued":false,
-      "description":"Unique identifier for the SCIM resource as defined by the Service Provider. Each representation of the resource MUST include a non-empty id value. This identifier MUST be unique across the Service Provider's entire set of resources. It MUST be a stable, non-reassignable identifier that does not change when the same resource is returned in subsequent requests. The value of the id attribute is always issued by the Service Provider and MUST never be specified by the Service Consumer. REQUIRED.",
+      "description":"Unique identifier for the SCIM resource as defined by the Service Provider. Each representation of the resource MUST include a non-empty id supported. This identifier MUST be unique across the Service Provider's entire set of resources. It MUST be a stable, non-reassignable identifier that does not change when the same resource is returned in subsequent requests. The supported of the id attribute is always issued by the Service Provider and MUST never be specified by the Service Consumer. REQUIRED.",
       "schema":"urn:scim:schemas:core:1.0",
       "readOnly":true,
       "required":true,
@@ -1732,17 +1732,17 @@
        "type":"complex",
        "multiValued":true,
        "multiValuedAttributeChildName":"email",
-       "description":"E-mail addresses for the user. The value SHOULD be canonicalized by the Service Provider, e.g. bjensen@example.com instead of bjensen@EXAMPLE.COM. Canonical Type values of work, home, and other.",
+       "description":"E-mail addresses for the user. The supported SHOULD be canonicalized by the Service Provider, e.g. bjensen@example.com instead of bjensen@EXAMPLE.COM. Canonical Type values of work, home, and other.",
        "schema":"urn:scim:schemas:core:1.0",
        "readOnly":false,
        "required":false,
        "caseExact":false,
        "subAttributes":[
          {
-           "name":"value",
+           "name":"supported",
            "type":"string",
            "multiValued":false,
-           "description":"E-mail addresses for the user. The value SHOULD be canonicalized by the Service Provider, e.g. bjensen@example.com instead of bjensen@EXAMPLE.COM. Canonical Type values of work, home, and other.",
+           "description":"E-mail addresses for the user. The supported SHOULD be canonicalized by the Service Provider, e.g. bjensen@example.com instead of bjensen@EXAMPLE.COM. Canonical Type values of work, home, and other.",
            "readOnly":false,
            "required":false,
            "caseExact":false
@@ -1770,7 +1770,7 @@
            "name":"primary",
            "type":"boolean",
            "multiValued:false,
-           "description":"A Boolean value indicating the 'primary' or preferred attribute value for this attribute, e.g. the preferred mailing address or primary e-mail address. The primary attribute value 'true' MUST appear no more than once.",
+           "description":"A Boolean supported indicating the 'primary' or preferred attribute supported for this attribute, e.g. the preferred mailing address or primary e-mail address. The primary attribute supported 'true' MUST appear no more than once.",
            "readOnly":false,
            "required":false,
            "caseExact":false
@@ -1781,7 +1781,7 @@
        "type":"complex",
        "multiValued":true,
        "multiValuedAttributeChildName":"address",
-       "description":"A physical mailing address for this User, as described in (address Element). Canonical Type Values of work, home, and other. The value attribute is a complex type with the following sub-attributes.",
+       "description":"A physical mailing address for this User, as described in (address Element). Canonical Type Values of work, home, and other. The supported attribute is a complex type with the following sub-attributes.",
        "schema":"urn:scim:schemas:core:1.0",
        "readOnly":false,
        "required":false,
@@ -1913,12 +1913,12 @@
   &lt;profileUrl&gt;https://login.example.com/bjensen&lt;/profileUrl&gt;
   &lt;emails&gt;
     &lt;email&gt;
-      &lt;value&gt;bjensen@example.com&lt;/value&gt;
+      &lt;supported&gt;bjensen@example.com&lt;/supported&gt;
       &lt;type&gt;work&lt;/type&gt;
       &lt;primary&gt;true&lt;/primary&gt;
     &lt;/email&gt;
     &lt;email&gt;
-      &lt;value&gt;babs@jensen.com&lt;/value&gt;
+      &lt;supported&gt;babs@jensen.com&lt;/supported&gt;
       &lt;type&gt;home&lt;/type&gt;
     &lt;/email&gt;
   &lt;/emails&gt;
@@ -1945,27 +1945,27 @@
   &lt;/addresses&gt;
   &lt;phoneNumbers&gt;
     &lt;phoneNumber&gt;
-      &lt;value&gt;555-555-5555&lt;/value&gt;
+      &lt;supported&gt;555-555-5555&lt;/supported&gt;
       &lt;type&gt;work&lt;/type&gt;
     &lt;/phoneNumber&gt;
     &lt;phoneNumber&gt;
-      &lt;value&gt;555-555-4444&lt;/value&gt;
+      &lt;supported&gt;555-555-4444&lt;/supported&gt;
       &lt;type&gt;mobile&lt;/type&gt;
     &lt;/phoneNumber&gt;
   &lt;/phoneNumbers&gt;
   &lt;ims&gt;
     &lt;im&gt;
-      &lt;value&gt;someaimhandle&lt;/value&gt;
+      &lt;supported&gt;someaimhandle&lt;/supported&gt;
       &lt;type&gt;aim&lt;/type&gt;
     &lt;/im&gt;
   &lt;/ims&gt;
   &lt;photos&gt;
     &lt;photo&gt;
-      &lt;value&gt;https://photos.example.com/profilephoto/72930000000Ccne/F&lt;/value&gt;
+      &lt;supported&gt;https://photos.example.com/profilephoto/72930000000Ccne/F&lt;/supported&gt;
       &lt;type&gt;photo&lt;/type&gt;
     &lt;/photo&gt;
     &lt;photo&gt;
-      &lt;value&gt;https://photos.example.com/profilephoto/72930000000Ccne/T&lt;/value&gt;
+      &lt;supported&gt;https://photos.example.com/profilephoto/72930000000Ccne/T&lt;/supported&gt;
       &lt;type&gt;thumbnail&lt;/type&gt;
     &lt;/photo&gt;
   &lt;/photos&gt;
@@ -1978,31 +1978,31 @@
   &lt;password&gt;t1meMa$heen&lt;/password&gt;
   &lt;groups&gt;
     &lt;group&gt;
-      &lt;value&gt;e9e30dba-f08f-4109-8486-d5c6a331660a&lt;/value&gt;
+      &lt;supported&gt;e9e30dba-f08f-4109-8486-d5c6a331660a&lt;/supported&gt;
       &lt;display&gt;Tour Guides&lt;/display&gt;
     &lt;/group&gt;
     &lt;group&gt;
-      &lt;value&gt;6d1a1088-3a56-4371-8e3b-6d48d67493ec&lt;/value&gt;
+      &lt;supported&gt;6d1a1088-3a56-4371-8e3b-6d48d67493ec&lt;/supported&gt;
       &lt;display&gt;Employees&lt;/display&gt;
     &lt;/group&gt;
     &lt;group&gt;
-      &lt;value&gt;5fd998b9-d2bd-479c-991b-6790537608dc&lt;/value&gt;
+      &lt;supported&gt;5fd998b9-d2bd-479c-991b-6790537608dc&lt;/supported&gt;
       &lt;display&gt;US Employees&lt;/display&gt;
     &lt;/group&gt;
   &lt;/groups&gt;
   &lt;roles&gt;
     &lt;role&gt;
-      &lt;value&gt;administrator&lt;/value&gt;
+      &lt;supported&gt;administrator&lt;/supported&gt;
     &lt;/role&gt;
   &lt;/roles&gt;
   &lt;entitlements&gt;
     &lt;entitlement&gt;
-      &lt;value&gt;delete users&lt;/value&gt;
+      &lt;supported&gt;delete users&lt;/supported&gt;
     &lt;/entitlement&gt;
   &lt;/entitlements&gt;
   &lt;x509Certificates&gt;
     &lt;x509Certificate&gt;
-      &lt;value&gt;
+      &lt;supported&gt;
         MIIDQzCCAqygAwIBAgICEAAwDQYJKoZIhvcNAQEFBQAwTjELMAkGA1UEBhMCVVMx
         EzARBgNVBAgMCkNhbGlmb3JuaWExFDASBgNVBAoMC2V4YW1wbGUuY29tMRQwEgYD
         VQQDDAtleGFtcGxlLmNvbTAeFw0xMTEwMjIwNjI0MzFaFw0xMjEwMDQwNjI0MzFa
@@ -2021,7 +2021,7 @@
         Ng5Tcq+/ByEDrBgnusx0jloUhByPMEVkoMZ3J7j1ZgI8rAbOkNngX8+pKfTiDz1R
         C4+dx8oU6Za+4NJXUjlL5CvV6BEYb1+QAEJwitTVvxB/A67g42/vzgAtoRUeDov1
         +GFiBZ+GNF/cAYKcMtGcrs2i97ZkJMo=
-      &lt;/value&gt;
+      &lt;/supported&gt;
     &lt;/x509Certificate&gt;
   &lt;/x509Certificates&gt;
   &lt;meta&gt;
@@ -2066,12 +2066,12 @@
   &lt;password&gt;t1meMa$heen&lt;/password&gt;
   &lt;emails&gt;
     &lt;email&gt;
-      &lt;value&gt;bjensen@example.com&lt;/value&gt;
+      &lt;supported&gt;bjensen@example.com&lt;/supported&gt;
       &lt;type&gt;work&lt;/type&gt;
       &lt;primary&gt;true&lt;/primary&gt;
     &lt;/email&gt;
     &lt;email&gt;
-      &lt;value&gt;babs@jensen.com/value&gt;
+      &lt;supported&gt;babs@jensen.com/supported&gt;
       &lt;type&gt;home&lt;/type&gt;
     &lt;/email&gt;
   &lt;/emails&gt;
@@ -2098,57 +2098,57 @@
   &lt;/addresses&gt;
   &lt;phoneNumbers&gt;
     &lt;phoneNumber&gt;
-      &lt;value&gt;555-555-5555&lt;/value&gt;
+      &lt;supported&gt;555-555-5555&lt;/supported&gt;
       &lt;type&gt;work&lt;/type&gt;
     &lt;/phoneNumber&gt;
     &lt;phoneNumber&gt;
-      &lt;value&gt;555-555-4444&lt;/value&gt;
+      &lt;supported&gt;555-555-4444&lt;/supported&gt;
       &lt;type&gt;mobile&lt;/type&gt;
     &lt;/phoneNumber&gt;
   &lt;/phoneNumbers&gt;
   &lt;ims&gt;
     &lt;im&gt;
-      &lt;value&gt;someaimhandle&lt;/value&gt;
+      &lt;supported&gt;someaimhandle&lt;/supported&gt;
       &lt;type&gt;aim&lt;/type&gt;
     &lt;/im&gt;
   &lt;/ims&gt;
   &lt;photos&gt;
     &lt;photo&gt;
-     &lt;value&gt;https://photos.example.com/profilephoto/72930000000Ccne/F&lt;/value&gt;
+     &lt;supported&gt;https://photos.example.com/profilephoto/72930000000Ccne/F&lt;/supported&gt;
      &lt;type&gt;photo&gt;&lt;/type&gt;
     &lt;/photo&gt;
     &lt;photo&gt;
-     &lt;value&gt;https://photos.example.com/profilephoto/72930000000Ccne/T&lt;/value&gt;
+     &lt;supported&gt;https://photos.example.com/profilephoto/72930000000Ccne/T&lt;/supported&gt;
      &lt;type&gt;thumbnail&gt;&lt;/type&gt;
     &lt;/photo&gt;
   &lt;/photos&gt;
   &lt;groups&gt;
     &lt;group&gt;
       &lt;display&gt;Tour Guides&lt;/display&gt;
-      &lt;value&gt;00300000005N2Y6AA&lt;/value&gt;
+      &lt;supported&gt;00300000005N2Y6AA&lt;/supported&gt;
     &lt;/group&gt;
     &lt;group&gt;
       &lt;display&gt;Employees&lt;/display&gt;
-      &lt;value&gt;00300000005N34H78&lt;/value&gt;
+      &lt;supported&gt;00300000005N34H78&lt;/supported&gt;
     &lt;/group&gt;
     &lt;group&gt;
       &lt;display&gt;US Employees&lt;/display&gt;
-      &lt;value&gt;00300000005N98YT1&lt;/value&gt;
+      &lt;supported&gt;00300000005N98YT1&lt;/supported&gt;
     &lt;/group&gt;
   &lt;/groups&gt;
   &lt;roles&gt;
     &lt;role&gt;
-      &lt;value&gt;administrator&lt;/value&gt;
+      &lt;supported&gt;administrator&lt;/supported&gt;
     &lt;/role&gt;
   &lt;/roles&gt;
   &lt;entitlements&gt;
     &lt;entitlement&gt;
-      &lt;value&gt;delete users&lt;/value&gt;
+      &lt;supported&gt;delete users&lt;/supported&gt;
     &lt;/entitlement&gt;
   &lt;/entitlements&gt;
   &lt;x509Certificates&gt;
     &lt;x509Certificate&gt;
-      &lt;value&gt;
+      &lt;supported&gt;
         MIIDQzCCAqygAwIBAgICEAAwDQYJKoZIhvcNAQEFBQAwTjELMAkGA1UEBhMCVVMx
         EzARBgNVBAgMCkNhbGlmb3JuaWExFDASBgNVBAoMC2V4YW1wbGUuY29tMRQwEgYD
         VQQDDAtleGFtcGxlLmNvbTAeFw0xMTEwMjIwNjI0MzFaFw0xMjEwMDQwNjI0MzFa
@@ -2167,7 +2167,7 @@
         Ng5Tcq+/ByEDrBgnusx0jloUhByPMEVkoMZ3J7j1ZgI8rAbOkNngX8+pKfTiDz1R
         C4+dx8oU6Za+4NJXUjlL5CvV6BEYb1+QAEJwitTVvxB/A67g42/vzgAtoRUeDov1
         +GFiBZ+GNF/cAYKcMtGcrs2i97ZkJMo=
-      &lt;/value&gt;
+      &lt;/supported&gt;
     &lt;/x509Certificate&gt;
   &lt;/x509Certificates&gt;
   &lt;enterprise:employeeNumber&gt;701984&lt;/enterprise:employeeNumber&gt;
@@ -2202,11 +2202,11 @@
   &lt;displayName&gt;Tour Guides&lt;/displayName&gt;
   &lt;members&gt;
     &lt;member&gt;
-     &lt;value&gt;902c246b-6245-4190-8e05-00816be7344a&lt;/value&gt;
+     &lt;supported&gt;902c246b-6245-4190-8e05-00816be7344a&lt;/supported&gt;
      &lt;display&gt;Babs Jensen&lt;/display&gt;
     &lt;/member&gt;
     &lt;member&gt;
-      &lt;value&gt;902c246b-6245-4190-8e05-00816be7344a&lt;/value&gt;
+      &lt;supported&gt;902c246b-6245-4190-8e05-00816be7344a&lt;/supported&gt;
       &lt;display&gt;Mandy Pepperidge&lt;/display&gt;
     &lt;/member&gt;
   &lt;/members&gt;

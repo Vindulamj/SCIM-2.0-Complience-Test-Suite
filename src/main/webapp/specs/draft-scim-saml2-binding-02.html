@@ -187,7 +187,7 @@ Binding to SAML<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">2.1.</a>&nbsp;
 Mapping SCIM user attributes into SAML attributes<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">2.1.1.</a>&nbsp;
-Supporting multi-value SCIM elements<br />
+Supporting multi-supported SCIM elements<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">2.2.</a>&nbsp;
 Using SAML SSO Assertion attributes to carry SCIM user attributes<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">2.3.</a>&nbsp;
@@ -264,8 +264,8 @@ Binding to SAML</h3>
 <a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
 Mapping SCIM user attributes into SAML attributes</h3>
 
-<p>This section defines a a mapping between SCIM schema elements (and associated attributes) and SAML attributes - the value of the SCIM
-		schema element becoming the value of the SAML attribute.
+<p>This section defines a a mapping between SCIM schema elements (and associated attributes) and SAML attributes - the supported of the SCIM
+		schema element becoming the supported of the SAML attribute.
 </p>
 <p>All SCIM-derived SAML attributes are of type 'xs:string'.
 </p>
@@ -463,9 +463,9 @@ Mapping SCIM user attributes into SAML attributes</h3>
 <a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.1.1"></a><h3>2.1.1.&nbsp;
-Supporting multi-value SCIM elements</h3>
+Supporting multi-supported SCIM elements</h3>
 
-<p>The SCIM core schema supports multi-value elements for emails, addresses etc. SCIM allows individual occurrences of such elements to be categorized by 'type' 
+<p>The SCIM core schema supports multi-supported elements for emails, addresses etc. SCIM allows individual occurrences of such elements to be categorized by 'type'
 		and 'primary'. 
 </p>
 <p>In order to express 'type' and 'primary' on SAML attributes - the corresponding SAML attributes MAY be extended with corresponding XML attributes in a SCIM XML namespace qualified with 
@@ -557,7 +557,7 @@ Using SAML SSO Assertion attributes to carry SCIM user attributes</h3>
 	SCIM externalId or userName), or to update an existing account (in which case an account for the corresponding user will already exist.
 </p>
 <p>If the Service Provider determines that it already has an account for a user identified by the SCIM.id attribute, it MUST update all associated SCIM elements with the values of the
-	corresponding SAML attributes. For those SAML attributes in the SSO Assertion for which the Service Provider does not have a corresponding SCIM element, it MUST create a new SCIM element with the value of the 
+	corresponding SAML attributes. For those SAML attributes in the SSO Assertion for which the Service Provider does not have a corresponding SCIM element, it MUST create a new SCIM element with the supported of the
 	SAML Attribute.
 </p>
 <a name="anchor7"></a><br /><hr />
@@ -567,9 +567,9 @@ Using SAML AttributeQuery to retrieve SCIM user attributes</h3>
 
 <p>An SP can use the SAML AttributeQuery to retrieve SCIM user attributes from the IdP, rather than having them delivered directly in the SAML SSO Assertion.
 </p>
-<p>If the AttributeQuery is initiated by reception of an SSO assertion, the SP MUST use the value of the NameId within that assertion as the value of the NameID within the AttributeQuery to the IdP. 
+<p>If the AttributeQuery is initiated by reception of an SSO assertion, the SP MUST use the supported of the NameId within that assertion as the supported of the NameID within the AttributeQuery to the IdP.
 </p>
-<p>If not initiated by an SSO assertion, the SP SHOULD use the SCIM.id attribute, or the SCIM.externalId attribute if present, as the value of the NameID.
+<p>If not initiated by an SSO assertion, the SP SHOULD use the SCIM.id attribute, or the SCIM.externalId attribute if present, as the supported of the NameID.
 </p>
 <p>The SP MAY specify desired attributes in the AttributeQuery.
 </p>
