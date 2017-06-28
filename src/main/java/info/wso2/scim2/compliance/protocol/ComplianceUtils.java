@@ -30,10 +30,6 @@ public class ComplianceUtils {
         }
 
 
-        fromServer.append(method.getStatusLine()).append("\n");
-        for (Header header : method.getResponseHeaders()) {
-            fromServer.append(header.getName()).append(": ").append(header.getValue()).append("\n");
-        }
         fromServer.append("\n" + body);
 
         return new Wire(toServer.toString(), fromServer.toString());

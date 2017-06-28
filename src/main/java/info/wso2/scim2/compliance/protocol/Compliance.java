@@ -1,10 +1,8 @@
 package info.wso2.scim2.compliance.protocol;
 
-import com.sun.xml.bind.v2.TODO;
 import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
-import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CritialComplienceException;
 import info.wso2.scim2.compliance.httpclient.HttpClientImpl;
 import info.wso2.scim2.compliance.tests.ConfigTest;

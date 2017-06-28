@@ -88,7 +88,7 @@ $(document).ready(
                     [ 'Result', 'Number' ], [ 'Failed', failed ],
                     [ 'Success', success ], [ 'Skipped', skipped ] ]);
                 new google.visualization.PieChart(document
-                    .getElementById('compliance-chart')).draw(chartData, options);
+                    .getElementById('compliance-chart2')).draw(chartData, options);
 
                 prettyPrint();
                 $("#result-container2").show();

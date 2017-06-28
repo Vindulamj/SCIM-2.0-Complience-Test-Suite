@@ -18,7 +18,8 @@ public class HttpClientImpl {
 
     public SCIMServiceProviderConfig GetServiceProviderConfig() throws Exception {
 
-        String url = "https://localhost:9443" +
+        //TODO : get the URL from meta holder
+        String url = complianceTestMetaDataHolder.getUrl() +
                 complianceTestMetaDataHolder.getVersion() + "/ServiceProviderConfig";
 
         BasicAuthRequestInterceptor interceptor = new BasicAuthRequestInterceptor

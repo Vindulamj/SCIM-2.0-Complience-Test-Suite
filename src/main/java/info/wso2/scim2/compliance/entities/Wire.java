@@ -5,13 +5,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Wire {
-    public static final Wire EMPTY      = new Wire("<empty>", "<empty>");
+    public static final Wire EMPTY = new Wire("<empty>", "<empty>");
     
     @XmlElement(name = "to_server")
-    String                   toServer   = "";
+    String toServer = "";
     
     @XmlElement(name = "from_server")
-    String                   fromServer = "";
+    String fromServer = "";
 
     public Wire() {
     }
