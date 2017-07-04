@@ -36,7 +36,7 @@ public class ComplienceUtils {
      */
     @SuppressWarnings("deprecation")
 	public static HttpClient getHttpClientWithAuth(CSP csp, HttpMethodBase method) {
-        // Create an instance of HttpClient.
+        // Create an instance of FeignClient.
     	
 		try {
 	    	URL url = new URL(csp.getUrl());

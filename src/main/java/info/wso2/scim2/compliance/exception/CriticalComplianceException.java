@@ -2,14 +2,14 @@ package info.wso2.scim2.compliance.exception;
 
 import info.wso2.scim2.compliance.entities.TestResult;
 
-public class CritialComplienceException extends Exception {
+public class CriticalComplianceException extends Exception {
 
 	private TestResult result = null;
 
 	private static final long serialVersionUID = 1L;
 	
 	
-	public CritialComplienceException(TestResult result) {
+	public CriticalComplianceException(TestResult result) {
 		this.result = result;
 	}
 

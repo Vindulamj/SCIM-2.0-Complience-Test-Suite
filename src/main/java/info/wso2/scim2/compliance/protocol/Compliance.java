@@ -3,8 +3,8 @@ package info.wso2.scim2.compliance.protocol;
 import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
-import info.wso2.scim2.compliance.exception.CritialComplienceException;
-import info.wso2.scim2.compliance.httpclient.HttpClientImpl;
+import info.wso2.scim2.compliance.exception.CriticalComplianceException;
+import info.wso2.scim2.compliance.feignclient.FeignClientImpl;
 import info.wso2.scim2.compliance.tests.ConfigTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -44,8 +44,10 @@ public class Compliance extends HttpServlet {
             url = "https://localhost:9443/";
         }
 
+        // This is to keep the test results
         ArrayList<TestResult> results = new ArrayList<TestResult>();
 
+        // Valid schemas
         String[] schemes = {ComplianceConstants.RequestCodeConstants.HTTP,
                 ComplianceConstants.RequestCodeConstants.HTTPS};
 
@@ -67,7 +69,7 @@ public class Compliance extends HttpServlet {
         }
         */
 
-        // create a CSP to use to connect to the server
+        // create a complianceTestMetaDataHolder to use to hold the test suite configurations
         ComplianceTestMetaDataHolder complianceTestMetaDataHolder = new ComplianceTestMetaDataHolder();
         complianceTestMetaDataHolder.setUrl(url);
         complianceTestMetaDataHolder.setVersion("/scim2");
@@ -79,18 +81,19 @@ public class Compliance extends HttpServlet {
         complianceTestMetaDataHolder.setClient_id(clientId);
         complianceTestMetaDataHolder.setClient_secret(clientSecret);
 
-        //create a httpclient
-        HttpClientImpl HttpClient = new HttpClientImpl(complianceTestMetaDataHolder);
+        //create a feignClient
+        FeignClientImpl feignClient = new FeignClientImpl(complianceTestMetaDataHolder);
 
-        //get the service provider Config
         try {
-            // start with the critical tests (will throw exception and test will
-            // stop if fails)
-            ConfigTest configTest = new ConfigTest(HttpClient, complianceTestMetaDataHolder);
+            // start with the critical tests (will throw exception and test will stop if fails)
+            // 1. /ServiceProviderConfig Test
+            // 2. /Schemas Test
 
+            // /ServiceProviderConfig Test
+            ConfigTest configTest = new ConfigTest(feignClient, complianceTestMetaDataHolder);
             results.add(configTest.getConfiguration());
 
-    } catch (CritialComplienceException e) {
+    } catch (CriticalComplianceException e) {
         results.add(e.getResult());
     } catch (Throwable e) {
         results.add(new TestResult(TestResult.ERROR, "Unknown Test", e.getMessage(), null));

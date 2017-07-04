@@ -15,7 +15,7 @@ public class ComplianceUtils {
      * @param body The request body that was sent.
      * @return
      */
-    public static Wire getWire(HttpMethodBase method, String body) {
+    public static Wire getWire(HttpMethodBase method, String body, String headers, int status, String reason) {
         StringBuffer toServer = new StringBuffer();
         StringBuffer fromServer = new StringBuffer();
 
@@ -28,8 +28,10 @@ public class ComplianceUtils {
         for (Header header : method.getRequestHeaders()) {
             toServer.append(header.getName()).append(": ").append(header.getValue()).append("\n");
         }
-
-
+        fromServer.append("\n" + "Headers : ");
+        fromServer.append(headers + "\n");
+        fromServer.append("\n" + "Status : ");
+        fromServer.append(status + " " + reason + "\n");
         fromServer.append("\n" + body);
 
         return new Wire(toServer.toString(), fromServer.toString());

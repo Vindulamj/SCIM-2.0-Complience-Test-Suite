@@ -17,15 +17,15 @@ public class SCIMServiceProviderConfig {
     @Override
     public String toString() {
         return "SCIMServiceProviderConfig{" +
-                "patch=" + patch.getSupported() +
-                ", schemas=" + schemas.get(0) +
-                ", filter=" + filter.getMaxResults() +
+                "patch=" + patch +
+                ", schemas=" + schemas +
+                ", filter=" + filter +
                 ", documentationUri='" + documentationUri + '\'' +
-                ", etag=" + etag.getSupported() +
-                ", sort=" + sort.getSupported() +
-                ", changePassword=" + changePassword.getSupported() +
-                ", bulk=" + bulk.getMaxOperations() +
-                ", authenticationSchemes=" + authenticationSchemes.get(0).getName() +
+                ", etag=" + etag +
+                ", sort=" + sort +
+                ", changePassword=" + changePassword +
+                ", bulk=" + bulk +
+                ", authenticationSchemes=" + authenticationSchemes +
                 '}';
     }
 
@@ -173,6 +173,4 @@ public class SCIMServiceProviderConfig {
             this.maxOperations = maxOperations;
         }
     }
-
-
 }

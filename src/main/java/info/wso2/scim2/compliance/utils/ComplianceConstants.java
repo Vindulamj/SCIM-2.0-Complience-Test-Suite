@@ -17,8 +17,20 @@ public class ComplianceConstants {
     }
 
     public static class ResponseCodeConstants {
-
         public static final int CODE_BAD_REQUEST = 400;
+
+    }
+
+    public static class TestConstants {
+        public static final String LABEL_IMPORTANT =  "label-important";
+        public static final String LABEL_SUCCESS =  "label-success";
+        public static final String LABEL_INFO = "label-info";
+
+        public static final String FAILED =  "Failed";
+        public static final String SUCCESS =  "Success";
+        public static final String SKIPPED = "Skipped";
+
+        public static final String SERVICE_PROVIDER_ENDPOINT = "/ServiceProviderConfig";
 
     }
 }

@@ -1,6 +1,7 @@
 package info.wso2.scim2.compliance.entities;
 
 import info.wso2.scim2.compliance.exception.ComplianceException;
+import info.wso2.scim2.compliance.utils.ComplianceConstants;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,12 +9,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class TestResult {
 
-    private static String[] statusLabels = new String[] { "label-important", "label-success", "label-info" };
-    private static String[] statusTexts  = new String[] { "Failed", "Success", "Skipped" };
+    private static String[] statusLabels = new String[] { ComplianceConstants.TestConstants.LABEL_IMPORTANT,
+            ComplianceConstants.TestConstants.LABEL_SUCCESS, ComplianceConstants.TestConstants.LABEL_INFO};
 
-    public static final int ERROR        = 0;
-    public static final int SUCCESS      = 1;
-    public static final int SKIPPED      = 2;
+    private static String[] statusTexts  = new String[] { ComplianceConstants.TestConstants.FAILED,
+            ComplianceConstants.TestConstants.SUCCESS, ComplianceConstants.TestConstants.SKIPPED };
+
+    public static final int ERROR = 0;
+    public static final int SUCCESS  = 1;
+    public static final int SKIPPED = 2;
 
     @XmlElement(name = "name")
     String name = "";

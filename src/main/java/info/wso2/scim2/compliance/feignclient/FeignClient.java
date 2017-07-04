@@ -1,4 +1,4 @@
-package info.wso2.scim2.compliance.httpclient;
+package info.wso2.scim2.compliance.feignclient;
 
 import info.wso2.scim2.compliance.scimcore.objects.ServiceProviderConfig.SCIMServiceProviderConfig;
 
@@ -8,7 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
-public interface HttpClient {
+public interface FeignClient {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

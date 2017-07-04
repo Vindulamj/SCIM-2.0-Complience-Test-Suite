@@ -32,7 +32,7 @@ public class ConfigTest {
      *            The servers supported features.
      * @return The test Result.
      * @throws Exception
-     *             Throws CritialComplienceException if we could not read
+     *             Throws CriticalComplianceException if we could not read
      *             configuration from server, otherwise fatal exceptions.
      */
     public TestResult getConfiguration(CSP csp) throws Exception {
@@ -127,7 +127,7 @@ public class ConfigTest {
      *            The resulted schema.
      * @return The test Result.
      * @throws Exception
-     *             Throws CritialComplienceException if we could not read
+     *             Throws CriticalComplianceException if we could not read
      *             configuration from server, otherwise fatal exceptions.
      */
     public TestResult getSchema(String type, CSP csp) throws Exception {
