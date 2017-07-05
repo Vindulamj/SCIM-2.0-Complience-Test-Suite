@@ -6,6 +6,7 @@ import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.feignclient.FeignClientImpl;
 import info.wso2.scim2.compliance.tests.ConfigTest;
+import info.wso2.scim2.compliance.tests.UserTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.validator.routines.UrlValidator;
 
@@ -93,27 +94,34 @@ public class Compliance extends HttpServlet {
             ConfigTest configTest = new ConfigTest(feignClient, complianceTestMetaDataHolder);
             results.add(configTest.getConfiguration());
 
-    } catch (CriticalComplianceException e) {
-        results.add(e.getResult());
-    } catch (Throwable e) {
-        results.add(new TestResult(TestResult.ERROR, "Unknown Test", e.getMessage(), null));
-    }
+        } catch (CriticalComplianceException e) {
+            results.add(e.getResult());
+        } catch (Throwable e) {
+            results.add(new TestResult(TestResult.ERROR, "Unknown Test", e.getMessage(), null));
+        }
 
-    Statistics statistics = new Statistics();
+        try {
+            UserTest userTest = new UserTest(feignClient, complianceTestMetaDataHolder);
+            results.add(userTest.getConfiguration());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Statistics statistics = new Statistics();
         for (TestResult result : results) {
 
-        switch (result.getStatus()) {
-            case TestResult.ERROR:
-                statistics.incFailed();
-                break;
-            case TestResult.SUCCESS:
-                statistics.incSuccess();
-                break;
-            case TestResult.SKIPPED:
-                statistics.incSkipped();
-                break;
+            switch (result.getStatus()) {
+                case TestResult.ERROR:
+                    statistics.incFailed();
+                    break;
+                case TestResult.SUCCESS:
+                    statistics.incSuccess();
+                    break;
+                case TestResult.SKIPPED:
+                    statistics.incSkipped();
+                    break;
+            }
         }
-    }
         return new Result(statistics, results);
     }
 }

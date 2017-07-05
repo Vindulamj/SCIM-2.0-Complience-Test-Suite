@@ -73,7 +73,7 @@ public class Compliance extends HttpServlet {
         csp.setoAuth2GrantType("password");
         csp.setAuthorizationHeader(authorizationHeader);
 
-        // get the configuration
+        // getX the configuration
         try {
             // start with the critical tests (will throw exception and test will
             // stop if fails)

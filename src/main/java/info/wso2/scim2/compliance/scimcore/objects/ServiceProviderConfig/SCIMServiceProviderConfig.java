@@ -14,21 +14,6 @@ public class SCIMServiceProviderConfig {
     private BulkObj bulk;
     private List<AuthSchemasObj> authenticationSchemes;
 
-    @Override
-    public String toString() {
-        return "SCIMServiceProviderConfig{" +
-                "patch=" + patch +
-                ", schemas=" + schemas +
-                ", filter=" + filter +
-                ", documentationUri='" + documentationUri + '\'' +
-                ", etag=" + etag +
-                ", sort=" + sort +
-                ", changePassword=" + changePassword +
-                ", bulk=" + bulk +
-                ", authenticationSchemes=" + authenticationSchemes +
-                '}';
-    }
-
     private class PatchObj {
 
        private boolean supported;

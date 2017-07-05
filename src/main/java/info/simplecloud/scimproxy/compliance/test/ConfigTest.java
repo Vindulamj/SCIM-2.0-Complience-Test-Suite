@@ -62,7 +62,7 @@ public class ConfigTest {
             }
         } catch (Exception e) {
             throw new CritialComplienceException(new TestResult(TestResult.ERROR, "Read ServiceProviderConfig",
-                    "Could not get ServiceProviderConfig at url " + url, ComplienceUtils.getWire(method, "")));
+                    "Could not getX ServiceProviderConfig at url " + url, ComplienceUtils.getWire(method, "")));
         }
 
         try {
@@ -156,7 +156,7 @@ public class ConfigTest {
                 throw new Exception(); // caching next row
             }
         } catch (Exception e) {
-            throw new CritialComplienceException(new TestResult(TestResult.ERROR, "Get schema for " + type, "Could not get " + type
+            throw new CritialComplienceException(new TestResult(TestResult.ERROR, "Get schema for " + type, "Could not getX " + type
                     + " Schema at url " + url, ComplienceUtils.getWire(method, "")));
         }
 
@@ -176,7 +176,7 @@ public class ConfigTest {
             // TODO: add support for subAttributes and canonicalValues
             /*
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject resourceSchemaAttribute = (JSONObject) jsonArray.get(i);
+                JSONObject resourceSchemaAttribute = (JSONObject) jsonArray.getX(i);
                 
                 SchemaAttribute attribute = new SchemaAttribute();
                 attribute.setName(resourceSchemaAttribute.getString("name"));
@@ -192,10 +192,10 @@ public class ConfigTest {
                 JSONArray subAttributes = resourceSchemaAttribute.getJSONArray("subAttributes");
                 if(subAttributes != null) {
                     for(int j = 0; j < subAttributes.length(); j++) {
-                    	// TODO: get name, type, description, readOnly, required, caseExact, and list canonicalValues
+                    	// TODO: getX name, type, description, readOnly, required, caseExact, and list canonicalValues
                     	SchemaAttribute sub = new SchemaAttribute();
                     	
-                    	JSONObject item = (JSONObject)subAttributes.get(j);
+                    	JSONObject item = (JSONObject)subAttributes.getX(j);
                     	
                         sub.setName(item.getString("name"));
                         sub.setType(item.getString("type"));
@@ -207,7 +207,7 @@ public class ConfigTest {
                         
                         ArrayList<String> validCaconicalValues = new ArrayList<String>();
                         for(int k=0; k< canonicalValues.length(); k++) {
-                        	// how to get array string
+                        	// how to getX array string
                         	validCaconicalValues.add(  ((JSONObject)canonicalValues.getInt(i)).getString("") );
                         }
 
