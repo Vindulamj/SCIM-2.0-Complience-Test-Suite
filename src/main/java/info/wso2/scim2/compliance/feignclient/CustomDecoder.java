@@ -40,4 +40,11 @@ public class CustomDecoder extends GsonDecoder {
     public String getReason(){
         return reason;
     }
+
+    public void decoderRest(){
+        Map<String, Collection<String>> headers = null;
+        int status = 0;
+        byte[] responseBody = null;
+        String reason = null;
+    }
 }

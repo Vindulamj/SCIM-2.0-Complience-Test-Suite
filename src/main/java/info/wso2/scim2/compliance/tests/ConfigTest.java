@@ -12,7 +12,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 /*
 This Class is to test the /ServiceProviderConfig Endpoint.
  */
-public class ConfigTest {
+public class ConfigTest implements Test{
 
     private FeignClientImpl feignClient;
     private ComplianceTestMetaDataHolder complianceTestMetaDataHolder;
@@ -23,19 +23,19 @@ public class ConfigTest {
     }
 
     // Test is to getX the service provider configurations from service provider
-    public TestResult getConfiguration()
-            throws Exception {
+    public TestResult performTest() throws CriticalComplianceException {
 
         // Construct the endpoint url
         String url = complianceTestMetaDataHolder.getUrl() +
                 complianceTestMetaDataHolder.getVersion() +
                 ComplianceConstants.TestConstants.SERVICE_PROVIDER_ENDPOINT;
+
+        //TODO : Need to get this from feign
         GetMethod method = new GetMethod(url);
 
         try {
             //get the ServiceProviderConfig
             feignClient.GetServiceProviderConfig(url);
-
 
         } catch (Exception e) {
             throw new CriticalComplianceException(new TestResult

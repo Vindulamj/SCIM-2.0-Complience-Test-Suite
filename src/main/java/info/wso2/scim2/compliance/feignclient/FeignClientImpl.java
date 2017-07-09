@@ -57,7 +57,6 @@ public class FeignClientImpl {
     public String getResponseReason(){
         return  customDecoder.getReason();
     }
-
     public String getX(){
         return  customEncoder.getReason();
     }

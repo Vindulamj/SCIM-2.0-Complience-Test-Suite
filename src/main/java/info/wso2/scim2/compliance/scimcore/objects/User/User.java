@@ -26,6 +26,7 @@ public class User {
     private boolean active;
     private ArrayList<GroupsObj> groups;
     private ArrayList<X509CertificatesObj> x509Certificates;
+    private MetaObj meta;
 
     public User() {
     }
@@ -92,6 +93,54 @@ public class User {
         this.x509Certificates = x509Certificates;
     }
 
+    private static class MetaObj {
+        private String resourceType;
+        private String created;
+        private String lastModified;
+        private String version;
+        private String location;
+
+        public String getResourceType() {
+            return resourceType;
+        }
+
+        public void setResourceType(String resourceType) {
+            this.resourceType = resourceType;
+        }
+
+        public String getCreated() {
+            return created;
+        }
+
+        public void setCreated(String created) {
+            this.created = created;
+        }
+
+        public String getLastModified() {
+            return lastModified;
+        }
+
+        public void setLastModified(String lastModified) {
+            this.lastModified = lastModified;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+    }
+
     private static class NameObj{
 
         private String formatted;
@@ -110,6 +159,54 @@ public class User {
             this.honorificPrefix = honorificPrefix;
             this.honorificSuffix = honorificSuffix;
         }
+
+        public String getFormatted() {
+            return formatted;
+        }
+
+        public void setFormatted(String formatted) {
+            this.formatted = formatted;
+        }
+
+        public String getFamilyName() {
+            return familyName;
+        }
+
+        public void setFamilyName(String familyName) {
+            this.familyName = familyName;
+        }
+
+        public String getGivenName() {
+            return givenName;
+        }
+
+        public void setGivenName(String givenName) {
+            this.givenName = givenName;
+        }
+
+        public String getMiddleName() {
+            return middleName;
+        }
+
+        public void setMiddleName(String middleName) {
+            this.middleName = middleName;
+        }
+
+        public String getHonorificPrefix() {
+            return honorificPrefix;
+        }
+
+        public void setHonorificPrefix(String honorificPrefix) {
+            this.honorificPrefix = honorificPrefix;
+        }
+
+        public String getHonorificSuffix() {
+            return honorificSuffix;
+        }
+
+        public void setHonorificSuffix(String honorificSuffix) {
+            this.honorificSuffix = honorificSuffix;
+        }
     }
 
     private static class EmailObj{
@@ -126,6 +223,30 @@ public class User {
         public EmailObj(String value, String type) {
             this.value = value;
             this.type = type;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public boolean isPrimary() {
+            return primary;
+        }
+
+        public void setPrimary(boolean primary) {
+            this.primary = primary;
         }
     }
 
@@ -161,6 +282,70 @@ public class User {
             this.formatted = formatted;
             this.type = type;
         }
+
+        public String getStreetAddress() {
+            return streetAddress;
+        }
+
+        public void setStreetAddress(String streetAddress) {
+            this.streetAddress = streetAddress;
+        }
+
+        public String getLocality() {
+            return locality;
+        }
+
+        public void setLocality(String locality) {
+            this.locality = locality;
+        }
+
+        public String getRegion() {
+            return region;
+        }
+
+        public void setRegion(String region) {
+            this.region = region;
+        }
+
+        public String getPostalCode() {
+            return postalCode;
+        }
+
+        public void setPostalCode(String postalCode) {
+            this.postalCode = postalCode;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public String getFormatted() {
+            return formatted;
+        }
+
+        public void setFormatted(String formatted) {
+            this.formatted = formatted;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public boolean isPrimary() {
+            return primary;
+        }
+
+        public void setPrimary(boolean primary) {
+            this.primary = primary;
+        }
     }
 
     public static class PhoneNumberObj{
@@ -169,6 +354,22 @@ public class User {
 
         public PhoneNumberObj(String value, String type) {
             this.value = value;
+            this.type = type;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
             this.type = type;
         }
     }
@@ -181,7 +382,24 @@ public class User {
             this.value = value;
             this.type = type;
         }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
     }
+
 
     private static class PhotosObj{
         private String value;
@@ -189,6 +407,22 @@ public class User {
 
         public PhotosObj(String value, String type) {
             this.value = value;
+            this.type = type;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
             this.type = type;
         }
     }
@@ -203,12 +437,44 @@ public class User {
             this.$ref = $ref;
             this.display = display;
         }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String get$ref() {
+            return $ref;
+        }
+
+        public void set$ref(String $ref) {
+            this.$ref = $ref;
+        }
+
+        public String getDisplay() {
+            return display;
+        }
+
+        public void setDisplay(String display) {
+            this.display = display;
+        }
     }
 
     private static class X509CertificatesObj{
         private String value;
 
         public X509CertificatesObj(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
             this.value = value;
         }
     }
@@ -398,8 +664,8 @@ public class User {
                     "Jane","Ms.","III");
 
             ArrayList<EmailObj> emails = new ArrayList<EmailObj>() {{
-                add(new EmailObj("bjensen@example.com","work",true));
-                add(new EmailObj("babs@jensen.org","home"));
+                add(new EmailObj("bjensen_example.com","work",true));
+                add(new EmailObj("babs_jensen.org","home"));
             }};
 
             ArrayList<AddressObj> addresses = new ArrayList<AddressObj>() {{
@@ -451,11 +717,18 @@ public class User {
                         "Gcrs2i97ZkJMo"));
             }};
 
-            return new User("2819c223-7f76-453a-919d-413861904646", "bjensen@example.com",
+            //TODO : Redo the user creation with commented version
+          /*  return new User("2819c223-7f76-453a-919d-413861904646", "bjensenexamplecom",
                     "t1meMa$heen","701984", schemas, name,"Babs Jensen",
-                    "Babs","https://login.example.com/bjensen",emails, addresses, phoneNumbers,
-                    ims, photos, "Employee","Tour Guide","en-US","en-US",
-                    "America/Los_Angeles",true, x509Certificates);
+                    "Babs","https://login.example.com/bjensen", emails, addresses, phoneNumbers,
+                    ims, photos, "Employee","Tour Guide", "en-US","en-US",
+                    "America/Los_Angeles",true, x509Certificates); */
+
+            return new User("2819c223-7f76-453a-919d-413861904646", "bjensenexamplecom",
+                    "t1meMa$heen",null, schemas, null,null,
+                    null,null, null, null, null,
+                    null, null, null,null, null,null,
+                    null,true, null);
         }
         return user;
     }

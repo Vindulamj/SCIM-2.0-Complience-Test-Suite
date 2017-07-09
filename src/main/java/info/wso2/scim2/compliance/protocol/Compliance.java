@@ -4,6 +4,7 @@ import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
+import info.wso2.scim2.compliance.exception.GeneralComplianceException;
 import info.wso2.scim2.compliance.feignclient.FeignClientImpl;
 import info.wso2.scim2.compliance.tests.ConfigTest;
 import info.wso2.scim2.compliance.tests.UserTest;
@@ -85,6 +86,7 @@ public class Compliance extends HttpServlet {
         //create a feignClient
         FeignClientImpl feignClient = new FeignClientImpl(complianceTestMetaDataHolder);
 
+        /***************** Start of critical tests **************/
         try {
             // start with the critical tests (will throw exception and test will stop if fails)
             // 1. /ServiceProviderConfig Test
@@ -92,19 +94,23 @@ public class Compliance extends HttpServlet {
 
             // /ServiceProviderConfig Test
             ConfigTest configTest = new ConfigTest(feignClient, complianceTestMetaDataHolder);
-            results.add(configTest.getConfiguration());
+            results.add(configTest.performTest());
 
         } catch (CriticalComplianceException e) {
+            // failing critical test
             results.add(e.getResult());
-        } catch (Throwable e) {
-            results.add(new TestResult(TestResult.ERROR, "Unknown Test", e.getMessage(), null));
         }
 
+        /***************** End of critical tests **************/
+
+        /***************** Start of User tests **************/
         try {
+            //User Test
             UserTest userTest = new UserTest(feignClient, complianceTestMetaDataHolder);
-            results.add(userTest.getConfiguration());
-        } catch (Exception e) {
-            e.printStackTrace();
+            results.add(userTest.performTest());
+        } catch (GeneralComplianceException e) {
+            // failing critical test
+            results.add(e.getResult());
         }
 
         Statistics statistics = new Statistics();
