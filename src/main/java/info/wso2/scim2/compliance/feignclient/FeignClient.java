@@ -1,5 +1,7 @@
 package info.wso2.scim2.compliance.feignclient;
 
+
+import feign.Param;
 import info.wso2.scim2.compliance.scimcore.objects.ServiceProviderConfig.SCIMServiceProviderConfig;
 import info.wso2.scim2.compliance.scimcore.objects.User.User;
 
@@ -18,4 +20,8 @@ public interface FeignClient {
     @Produces(MediaType.APPLICATION_JSON)
     User CreateUser(final User user);
 
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    User GetUser(@Param("id") String id);
 }

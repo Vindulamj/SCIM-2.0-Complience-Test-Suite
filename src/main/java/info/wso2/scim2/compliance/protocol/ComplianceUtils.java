@@ -8,13 +8,6 @@ import java.io.IOException;
 
 public class ComplianceUtils {
 
-    /**
-     * Gets the raw request, headers and body that's sent to the server.
-     * TODO: Replace this with the output from HttpClients wire logs!
-     * @param method The http method to read data from.
-     * @param body The request body that was sent.
-     * @return
-     */
     public static Wire getWire(HttpMethodBase method, String body, String headers, int status, String reason) {
         StringBuffer toServer = new StringBuffer();
         StringBuffer fromServer = new StringBuffer();

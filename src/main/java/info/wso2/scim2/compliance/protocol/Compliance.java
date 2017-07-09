@@ -1,5 +1,6 @@
 package info.wso2.scim2.compliance.protocol;
 
+import info.simplecloud.scimproxy.compliance.test.Test;
 import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
@@ -95,6 +96,8 @@ public class Compliance extends HttpServlet {
             // /ServiceProviderConfig Test
             ConfigTest configTest = new ConfigTest(feignClient, complianceTestMetaDataHolder);
             results.add(configTest.performTest());
+            //reset the decoder
+            feignClient.getCustomDecoder().decoderReset();
 
         } catch (CriticalComplianceException e) {
             // failing critical test
@@ -104,14 +107,16 @@ public class Compliance extends HttpServlet {
         /***************** End of critical tests **************/
 
         /***************** Start of User tests **************/
-        try {
-            //User Test
-            UserTest userTest = new UserTest(feignClient, complianceTestMetaDataHolder);
-            results.add(userTest.performTest());
-        } catch (GeneralComplianceException e) {
-            // failing critical test
-            results.add(e.getResult());
+        //User Test
+        UserTest userTest = new UserTest(feignClient, complianceTestMetaDataHolder);
+        ArrayList<TestResult> userTestResults = userTest.performTest();
+        for(TestResult testResult : userTestResults){
+            results.add(testResult);
         }
+        //reset the decoder
+        feignClient.getCustomDecoder().decoderReset();
+
+
 
         Statistics statistics = new Statistics();
         for (TestResult result : results) {

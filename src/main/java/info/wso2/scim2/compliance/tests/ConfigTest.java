@@ -12,7 +12,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 /*
 This Class is to test the /ServiceProviderConfig Endpoint.
  */
-public class ConfigTest implements Test{
+public class ConfigTest {
 
     private FeignClientImpl feignClient;
     private ComplianceTestMetaDataHolder complianceTestMetaDataHolder;
@@ -24,7 +24,10 @@ public class ConfigTest implements Test{
 
     // Test is to getX the service provider configurations from service provider
     public TestResult performTest() throws CriticalComplianceException {
+        return getServiceProviderConfigTest();
+    }
 
+    private TestResult getServiceProviderConfigTest () throws CriticalComplianceException {
         // Construct the endpoint url
         String url = complianceTestMetaDataHolder.getUrl() +
                 complianceTestMetaDataHolder.getVersion() +
@@ -55,7 +58,7 @@ public class ConfigTest implements Test{
         } catch (Exception e) {
             throw new CriticalComplianceException
                     (new TestResult(TestResult.ERROR, "Parse ServiceProviderConfig",
-                    "Could not parse the json format returned from ServiceProviderConfig. " + e.getMessage(),
+                            "Could not parse the json format returned from ServiceProviderConfig. " + e.getMessage(),
                             ComplianceUtils.getWire(method, feignClient.getResponseBody(),
                                     feignClient.getResponseHeaders(),feignClient.getResponseStatus(),
                                     feignClient.getResponseReason())));

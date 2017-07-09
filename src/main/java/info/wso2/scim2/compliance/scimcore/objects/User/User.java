@@ -1,10 +1,11 @@
 package info.wso2.scim2.compliance.scimcore.objects.User;
 
+import info.wso2.scim2.compliance.scimcore.objects.common.SCIMResource;
+
 import java.util.ArrayList;
 
-public class User {
+public class User extends SCIMResource {
 
-    private String id;
     private String userName;
     private String password;
     private String externalId;
@@ -26,7 +27,6 @@ public class User {
     private boolean active;
     private ArrayList<GroupsObj> groups;
     private ArrayList<X509CertificatesObj> x509Certificates;
-    private MetaObj meta;
 
     public User() {
     }
@@ -91,54 +91,6 @@ public class User {
         this.timezone = timezone;
         this.active = active;
         this.x509Certificates = x509Certificates;
-    }
-
-    private static class MetaObj {
-        private String resourceType;
-        private String created;
-        private String lastModified;
-        private String version;
-        private String location;
-
-        public String getResourceType() {
-            return resourceType;
-        }
-
-        public void setResourceType(String resourceType) {
-            this.resourceType = resourceType;
-        }
-
-        public String getCreated() {
-            return created;
-        }
-
-        public void setCreated(String created) {
-            this.created = created;
-        }
-
-        public String getLastModified() {
-            return lastModified;
-        }
-
-        public void setLastModified(String lastModified) {
-            this.lastModified = lastModified;
-        }
-
-        public String getVersion() {
-            return version;
-        }
-
-        public void setVersion(String version) {
-            this.version = version;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public void setLocation(String location) {
-            this.location = location;
-        }
     }
 
     private static class NameObj{
@@ -477,14 +429,6 @@ public class User {
         public void setValue(String value) {
             this.value = value;
         }
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUserName() {

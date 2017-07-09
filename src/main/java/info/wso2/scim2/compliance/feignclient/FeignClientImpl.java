@@ -42,6 +42,18 @@ public class FeignClientImpl {
         return (UserService.CreateUser(user));
     }
 
+    public User GetUser(String id, String url) {
+        FeignClient UserService = Feign.builder()
+                .contract(new JAXRSContract())
+                .encoder(customEncoder)
+                .decoder(customDecoder)
+                .errorDecoder(new CustomErrorDecoder())
+                .requestInterceptor(interceptor)
+                .target(FeignClient.class, url);
+        return (UserService.GetUser(id));
+    }
+
+
     public String getResponseHeaders(){
         return customDecoder.getHeaders();
     }
@@ -57,7 +69,20 @@ public class FeignClientImpl {
     public String getResponseReason(){
         return  customDecoder.getReason();
     }
-    public String getX(){
-        return  customEncoder.getReason();
+
+    public CustomDecoder getCustomDecoder() {
+        return customDecoder;
+    }
+
+    public void setCustomDecoder(CustomDecoder customDecoder) {
+        this.customDecoder = customDecoder;
+    }
+
+    public CustomEncoder getCustomEncoder() {
+        return customEncoder;
+    }
+
+    public void setCustomEncoder(CustomEncoder customEncoder) {
+        this.customEncoder = customEncoder;
     }
 }
