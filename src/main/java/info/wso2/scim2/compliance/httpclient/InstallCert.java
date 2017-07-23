@@ -1,4 +1,4 @@
-package info.wso2.scim2.compliance.feignclient;/*
+package info.wso2.scim2.compliance.httpclient;/*
  * Copyright 2006 Sun Microsystems, Inc.  All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without

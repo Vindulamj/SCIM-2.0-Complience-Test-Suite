@@ -64,16 +64,6 @@
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:1.6.2" level="project" />
-    <orderEntry type="library" name="Maven: com.netflix.feign:feign-core:8.18.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jvnet:animal-sniffer-annotation:1.0" level="project" />
-    <orderEntry type="library" name="Maven: com.netflix.feign:feign-jackson:8.11.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.1" level="project" />
-    <orderEntry type="library" name="Maven: com.netflix.feign:feign-jaxrs:8.11.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.netflix.feign:feign-gson:8.18.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.code.gson:gson:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.wso2.charon:org.wso2.charon3.core:3.0.6-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20090211" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.commons.axiom:axiom-api:1.2.11" level="project" />
@@ -84,5 +74,7 @@
     <orderEntry type="library" name="Maven: org.apache.ws.commons.axiom:axiom-impl:1.2.11" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.woodstox:wstx-asl:3.2.9" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.6" level="project" />
   </component>
 </module>

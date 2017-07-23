@@ -1,24 +1,29 @@
 package info.wso2.scim2.compliance.tests;
 
+import info.wso2.scim2.compliance.protocol.ComplianceUtils;
 import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
-import info.wso2.scim2.compliance.feignclient.FeignClientImpl;
+import info.wso2.scim2.compliance.httpclient.HTTPClient;
 import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
-import info.wso2.scim2.compliance.protocol.ComplianceUtils;
 import info.wso2.scim2.compliance.scimcore.objects.ServiceProviderConfig.SCIMServiceProviderConfig;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 /*
 This Class is to test the /ServiceProviderConfig Endpoint.
  */
 public class ConfigTest {
 
-    private FeignClientImpl feignClient;
     private ComplianceTestMetaDataHolder complianceTestMetaDataHolder;
 
-    public ConfigTest(FeignClientImpl httpClient, ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
-            this.feignClient = httpClient;
+    public ConfigTest(ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
             this.complianceTestMetaDataHolder = complianceTestMetaDataHolder;
     }
 
@@ -33,36 +38,92 @@ public class ConfigTest {
                 complianceTestMetaDataHolder.getVersion() +
                 ComplianceConstants.TestConstants.SERVICE_PROVIDER_ENDPOINT;
 
-        //TODO : Need to get this from feign
-        GetMethod method = new GetMethod(url);
+        // specify the get request
+        HttpGet method = new HttpGet(url);
 
+        HttpClient client = HTTPClient.getHttpClientWithBasicAuth();
+
+        method = (HttpGet) HTTPClient.setAuthorizationHeader(complianceTestMetaDataHolder, method);
+        method.setHeader("Accept", "application/json");
+        method.setHeader("Content-Type", "application/json");
+
+        HttpResponse response = null;
+        String responseString = null;
+        String headerString = "";
+        String responseStatus = null;
         try {
             //get the ServiceProviderConfig
-            feignClient.GetServiceProviderConfig(url);
+            response = client.execute(method);
+            // Read the response body.
+            responseString = new BasicResponseHandler().handleResponse(response);
+            //get all headers
+            Header[] headers = response.getAllHeaders();
+            for (Header header : headers) {
+                headerString += header.getName() + " : " + header.getValue() + "\n";
+            }
+            responseStatus = response.getStatusLine().getStatusCode() + " "
+                    + response.getStatusLine().getReasonPhrase();
 
         } catch (Exception e) {
             throw new CriticalComplianceException(new TestResult
                     (TestResult.ERROR, "Read ServiceProviderConfig",
                             "Could not get ServiceProviderConfig at url " + url ,
-                            ComplianceUtils.getWire(method, feignClient.getResponseBody(),
-                                    feignClient.getResponseHeaders(),feignClient.getResponseStatus(),
-                                    feignClient.getResponseReason())));
+                            ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
         }
         try {
+            SCIMServiceProviderConfig scimServiceProviderConfig = new SCIMServiceProviderConfig();
+            JSONObject jsonObj = new JSONObject(responseString);
+            JSONObject tmp;
+
+            tmp = jsonObj.optJSONObject("patch");
+            scimServiceProviderConfig.setPatch(tmp == null ? false : tmp.getBoolean("supported"));
+
+            tmp = jsonObj.optJSONObject("bulk");
+            scimServiceProviderConfig.setBulk(tmp == null ? false : tmp.optBoolean("supported"),
+                    tmp == null ? -1 : tmp.optInt("maxOperations"),
+                    tmp == null ? -1 : tmp.optInt("maxPayloadSize"));
+
+            tmp = jsonObj.optJSONObject("filter");
+            scimServiceProviderConfig.setFilter(tmp == null ? false : tmp.optBoolean("supported"),
+                    tmp == null ? -1 : tmp.optInt("maxResults"));
+
+            tmp = jsonObj.optJSONObject("changePassword");
+            scimServiceProviderConfig.setChangePassword(tmp == null ? false : tmp.optBoolean("supported"));
+
+            tmp = jsonObj.optJSONObject("sort");
+            scimServiceProviderConfig.setSort(tmp == null ? false : tmp.getBoolean("supported"));
+
+            tmp = jsonObj.optJSONObject("etag");
+            scimServiceProviderConfig.setEtag(tmp == null ? false : tmp.getBoolean("supported"));
+
+            String documentationUri = jsonObj.optString("documentationUri");
+            scimServiceProviderConfig.setDocumentationUri(tmp == null ? "" : documentationUri);
+
+            JSONArray authArray = jsonObj.getJSONArray("authenticationSchemes");
+            for (int i = 0; i < authArray.length(); i++) {
+                tmp = authArray.getJSONObject(i);
+                String name = tmp.optString("name");
+                String description = tmp.optString("description");
+                String type = tmp.optString("type");
+                String specURI = tmp.optString("specURI");
+                boolean primary = false;
+                if(!jsonObj.isNull("primary")) {
+                    primary = tmp.optBoolean("primary");
+                }
+                scimServiceProviderConfig.setAuthenticationSchemes(name, description, specURI, type, primary);
+            }
+
             return new TestResult
                     (TestResult.SUCCESS, "Read ServiceProviderConfig",
-                            "", ComplianceUtils.getWire(method, feignClient.getResponseBody(),
-                            feignClient.getResponseHeaders(),feignClient.getResponseStatus(),
-                            feignClient.getResponseReason()));
+                            "", ComplianceUtils.getWire(method, responseString, headerString, responseStatus));
 
         } catch (Exception e) {
             throw new CriticalComplianceException
                     (new TestResult(TestResult.ERROR, "Parse ServiceProviderConfig",
                             "Could not parse the json format returned from ServiceProviderConfig. " + e.getMessage(),
-                            ComplianceUtils.getWire(method, feignClient.getResponseBody(),
-                                    feignClient.getResponseHeaders(),feignClient.getResponseStatus(),
-                                    feignClient.getResponseReason())));
+                            ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
         }
     }
+
 
 }

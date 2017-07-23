@@ -22,6 +22,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.http.client.methods.HttpGet;
 
 public class ComplienceUtils {
 
@@ -129,10 +130,10 @@ public class ComplienceUtils {
 	 * @param body The request body that was sent.
 	 * @return
 	 */
-	public static Wire getWire(HttpMethodBase method, String body) {
+	public static Wire getWire(HttpMethod method, String body) {
 		StringBuffer toServer = new StringBuffer();
 		StringBuffer fromServer = new StringBuffer();
-		
+
 		toServer.append(method.getName()).append(" ");
 		toServer.append(method.getPath());
 		if (method.getQueryString() != null) {

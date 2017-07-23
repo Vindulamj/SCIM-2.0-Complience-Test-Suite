@@ -1,8 +1,9 @@
 package info.wso2.scim2.compliance.tests;
 
 import info.wso2.scim2.compliance.entities.TestResult;
+import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.exception.GeneralComplianceException;
-import info.wso2.scim2.compliance.feignclient.FeignClientImpl;
+import info.wso2.scim2.compliance.httpclient.HTTPClient;
 import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
 import info.wso2.scim2.compliance.protocol.ComplianceUtils;
 import info.wso2.scim2.compliance.scimcore.objects.User.User;
@@ -10,21 +11,26 @@ import info.wso2.scim2.compliance.scimcore.objects.common.ErrorResponse;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class UserTest{
 
-    private FeignClientImpl feignClient;
     private ComplianceTestMetaDataHolder complianceTestMetaDataHolder;
     private String url;
-    private Stack<User> users = new Stack<>();
 
 
-    public UserTest(FeignClientImpl httpClient, ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
-        this.feignClient = httpClient;
+    public UserTest(ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
+
         this.complianceTestMetaDataHolder = complianceTestMetaDataHolder;
+
         url = complianceTestMetaDataHolder.getUrl() +
                 complianceTestMetaDataHolder.getVersion() +
                 ComplianceConstants.TestConstants.USERS_ENDPOINT;
@@ -37,42 +43,62 @@ public class UserTest{
         } catch (GeneralComplianceException e) {
             testResults.add(e.getResult());
         }
-        //reset the decoder
-        feignClient.getCustomDecoder().decoderReset();
-        try {
-            testResults.add(GetUserTest());
-        } catch (GeneralComplianceException e) {
-            testResults.add(e.getResult());
-        }
         return testResults;
     }
 
     private TestResult CreateUserTest () throws  GeneralComplianceException {
-        //TODO : This need to replaced with feign
-        PostMethod method = new PostMethod(url);
 
+        HttpPost method = new HttpPost(url);
+
+        User definedUser = User.getDefinedUser();
+        //create user test
+        HttpClient client = HTTPClient.getHttpClientWithBasicAuth();
+
+        method = (HttpPost) HTTPClient.setAuthorizationHeader(complianceTestMetaDataHolder, method);
+        method.setHeader("Accept", "application/json");
+        method.setHeader("Content-Type", "application/json");
+
+        HttpResponse response = null;
+        String responseString = null;
+        String headerString = "";
+        String responseStatus = null;
         try {
-            User definedUser = User.getDefinedUser();
-            //create user test
-            users.push(feignClient.CreateUser(definedUser, url));
-            // ResponseValidateTest responseValidateTest = new ResponseValidateTest(returnedUser);
-            //responseValidateTest.runValidateTests();
-        } catch (Exception e) {
-            //check if the service provider has sent an error message
-            if (e.getCause() instanceof ErrorResponse){
-                throw new GeneralComplianceException(new TestResult
-                        (TestResult.ERROR, "Create User",
-                                "Error in creating the user at " + url ,
-                                ComplianceUtils.getWire(method,
-                                        ((ErrorResponse) e.getCause()).getDetails(),
-                                        ((ErrorResponse) e.getCause()).getHeader(),
-                                        ((ErrorResponse) e.getCause()).getStatus(),
-                                        ((ErrorResponse) e.getCause()).getReason())));
+            //create the user
+            response = client.execute(method);
+            // Read the response body.
+            responseString = new BasicResponseHandler().handleResponse(response);
+            //get all headers
+            Header[] headers = response.getAllHeaders();
+            for (Header header : headers) {
+                headerString += header.getName() + " : " + header.getValue() + "\n";
             }
+            responseStatus = response.getStatusLine().getStatusCode() + " "
+                    + response.getStatusLine().getReasonPhrase();
+
+        } catch (Exception e) {
+            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create User",
+                    "Could not create default user at url " + url,
+                    ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
+        }
+        return null;
+    }
+        /*
+    } catch (Exception e) {
+        //check if the service provider has sent an error message
+        if (e.getCause() instanceof ErrorResponse){
             throw new GeneralComplianceException(new TestResult
                     (TestResult.ERROR, "Create User",
-                            "Could not create the user at " + url ,
+                            "Error in creating the user at " + url ,
                             ComplianceUtils.getWire(method,
+                                    ((ErrorResponse) e.getCause()).getDetails(),
+                                    ((ErrorResponse) e.getCause()).getHeader(),
+                                    ((ErrorResponse) e.getCause()).getStatus(),
+                                    ((ErrorResponse) e.getCause()).getReason())));
+        }
+        throw new GeneralComplianceException(new TestResult
+                (TestResult.ERROR, "Create User",
+                        "Could not create the user at " + url ,
+                        ComplianceUtils.getWire(method,
                                     feignClient.getResponseBody(),
                                     feignClient.getResponseHeaders(),
                                     feignClient.getResponseStatus(),
@@ -106,7 +132,7 @@ public class UserTest{
         GetMethod method = new GetMethod(url);
 
         try {
-            users.push(feignClient.GetUser(users.pop().getId(), url));
+            //users.push(feignClient.GetUser(users.pop().getId(), url));
 
         } catch (Exception e) {
             //check if the service provider has sent an error message
@@ -150,4 +176,6 @@ public class UserTest{
                                     feignClient.getResponseReason())));
         }
     }
+    */
 }
+

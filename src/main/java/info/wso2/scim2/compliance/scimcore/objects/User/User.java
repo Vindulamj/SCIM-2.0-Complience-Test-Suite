@@ -666,13 +666,21 @@ public class User extends SCIMResource {
                     "t1meMa$heen","701984", schemas, name,"Babs Jensen",
                     "Babs","https://login.example.com/bjensen", emails, addresses, phoneNumbers,
                     ims, photos, "Employee","Tour Guide", "en-US","en-US",
-                    "America/Los_Angeles",true, x509Certificates); */
+                    "America/Los_Angeles",true, x509Certificates);
 
-            return new User("2819c223-7f76-453a-919d-413861904646", "bjensenexamplecom",
+                     return new User("2819c223-7f76-453a-919d-413861904646", "bjensenexamplecom",
                     "t1meMa$heen",null, schemas, null,null,
                     null,null, null, null, null,
                     null, null, null,null, null,null,
                     null,true, null);
+
+                    */
+
+            return new User("2819c223-7f76-453a-919d-413861904646", "bjensenexamplecom",
+                    "t1meMa$heen","701984", schemas, name,"Babs Jensen",
+                    "Babs","https://login.example.com/bjensen", emails, addresses, phoneNumbers,
+                    ims, photos, "Employee","Tour Guide", "en-US","en-US",
+                    "America/Los_Angeles",true, x509Certificates);
         }
         return user;
     }

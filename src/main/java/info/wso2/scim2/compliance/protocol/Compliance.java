@@ -1,12 +1,10 @@
 package info.wso2.scim2.compliance.protocol;
 
-import info.simplecloud.scimproxy.compliance.test.Test;
 import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
+import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
-import info.wso2.scim2.compliance.exception.GeneralComplianceException;
-import info.wso2.scim2.compliance.feignclient.FeignClientImpl;
 import info.wso2.scim2.compliance.tests.ConfigTest;
 import info.wso2.scim2.compliance.tests.UserTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
@@ -55,8 +53,6 @@ public class Compliance extends HttpServlet {
                 ComplianceConstants.RequestCodeConstants.HTTPS};
 
         UrlValidator urlValidator = new UrlValidator(schemes);
-
-        //TODO: Uncomment this when deploying
         /*
         if (!urlValidator.isValid(url)) {
 
@@ -84,8 +80,6 @@ public class Compliance extends HttpServlet {
         complianceTestMetaDataHolder.setClient_id(clientId);
         complianceTestMetaDataHolder.setClient_secret(clientSecret);
 
-        //create a feignClient
-        FeignClientImpl feignClient = new FeignClientImpl(complianceTestMetaDataHolder);
 
         /***************** Start of critical tests **************/
         try {
@@ -94,29 +88,23 @@ public class Compliance extends HttpServlet {
             // 2. /Schemas Test
 
             // /ServiceProviderConfig Test
-            ConfigTest configTest = new ConfigTest(feignClient, complianceTestMetaDataHolder);
+            ConfigTest configTest = new ConfigTest(complianceTestMetaDataHolder);
             results.add(configTest.performTest());
-            //reset the decoder
-            feignClient.getCustomDecoder().decoderReset();
 
         } catch (CriticalComplianceException e) {
             // failing critical test
-            results.add(e.getResult());
+             results.add(e.getResult());
         }
 
         /***************** End of critical tests **************/
 
         /***************** Start of User tests **************/
         //User Test
-        UserTest userTest = new UserTest(feignClient, complianceTestMetaDataHolder);
+        UserTest userTest = new UserTest(complianceTestMetaDataHolder);
         ArrayList<TestResult> userTestResults = userTest.performTest();
         for(TestResult testResult : userTestResults){
             results.add(testResult);
         }
-        //reset the decoder
-        feignClient.getCustomDecoder().decoderReset();
-
-
 
         Statistics statistics = new Statistics();
         for (TestResult result : results) {

@@ -1,5 +1,6 @@
 package info.wso2.scim2.compliance.scimcore.objects.ServiceProviderConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SCIMServiceProviderConfig {
@@ -12,7 +13,64 @@ public class SCIMServiceProviderConfig {
     private SortObj sort;
     private ChangePasswordObj changePassword;
     private BulkObj bulk;
-    private List<AuthSchemasObj> authenticationSchemes;
+    private List<AuthSchemasObj> authenticationSchemes = new ArrayList<>();
+
+    public void setPatch(boolean supported) {
+        PatchObj patchObj = new PatchObj();
+        patchObj.setSupported(supported);
+        this.patch = patchObj;
+    }
+
+    public void setSchemas(List<String> schemas) {
+        this.schemas = schemas;
+    }
+
+    public void setFilter(boolean supported, int maxResults) {
+        FilterObj filterObj = new FilterObj();
+        filterObj.setSupported(supported);
+        filterObj.setMaxResults(maxResults);
+        this.filter = filterObj;
+    }
+
+    public void setDocumentationUri(String documentationUri) {
+        this.documentationUri = documentationUri;
+    }
+
+    public void setEtag(boolean supported) {
+        EtagObj etagObj = new EtagObj();
+        etagObj.setSupported(supported);
+        this.etag = etagObj;
+    }
+
+    public void setSort(boolean supported) {
+        SortObj sortObj = new SortObj();
+        sortObj.setSupported(supported);
+        this.sort = sortObj;
+    }
+
+    public void setChangePassword(boolean supported) {
+        ChangePasswordObj changePasswordObj = new ChangePasswordObj();
+        changePasswordObj.setSupported(supported);
+        this.changePassword = changePasswordObj;
+    }
+
+    public void setBulk(boolean supported, int maxPayloadSize, int maxOperations) {
+        BulkObj bulkObj = new BulkObj();
+        bulkObj.setMaxOperations(maxOperations);
+        bulkObj.setMaxPayloadSize(maxPayloadSize);
+        bulkObj.setSupported(supported);
+        this.bulk = bulkObj;
+    }
+
+    public void setAuthenticationSchemes(String name, String description, String specURI, String type, boolean primary) {
+        AuthSchemasObj authSchemasObj = new AuthSchemasObj();
+        authSchemasObj.setName(name);
+        authSchemasObj.setDescription(description);
+        authSchemasObj.setSpecURI(specURI);
+        authSchemasObj.setType(type);
+        authSchemasObj.setPrimary(primary);
+        authenticationSchemes.add(authSchemasObj);
+    }
 
     private class PatchObj {
 
@@ -139,8 +197,17 @@ public class SCIMServiceProviderConfig {
 
     private class BulkObj {
 
+        private boolean supported;
         private int maxPayloadSize;
         private int maxOperations;
+
+        public boolean isSupported() {
+            return supported;
+        }
+
+        public void setSupported(boolean supported) {
+            this.supported = supported;
+        }
 
         public int getMaxPayloadSize() {
             return maxPayloadSize;

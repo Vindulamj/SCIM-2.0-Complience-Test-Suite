@@ -62,7 +62,7 @@ public class ConfigTest {
             }
         } catch (Exception e) {
             throw new CritialComplienceException(new TestResult(TestResult.ERROR, "Read ServiceProviderConfig",
-                    "Could not getX ServiceProviderConfig at url " + url, ComplienceUtils.getWire(method, "")));
+                    "Could not get ServiceProviderConfig at url " + url, ComplienceUtils.getWire(method, "")));
         }
 
         try {
