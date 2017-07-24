@@ -35,15 +35,15 @@ public class PatchTest extends Test {
         List<TestResult> results = new ArrayList<TestResult>();
 
         User user = this.userCache.borrowCachedResource();
-        results.add(add("Add displayName to User with PATCH using JSON encoding", user, Resource.ENCODING_JSON, "displayName", "Alice",
+        results.add(add("Add displayName to SCIMUser with PATCH using JSON encoding", user, Resource.ENCODING_JSON, "displayName", "Alice",
                 "/Users/"));
-        results.add(remove("Remove displayName from User with PATCH using JSON encoding", user, Resource.ENCODING_JSON, "displayName",
+        results.add(remove("Remove displayName from SCIMUser with PATCH using JSON encoding", user, Resource.ENCODING_JSON, "displayName",
                 "/Users/"));
 
         user = this.userCache.borrowCachedResource();
-        results.add(add("Add displayName to User with PATCH using XML encoding", user, Resource.ENCODING_JSON, "displayName", "Bob",
+        results.add(add("Add displayName to SCIMUser with PATCH using XML encoding", user, Resource.ENCODING_JSON, "displayName", "Bob",
                 "/Users/"));
-        results.add(remove("Remove displayName from User with PATCH using XML encoding", user, Resource.ENCODING_JSON, "displayName",
+        results.add(remove("Remove displayName from SCIMUser with PATCH using XML encoding", user, Resource.ENCODING_JSON, "displayName",
                 "/Users/"));
 
         String userId = "";
@@ -53,19 +53,19 @@ public class PatchTest extends Test {
         
         Group group = this.groupCache.borrowCachedResource();
         List<MultiValuedType<String>> members = new ArrayList<MultiValuedType<String>>();
-        members.add(new MultiValuedType<String>(userId, "User", false, false));
+        members.add(new MultiValuedType<String>(userId, "SCIMUser", false, false));
         results.add(add("Add member to group with PATCH using JSON encoding", group, Resource.ENCODING_JSON, "members", members, "/Groups/"));
         members = new ArrayList<MultiValuedType<String>>();
-        members.add(new MultiValuedType<String>(userId, "User", false, true));
+        members.add(new MultiValuedType<String>(userId, "SCIMUser", false, true));
         results.add(add("Remove member from group with PATCH using JSON encoding", group, Resource.ENCODING_JSON, "members", members,
                 "/Groups/"));
 
         group = this.groupCache.borrowCachedResource();
         members = new ArrayList<MultiValuedType<String>>();
-        members.add(new MultiValuedType<String>(userId, "User", false, false));
+        members.add(new MultiValuedType<String>(userId, "SCIMUser", false, false));
         results.add(add("Add member to group with PATCH using XML encoding", group, Resource.ENCODING_XML, "members", members, "/Groups/"));
         members = new ArrayList<MultiValuedType<String>>();
-        members.add(new MultiValuedType<String>(userId, "User", false, true));
+        members.add(new MultiValuedType<String>(userId, "SCIMUser", false, true));
         results.add(add("Remove member from group with PATCH using XML encoding", group, Resource.ENCODING_XML, "members", members,
                 "/Groups/"));
 

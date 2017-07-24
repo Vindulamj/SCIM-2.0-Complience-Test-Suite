@@ -4,7 +4,7 @@ import info.wso2.scim2.compliance.scimcore.objects.common.SCIMResource;
 
 import java.util.ArrayList;
 
-public class User extends SCIMResource {
+public class SCIMUser extends SCIMResource {
 
     private String userName;
     private String password;
@@ -28,17 +28,17 @@ public class User extends SCIMResource {
     private ArrayList<GroupsObj> groups;
     private ArrayList<X509CertificatesObj> x509Certificates;
 
-    public User() {
+    public SCIMUser() {
     }
 
-    public User(String id, String userName, String password, String externalId,
-                ArrayList<String> schemas, NameObj name, String displayName,
-                String nickName, String profileUrl, ArrayList<EmailObj> emails,
-                ArrayList<AddressObj> addresses, ArrayList<PhoneNumberObj> phoneNumbers,
-                ArrayList<ImsObj> ims, ArrayList<PhotosObj> photos, String userType,
-                String title, String preferredLanguage, String locale, String timezone,
-                boolean active, ArrayList<GroupsObj> groups,
-                ArrayList<X509CertificatesObj> x509Certificates) {
+    public SCIMUser(String id, String userName, String password, String externalId,
+                    ArrayList<String> schemas, NameObj name, String displayName,
+                    String nickName, String profileUrl, ArrayList<EmailObj> emails,
+                    ArrayList<AddressObj> addresses, ArrayList<PhoneNumberObj> phoneNumbers,
+                    ArrayList<ImsObj> ims, ArrayList<PhotosObj> photos, String userType,
+                    String title, String preferredLanguage, String locale, String timezone,
+                    boolean active, ArrayList<GroupsObj> groups,
+                    ArrayList<X509CertificatesObj> x509Certificates) {
         this.id = id;
         this.userName = userName;
         this.password = password;
@@ -63,13 +63,13 @@ public class User extends SCIMResource {
         this.x509Certificates = x509Certificates;
     }
 
-    public User(String id, String userName, String password, String externalId,
-                ArrayList<String> schemas, NameObj name, String displayName,
-                String nickName, String profileUrl, ArrayList<EmailObj> emails,
-                ArrayList<AddressObj> addresses, ArrayList<PhoneNumberObj> phoneNumbers,
-                ArrayList<ImsObj> ims, ArrayList<PhotosObj> photos, String userType,
-                String title, String preferredLanguage, String locale, String timezone,
-                boolean active, ArrayList<X509CertificatesObj> x509Certificates) {
+    public SCIMUser(String id, String userName, String password, String externalId,
+                    ArrayList<String> schemas, NameObj name, String displayName,
+                    String nickName, String profileUrl, ArrayList<EmailObj> emails,
+                    ArrayList<AddressObj> addresses, ArrayList<PhoneNumberObj> phoneNumbers,
+                    ArrayList<ImsObj> ims, ArrayList<PhotosObj> photos, String userType,
+                    String title, String preferredLanguage, String locale, String timezone,
+                    boolean active, ArrayList<X509CertificatesObj> x509Certificates) {
         this.id = id;
         this.userName = userName;
         this.password = password;
@@ -599,89 +599,11 @@ public class User extends SCIMResource {
         this.x509Certificates = x509Certificates;
     }
 
-    private static User user;
-    public static User getDefinedUser(){
-        if (user == null){
-            ArrayList<String> schemas = new ArrayList<String>() {{add("urn:ietf:params:scim:schemas:core:2.0:User");}};
+    public static String getDefinedUser(){
+        return  "{\n" +
+                "  \"password\": \"7019asd84\",\n" +
+                "  \"userName\": \"bjensenexamplecom\",\n" +
+                "}";
 
-            NameObj name = new NameObj("Ms. Barbara J Jensen, III","Jensen","Barbara",
-                    "Jane","Ms.","III");
-
-            ArrayList<EmailObj> emails = new ArrayList<EmailObj>() {{
-                add(new EmailObj("bjensen_example.com","work",true));
-                add(new EmailObj("babs_jensen.org","home"));
-            }};
-
-            ArrayList<AddressObj> addresses = new ArrayList<AddressObj>() {{
-                add(new AddressObj("100 Universal City Plaza","Hollywood",
-                        "CA","91608","USA",
-                        "100 Universal City Plaza Hollywood, CA 91608 USA","work", true));
-                add(new AddressObj("456 Hollywood Blvd","Hollywood",
-                        "CA","91608","USA",
-                        "456 Hollywood Blvd Hollywood, CA 91608 USA","home"));
-            }};
-
-            ArrayList<PhoneNumberObj> phoneNumbers = new ArrayList<PhoneNumberObj>(){{
-                    add(new PhoneNumberObj("555-555-5555","work"));
-                    add(new PhoneNumberObj("555-555-4444","mobile"));
-            }};
-
-            ArrayList<ImsObj> ims = new ArrayList<ImsObj>(){{
-                add(new ImsObj("someaimhandle","aim"));
-            }};
-
-            ArrayList<PhotosObj> photos = new ArrayList<PhotosObj>(){{
-                add(new PhotosObj("https://photos.example.com/profilephoto/72930000000Ccne/F","photo"));
-                add(new PhotosObj("photos.example.com/profilephoto/72930000000Ccne/T","thumbnail"));
-            }};
-
-            ArrayList<GroupsObj> groups = new ArrayList<GroupsObj>(){{
-                add(new GroupsObj("e9e30dba-f08f-4109-8486-d5c6a331660a",
-                        "../Groups/e9e30dba-f08f-4109-8486-d5c6a331660a","Tour Guides"));
-                add(new GroupsObj("fc348aa8-3835-40eb-a20b-c726e15c55b5",
-                        "../Groups/fc348aa8-3835-40eb-a20b-c726e15c55b5","Employees"));
-                add(new GroupsObj("71ddacd2-a8e7-49b8-a5db-ae50d0a5bfd7",
-                        "../Groups/71ddacd2-a8e7-49b8-a5db-ae50d0a5bfd7","US Employees"));
-            }};
-
-            ArrayList<X509CertificatesObj> x509Certificates = new ArrayList<X509CertificatesObj>(){{
-                add(new X509CertificatesObj("MIIDQzCCAqygAwIBAgICEAAwDQYJKoZIhvcNAQEFBQAwTjELMAkGA1UEBhMCVVMxEz" +
-                        "ARBgNVBAgMCkNhbGlmb3JuaWExFDASBgNVBAoMC2V4YW1wbGUuY29tMRQwEgYDVQQDDAtleGFtcGxlLmNvbTAe" +
-                        "Fw0xMTEwMjIwNjI0MzFaFw0xMjEwMDQwNjI0MzFaMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybml" +
-                        "hMRQwEgYDVQQKDAtl eGFtcGxlLmNvbTEhMB8GA1UEAwwYTXMuIEJhcmJhcmEgSiBKZW5zZW4gSUlJMSIw IAYJ" +
-                        "KoZIhvcNAQkBFhNiamVuc2VuQGV4YW1wbGUuY29tMIIBIjANBgkqhkiG9w0B AQEFAAOCAQ8AMIIBCgKCAQEA7K" +
-                        "r+Dcds/JQ5GwejJFcBIP682X3xpjis56AK02bc 1FLgzdLI8auoR+cC9/Vrh5t66HkQIOdA4unHh0AaZ4xL5PhVb" +
-                        "XIPMB5vAPKpzz5i PSi8xO8SL7I7SDhcBVJhqVqr3HgllEG6UClDdHO7nkLuwXq8HcISKkbT5WFTVfFZ zidPl8H" +
-                        "Z7DhXkZIRtJwBweq4bvm3hM1Os7UQH05ZS6cVDgweKNwdLLrT51ikSQG3 DYrl+ft781UQRIqxgwqCfXEuDiinPh" +
-                        "0kkvIi5jivVu1Z9QiwlYEdRbLJ4zJQBmDr SGTMYn4lRc2HgHO4DqB/bnMVorHB0CC6AV1QoFK4GPe1LwIDAQABo" +
-                        "3sweTAJBgNV HRMEAjAAMCwGCWCGSAGG+EIBDQQfFh1PcGVuU1NMIEdlbmVyYXRlZCBDZXJ0aWZp Y2F0ZTAdBgN" +
-                        "VHQ4EFgQU8pD0U0vsZIsaA16lL8En8bx0F/gwHwYDVR0jBBgwFoAU dGeKitcaF7gnzsNwDx708kqaVt0wDQYJKo" +
-                        "ZIhvcNAQEFBQADgYEAA81SsFnOdYJt Ng5Tcq+/ByEDrBgnusx0jloUhByPMEVkoMZ3J7j1ZgI8rAbOkNngX8+pKf" +
-                        "TiDz1R C4+dx8oU6Za+4NJXUjlL5CvV6BEYb1+QAEJwitTVvxB/A67g42/vzgAtoRUeDov1+GFiBZ+GNF/cAYKcMt" +
-                        "Gcrs2i97ZkJMo"));
-            }};
-
-            //TODO : Redo the user creation with commented version
-          /*  return new User("2819c223-7f76-453a-919d-413861904646", "bjensenexamplecom",
-                    "t1meMa$heen","701984", schemas, name,"Babs Jensen",
-                    "Babs","https://login.example.com/bjensen", emails, addresses, phoneNumbers,
-                    ims, photos, "Employee","Tour Guide", "en-US","en-US",
-                    "America/Los_Angeles",true, x509Certificates);
-
-                     return new User("2819c223-7f76-453a-919d-413861904646", "bjensenexamplecom",
-                    "t1meMa$heen",null, schemas, null,null,
-                    null,null, null, null, null,
-                    null, null, null,null, null,null,
-                    null,true, null);
-
-                    */
-
-            return new User("2819c223-7f76-453a-919d-413861904646", "bjensenexamplecom",
-                    "t1meMa$heen","701984", schemas, name,"Babs Jensen",
-                    "Babs","https://login.example.com/bjensen", emails, addresses, phoneNumbers,
-                    ims, photos, "Employee","Tour Guide", "en-US","en-US",
-                    "America/Los_Angeles",true, x509Certificates);
-        }
-        return user;
     }
 }

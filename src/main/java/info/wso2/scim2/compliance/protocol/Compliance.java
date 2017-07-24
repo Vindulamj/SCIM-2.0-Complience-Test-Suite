@@ -98,8 +98,8 @@ public class Compliance extends HttpServlet {
 
         /***************** End of critical tests **************/
 
-        /***************** Start of User tests **************/
-        //User Test
+        /***************** Start of SCIMUser tests **************/
+        //SCIMUser Test
         UserTest userTest = new UserTest(complianceTestMetaDataHolder);
         ArrayList<TestResult> userTestResults = userTest.performTest();
         for(TestResult testResult : userTestResults){

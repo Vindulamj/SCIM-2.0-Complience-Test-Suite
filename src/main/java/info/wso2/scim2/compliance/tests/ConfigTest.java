@@ -48,9 +48,9 @@ public class ConfigTest {
         method.setHeader("Content-Type", "application/json");
 
         HttpResponse response = null;
-        String responseString = null;
+        String responseString = "";
         String headerString = "";
-        String responseStatus = null;
+        String responseStatus = "";
         try {
             //get the ServiceProviderConfig
             response = client.execute(method);

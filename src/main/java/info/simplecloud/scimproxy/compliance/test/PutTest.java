@@ -32,12 +32,12 @@ public class PutTest extends Test {
         if(user != null) {
         	user.setDisplayName("Bob");
         }
-        results.add(putUser(user, "PUT User JSON", "/Users/", User.ENCODING_JSON));
+        results.add(putUser(user, "PUT SCIMUser JSON", "/Users/", User.ENCODING_JSON));
 
         if(user != null) {
         	user.setDisplayName("Bobert");
         }
-        results.add(putUser(user, "PUT User XML", "/Users/", User.ENCODING_XML));
+        results.add(putUser(user, "PUT SCIMUser XML", "/Users/", User.ENCODING_XML));
 
         Group group = this.groupCache.borrowCachedResource();
 

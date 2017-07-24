@@ -26,8 +26,8 @@ public class PostTest extends Test {
     }
 
     /*
-    public User getUser(String userName) {
-    	User user = new User();
+    public SCIMUser getUser(String userName) {
+    	SCIMUser user = new SCIMUser();
     	
     	// set all mandatory attributes
     	user.setUserName(userName);
