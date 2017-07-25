@@ -21,6 +21,7 @@ This Class is to test the /ServiceProviderConfig Endpoint.
  */
 public class ConfigTest {
 
+    private boolean GetConfigTestPerformed = false;
     private ComplianceTestMetaDataHolder complianceTestMetaDataHolder;
 
     public ConfigTest(ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
@@ -63,12 +64,22 @@ public class ConfigTest {
             }
             responseStatus = response.getStatusLine().getStatusCode() + " "
                     + response.getStatusLine().getReasonPhrase();
+            GetConfigTestPerformed = true;
 
         } catch (Exception e) {
-            throw new CriticalComplianceException(new TestResult
-                    (TestResult.ERROR, "Read ServiceProviderConfig",
-                            "Could not get ServiceProviderConfig at url " + url ,
-                            ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
+            if (!GetConfigTestPerformed) {
+                Header[] headers = response.getAllHeaders();
+                for (Header header : headers) {
+                    headerString += header.getName() + " : " + header.getValue() + "\n";
+                }
+                responseStatus = response.getStatusLine().getStatusCode() + " "
+                        + response.getStatusLine().getReasonPhrase();
+
+                throw new CriticalComplianceException(new TestResult
+                        (TestResult.ERROR, "Read ServiceProviderConfig",
+                                "Could not get ServiceProviderConfig at url " + url,
+                                ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
+            }
         }
         try {
             SCIMServiceProviderConfig scimServiceProviderConfig = new SCIMServiceProviderConfig();

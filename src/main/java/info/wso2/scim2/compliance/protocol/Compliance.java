@@ -3,7 +3,6 @@ package info.wso2.scim2.compliance.protocol;
 import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
-import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.tests.ConfigTest;
 import info.wso2.scim2.compliance.tests.UserTest;
@@ -19,9 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 
-@Path("/test")
+@Path("/test2")
 public class Compliance extends HttpServlet {
-
     private static final long serialVersionUID = 1L;
 
     @POST
@@ -39,7 +37,6 @@ public class Compliance extends HttpServlet {
                            @FormParam(ComplianceConstants.RequestCodeConstants.AUTHORIZATION_METHOD)
                                        String authMethod)
             throws InterruptedException, ServletException {
-
         // TODO: remove when done coding!
         if (url == null || url.isEmpty()) {
             url = "https://localhost:9443/";
@@ -93,7 +90,7 @@ public class Compliance extends HttpServlet {
 
         } catch (CriticalComplianceException e) {
             // failing critical test
-             results.add(e.getResult());
+            results.add(e.getResult());
         }
 
         /***************** End of critical tests **************/
@@ -102,7 +99,7 @@ public class Compliance extends HttpServlet {
         //SCIMUser Test
         UserTest userTest = new UserTest(complianceTestMetaDataHolder);
         ArrayList<TestResult> userTestResults = userTest.performTest();
-        for(TestResult testResult : userTestResults){
+        for (TestResult testResult : userTestResults) {
             results.add(testResult);
         }
 

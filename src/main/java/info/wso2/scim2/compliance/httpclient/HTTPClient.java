@@ -16,7 +16,7 @@ public class HTTPClient {
 
     public static HttpClient getHttpClientWithBasicAuth() {
         if(httpClient == null) {
-            HttpClient httpClient = HttpClientBuilder.create().build();
+            HttpClient httpClient = HttpClientBuilder.create().disableAutomaticRetries().build();
             return httpClient;
         }
         return httpClient;

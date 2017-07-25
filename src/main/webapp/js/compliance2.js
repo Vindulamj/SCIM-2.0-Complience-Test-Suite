@@ -1,3 +1,4 @@
+var checked = false;
 $(document).ready(
     function() {
         var getColor = function() {
@@ -103,41 +104,43 @@ $(document).ready(
         };
 
         var sendRequest = function() {
-            var data = {
-                url : $("#complianceUrl2").val(),
-                authMethod : $("#authMethod2 option:selected").val(),
-                username : $("#username2").val(),
-                password : $("#password2").val(),
-                clientId : $("#oauthClientId2").val(),
-                clientSecret : $("#oauthClientSecret2").val(),
-                authorizationServer : $("#oauthAuthorizationServer2").val(),
-                authorizationHeader : $("#rawAuthorizationHeader2").val()
-            };
+            if (!checked) {
+                var data = {
+                    url: $("#complianceUrl2").val(),
+                    authMethod: $("#authMethod2 option:selected").val(),
+                    username: $("#username2").val(),
+                    password: $("#password2").val(),
+                    clientId: $("#oauthClientId2").val(),
+                    clientSecret: $("#oauthClientSecret2").val(),
+                    authorizationServer: $("#oauthAuthorizationServer2").val(),
+                    authorizationHeader: $("#rawAuthorizationHeader2").val()
+                };
 
-            $("#authenticationAlert2").hide();
-            $("#result-container2").hide();
-            $("#compliance-error2").hide();
-            $("#compliance-error-container2").hide();
+                $("#authenticationAlert2").hide();
+                $("#result-container2").hide();
+                $("#compliance-error2").hide();
+                $("#compliance-error-container2").hide();
 
-            $("#spinner-container2").spin({
-                lines : 13,
-                length : 30,
-                width : 10,
-                radius : 40,
-                rotate : 0,
-                color : '#000',
-                speed : 1,
-                trail : 60,
-                shadow : false,
-                hwaccel : false,
-                className : 'spinner',
-                zIndex : 2e9,
-                top : 'auto',
-                left : 'auto'
-            });
-            $.post("/compliance2/test", data, handleResponse).error(handleError);
-
-            return false;
+                $("#spinner-container2").spin({
+                    lines: 13,
+                    length: 30,
+                    width: 10,
+                    radius: 40,
+                    rotate: 0,
+                    color: '#000',
+                    speed: 1,
+                    trail: 60,
+                    shadow: false,
+                    hwaccel: false,
+                    className: 'spinner',
+                    zIndex: 2e9,
+                    top: 'auto',
+                    left: 'auto'
+                });
+                checked = true;
+                $.post("/compliance2/test2", data, handleResponse).error(handleError);
+                return false;
+            }
         };
 
         $("#toggleAddImplementation2").click(function(){toggleWire({currentTarget:$("#toggleAddImplementation2")})});

@@ -10,7 +10,7 @@ import org.wso2.charon3.core.attributes.ComplexAttribute;
 import org.wso2.charon3.core.attributes.MultiValuedAttribute;
 import org.wso2.charon3.core.exceptions.BadRequestException;
 import org.wso2.charon3.core.exceptions.CharonException;
-import org.wso2.charon3.core.objects.User;
+import org.wso2.charon3.core.objects.SCIMObject;
 import org.wso2.charon3.core.schema.AttributeSchema;
 import org.wso2.charon3.core.schema.SCIMAttributeSchema;
 import org.wso2.charon3.core.schema.SCIMResourceTypeSchema;
@@ -20,19 +20,18 @@ import java.util.Map;
 
 public class ResponseValidateTest {
 
-    public static void runValidateTests(User user,
+    public static void runValidateTests(SCIMObject scimObject,
                                         SCIMResourceTypeSchema schema,
-                                        String requestedAttributes,
-                                        String requestedExcludingAttributes,
                                         HttpPost method,
                                         String responseString,
                                         String headerString,
                                         String responseStatus)
             throws BadRequestException, CharonException, GeneralComplianceException {
-
-        validateSCIMObjectForRequiredAttributes(user, schema,
-                requestedAttributes, requestedExcludingAttributes,
+        //Check for required attributes
+        validateSCIMObjectForRequiredAttributes(scimObject, schema,
                 method, responseString, headerString, responseStatus);
+        //validate schema list
+        validateSchemaList(scimObject, schema, method, responseString, headerString, responseStatus);
     }
 
     /*
@@ -41,10 +40,8 @@ public class ResponseValidateTest {
      * @param scimObject
      * @param resourceSchema
      */
-    private static void validateSCIMObjectForRequiredAttributes(User scimObject,
+    private static void validateSCIMObjectForRequiredAttributes(SCIMObject scimObject,
                                                                 SCIMResourceTypeSchema resourceSchema,
-                                                                String requestedAttributes,
-                                                                String requestedExcludingAttributes,
                                                                 HttpPost method,
                                                                 String responseString,
                                                                 String headerString,
@@ -133,6 +130,32 @@ public class ResponseValidateTest {
                         validateSCIMObjectForRequiredSubAttributes(subAttribute, subAttributeSchema, method, responseString, headerString, responseStatus);
                     }
                 }
+            }
+        }
+    }
+
+    /*
+     * Validate SCIMObject for schema list
+     *
+     * @param scimObject
+     * @param resourceSchema
+     */
+    public static void validateSchemaList(SCIMObject scimObject,
+                                          SCIMResourceTypeSchema resourceSchema,
+                                          HttpPost method, String responseString,
+                                          String headerString, String responseStatus)
+            throws  GeneralComplianceException {
+
+        //get resource schema list
+        List<String> resourceSchemaList = resourceSchema.getSchemasList();
+        //get the scim object schema list
+        List<String> objectSchemaList = scimObject.getSchemaList();
+
+        for (String schema : resourceSchemaList) {
+            //check for schema.
+            if (!objectSchemaList.contains(schema)) {
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create SCIMUser",
+                        "Not all schemas are set", ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
             }
         }
     }

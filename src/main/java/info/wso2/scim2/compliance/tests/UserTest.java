@@ -8,8 +8,6 @@ import info.wso2.scim2.compliance.protocol.ComplianceUtils;
 import info.wso2.scim2.compliance.scimcore.objects.User.SCIMUser;
 import info.wso2.scim2.compliance.tests.common.ResponseValidateTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,11 +23,11 @@ import org.wso2.charon3.core.objects.User;
 import org.wso2.charon3.core.schema.SCIMResourceSchemaManager;
 import org.wso2.charon3.core.schema.SCIMResourceTypeSchema;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class UserTest{
 
+    private boolean CreateTestPerformed = false;
     private ComplianceTestMetaDataHolder complianceTestMetaDataHolder;
     private String url;
 
@@ -63,10 +61,6 @@ public class UserTest{
         method.setHeader("Accept", "application/json");
         method.setHeader("Content-Type", "application/json");
 
-        // Provide custom retry handler is necessary
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-                new DefaultHttpMethodRetryHandler(0, false));
-
         HttpResponse response = null;
         String responseString = "";
         String headerString = "";
@@ -85,19 +79,22 @@ public class UserTest{
             }
             responseStatus = response.getStatusLine().getStatusCode() + " "
                     + response.getStatusLine().getReasonPhrase();
+            CreateTestPerformed = true;
 
         } catch (Exception e) {
             // Read the response body.
             //get all headers
-            Header[] headers = response.getAllHeaders();
-            for (Header header : headers) {
-                headerString += header.getName() + " : " + header.getValue() + "\n";
+            if (!CreateTestPerformed) {
+                Header[] headers = response.getAllHeaders();
+                for (Header header : headers) {
+                    headerString += header.getName() + " : " + header.getValue() + "\n";
+                }
+                responseStatus = response.getStatusLine().getStatusCode() + " "
+                        + response.getStatusLine().getReasonPhrase();
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create SCIMUser",
+                        "Could not create default user at url " + url,
+                        ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
             }
-            responseStatus = response.getStatusLine().getStatusCode() + " "
-                    + response.getStatusLine().getReasonPhrase();
-            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create SCIMUser",
-                    "Could not create default user at url " + url,
-                    ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
         }
 
         if (response.getStatusLine().getStatusCode() == 201) {
@@ -115,8 +112,8 @@ public class UserTest{
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, null, null,
-                        method, responseString, headerString, responseStatus);
+                ResponseValidateTest.runValidateTests(user, schema, method,
+                        responseString, headerString, responseStatus);
 
             } catch (BadRequestException | CharonException e) {
                 throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create SCIMUser",
