@@ -114,7 +114,7 @@ public class UserTest{
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, method,
+                ResponseValidateTest.runValidateTests(user, schema,null, null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
@@ -195,7 +195,7 @@ public class UserTest{
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, method,
+                ResponseValidateTest.runValidateTests(user, schema, null, null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {

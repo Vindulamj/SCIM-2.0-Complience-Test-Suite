@@ -26,9 +26,11 @@ public class HTTPClient {
                                                           HttpRequestBase method) {
 
         String auth = complianceTestMetaDataHolder.getUsername() + ":" + complianceTestMetaDataHolder.getPassword();
-        byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
-        String authHeader = "Basic " + new String(encodedAuth);
-        method.setHeader(HttpHeaders.AUTHORIZATION, authHeader);
+        if (!auth.equals(":")) {
+            byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
+            String authHeader = "Basic " + new String(encodedAuth);
+            method.setHeader(HttpHeaders.AUTHORIZATION, authHeader);
+        }
         return method;
     }
 
