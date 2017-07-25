@@ -3,6 +3,7 @@ package info.wso2.scim2.compliance.protocol;
 import info.wso2.scim2.compliance.entities.Result;
 import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
+import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.tests.ConfigTest;
 import info.wso2.scim2.compliance.tests.UserTest;
@@ -81,10 +82,10 @@ public class Compliance extends HttpServlet {
         /***************** Start of critical tests **************/
         try {
             // start with the critical tests (will throw exception and test will stop if fails)
-            // 1. /ServiceProviderConfig Test
+            // 1. /Objects Test
             // 2. /Schemas Test
 
-            // /ServiceProviderConfig Test
+            // /Objects Test
             ConfigTest configTest = new ConfigTest(complianceTestMetaDataHolder);
             results.add(configTest.performTest());
 
@@ -98,7 +99,13 @@ public class Compliance extends HttpServlet {
         /***************** Start of SCIMUser tests **************/
         //SCIMUser Test
         UserTest userTest = new UserTest(complianceTestMetaDataHolder);
-        ArrayList<TestResult> userTestResults = userTest.performTest();
+        ArrayList<TestResult> userTestResults = null;
+        try {
+            userTestResults = userTest.performTest();
+        } catch (ComplianceException e) {
+            //TODO : capture this.
+            e.printStackTrace();
+        }
         for (TestResult testResult : userTestResults) {
             results.add(testResult);
         }

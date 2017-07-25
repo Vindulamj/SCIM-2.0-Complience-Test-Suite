@@ -1,4 +1,4 @@
-package info.wso2.scim2.compliance.scimcore.objects.ServiceProviderConfig;
+package info.wso2.scim2.compliance.objects;
 
 import java.util.ArrayList;
 import java.util.List;

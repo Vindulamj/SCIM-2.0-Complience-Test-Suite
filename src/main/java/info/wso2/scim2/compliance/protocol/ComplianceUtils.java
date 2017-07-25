@@ -4,13 +4,17 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import info.wso2.scim2.compliance.entities.Wire;
 import org.apache.http.client.methods.HttpRequestBase;
 
+import java.util.ArrayList;
+
 public class ComplianceUtils {
 
     public static Wire getWire(HttpRequestBase method, String responseBody,
-                               String headerString, String responseStatus) {
+                               String headerString, String responseStatus,
+                               ArrayList<String> subTests) {
 
         StringBuffer toServer = new StringBuffer();
         StringBuffer fromServer = new StringBuffer();
+        StringBuffer subTestsPerformed = new StringBuffer();
 
         toServer.append(method.getRequestLine().getMethod()).append(" ");
         toServer.append(method.getRequestLine().getUri()+"\n");
@@ -24,12 +28,14 @@ public class ComplianceUtils {
         fromServer.append("\n" + "Status : ");
         fromServer.append(responseStatus + "\n");
         fromServer.append("\n" + responseBody);
-
-        return new Wire(toServer.toString(), fromServer.toString());
+        for (String subTest : subTests) {
+            subTestsPerformed.append(subTest).append("\n");
+        }
+        return new Wire(toServer.toString(), fromServer.toString(), subTestsPerformed.toString());
     }
 
 
     public static Wire getWire(Throwable e) {
-        return new Wire(ExceptionUtils.getFullStackTrace(e), "");
+        return new Wire(ExceptionUtils.getFullStackTrace(e), "", "");
     }
 }

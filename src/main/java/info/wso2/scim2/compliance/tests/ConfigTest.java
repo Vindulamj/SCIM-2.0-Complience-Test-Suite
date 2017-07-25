@@ -5,7 +5,7 @@ import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.httpclient.HTTPClient;
 import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
-import info.wso2.scim2.compliance.scimcore.objects.ServiceProviderConfig.SCIMServiceProviderConfig;
+import info.wso2.scim2.compliance.objects.SCIMServiceProviderConfig;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -15,6 +15,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 
 /*
 This Class is to test the /ServiceProviderConfig Endpoint.
@@ -28,7 +29,7 @@ public class ConfigTest {
             this.complianceTestMetaDataHolder = complianceTestMetaDataHolder;
     }
 
-    // Test is to getX the service provider configurations from service provider
+    // Test is to get the service provider configurations from service provider
     public TestResult performTest() throws CriticalComplianceException {
         return getServiceProviderConfigTest();
     }
@@ -52,8 +53,9 @@ public class ConfigTest {
         String responseString = "";
         String headerString = "";
         String responseStatus = "";
+        ArrayList<String> subTests =  new ArrayList<>();
         try {
-            //get the ServiceProviderConfig
+            //get the Objects
             response = client.execute(method);
             // Read the response body.
             responseString = new BasicResponseHandler().handleResponse(response);
@@ -64,10 +66,8 @@ public class ConfigTest {
             }
             responseStatus = response.getStatusLine().getStatusCode() + " "
                     + response.getStatusLine().getReasonPhrase();
-            GetConfigTestPerformed = true;
 
         } catch (Exception e) {
-            if (!GetConfigTestPerformed) {
                 Header[] headers = response.getAllHeaders();
                 for (Header header : headers) {
                     headerString += header.getName() + " : " + header.getValue() + "\n";
@@ -78,8 +78,8 @@ public class ConfigTest {
                 throw new CriticalComplianceException(new TestResult
                         (TestResult.ERROR, "Read ServiceProviderConfig",
                                 "Could not get ServiceProviderConfig at url " + url,
-                                ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
-            }
+                                ComplianceUtils.getWire(method, responseString,
+                                        headerString, responseStatus, subTests)));
         }
         try {
             SCIMServiceProviderConfig scimServiceProviderConfig = new SCIMServiceProviderConfig();
@@ -126,13 +126,15 @@ public class ConfigTest {
 
             return new TestResult
                     (TestResult.SUCCESS, "Read ServiceProviderConfig",
-                            "", ComplianceUtils.getWire(method, responseString, headerString, responseStatus));
+                            "", ComplianceUtils.getWire(method, responseString,
+                            headerString, responseStatus, subTests));
 
         } catch (Exception e) {
             throw new CriticalComplianceException
                     (new TestResult(TestResult.ERROR, "Parse ServiceProviderConfig",
-                            "Could not parse the json format returned from ServiceProviderConfig. " + e.getMessage(),
-                            ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
+                            "Could not parse the json format returned from /ServiceProviderConfig. " + e.getMessage(),
+                            ComplianceUtils.getWire(method, responseString, headerString,
+                                    responseStatus, subTests)));
         }
     }
 

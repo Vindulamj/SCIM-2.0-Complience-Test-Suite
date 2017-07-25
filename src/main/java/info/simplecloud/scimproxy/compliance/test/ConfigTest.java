@@ -61,8 +61,8 @@ public class ConfigTest {
                 throw new Exception(); // catching in next row
             }
         } catch (Exception e) {
-            throw new CritialComplienceException(new TestResult(TestResult.ERROR, "Read ServiceProviderConfig",
-                    "Could not get ServiceProviderConfig at url " + url, ComplienceUtils.getWire(method, "")));
+            throw new CritialComplienceException(new TestResult(TestResult.ERROR, "Read Objects",
+                    "Could not get Objects at url " + url, ComplienceUtils.getWire(method, "")));
         }
 
         try {
@@ -106,11 +106,11 @@ public class ConfigTest {
 
             csp.setSpc(spc);
 
-            return new TestResult(TestResult.SUCCESS, "Read ServiceProviderConfig", "", ComplienceUtils.getWire(method, ""));
+            return new TestResult(TestResult.SUCCESS, "Read Objects", "", ComplienceUtils.getWire(method, ""));
 
         } catch (Exception e) {
-            throw new CritialComplienceException(new TestResult(TestResult.ERROR, "Parse ServiceProviderConfig",
-                    "Could not parse the json format returned from ServiceProviderConfig. " + e.getMessage(), ComplienceUtils.getWire(
+            throw new CritialComplienceException(new TestResult(TestResult.ERROR, "Parse Objects",
+                    "Could not parse the json format returned from Objects. " + e.getMessage(), ComplienceUtils.getWire(
                             method, "")));
         }
     }

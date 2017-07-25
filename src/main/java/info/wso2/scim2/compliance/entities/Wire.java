@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Wire {
-    public static final Wire EMPTY = new Wire("<empty>", "<empty>");
+    public static final Wire EMPTY = new Wire("<empty>", "<empty>", "<empty>");
     
     @XmlElement(name = "to_server")
     String toServer = "";
@@ -13,12 +13,16 @@ public class Wire {
     @XmlElement(name = "from_server")
     String fromServer = "";
 
+    @XmlElement(name = "tests")
+    String tests = "";
+
     public Wire() {
     }
 
-    public Wire(String toServer, String fromServer) {
+    public Wire(String toServer, String fromServer, String tests) {
         this.toServer = toServer;
         this.fromServer = fromServer;
+        this.tests = tests;
     }
 
 }

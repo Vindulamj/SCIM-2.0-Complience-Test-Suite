@@ -3,7 +3,8 @@ package info.wso2.scim2.compliance.tests.common;
 import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.GeneralComplianceException;
 import info.wso2.scim2.compliance.protocol.ComplianceUtils;
-import org.apache.http.client.methods.HttpPost;
+import info.wso2.scim2.compliance.utils.ComplianceConstants;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.wso2.charon3.core.attributes.AbstractAttribute;
 import org.wso2.charon3.core.attributes.Attribute;
 import org.wso2.charon3.core.attributes.ComplexAttribute;
@@ -15,6 +16,7 @@ import org.wso2.charon3.core.schema.AttributeSchema;
 import org.wso2.charon3.core.schema.SCIMAttributeSchema;
 import org.wso2.charon3.core.schema.SCIMResourceTypeSchema;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,16 +24,20 @@ public class ResponseValidateTest {
 
     public static void runValidateTests(SCIMObject scimObject,
                                         SCIMResourceTypeSchema schema,
-                                        HttpPost method,
+                                        HttpRequestBase method,
                                         String responseString,
                                         String headerString,
-                                        String responseStatus)
+                                        String responseStatus,
+                                        ArrayList<String> subTests)
             throws BadRequestException, CharonException, GeneralComplianceException {
         //Check for required attributes
         validateSCIMObjectForRequiredAttributes(scimObject, schema,
-                method, responseString, headerString, responseStatus);
+                method, responseString, headerString, responseStatus, subTests);
+        subTests.add(ComplianceConstants.TestConstants.REQUIRED_ATTRIBUTE_TEST);
         //validate schema list
-        validateSchemaList(scimObject, schema, method, responseString, headerString, responseStatus);
+        validateSchemaList(scimObject, schema, method, responseString, headerString, responseStatus, subTests);
+        subTests.add(ComplianceConstants.TestConstants.SCHEMA_LIST_TEST);
+        subTests.add(ComplianceConstants.TestConstants.ATTRIBUTE_MUTABILITY_TEST);
     }
 
     /*
@@ -42,10 +48,11 @@ public class ResponseValidateTest {
      */
     private static void validateSCIMObjectForRequiredAttributes(SCIMObject scimObject,
                                                                 SCIMResourceTypeSchema resourceSchema,
-                                                                HttpPost method,
+                                                                HttpRequestBase method,
                                                                 String responseString,
                                                                 String headerString,
-                                                                String responseStatus)
+                                                                String responseStatus,
+                                                                ArrayList<String> subTests)
             throws BadRequestException, CharonException, GeneralComplianceException {
         //get attributes from schema.
         List<AttributeSchema> attributeSchemaList = resourceSchema.getAttributesList();
@@ -57,14 +64,16 @@ public class ResponseValidateTest {
                 if (!attributeList.containsKey(attributeSchema.getName())) {
                     String error = "Required attribute " + attributeSchema.getName() + " is missing in the SCIM " +
                             "Object.";
-                    throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create SCIMUser",
-                            error, ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
+                    throw new GeneralComplianceException
+                            (new TestResult(TestResult.ERROR, "Create SCIMUser",
+                            error, ComplianceUtils.getWire(method, responseString,
+                                    headerString, responseStatus, subTests)));
                 }
             }
             //check for required sub attributes.
             AbstractAttribute attribute = (AbstractAttribute) attributeList.get(attributeSchema.getName());
             validateSCIMObjectForRequiredSubAttributes(attribute, attributeSchema,
-                    method, responseString, headerString, responseStatus);
+                    method, responseString, headerString, responseStatus, subTests);
         }
     }
 
@@ -78,8 +87,11 @@ public class ResponseValidateTest {
          */
     private static void validateSCIMObjectForRequiredSubAttributes(AbstractAttribute attribute,
                                                                    AttributeSchema attributeSchema,
-                                                                   HttpPost method, String responseString,
-                                                                   String headerString, String responseStatus)
+                                                                   HttpRequestBase method,
+                                                                   String responseString,
+                                                                   String headerString,
+                                                                   String responseStatus,
+                                                                   ArrayList<String> subTests)
             throws GeneralComplianceException, CharonException {
         if (attribute != null) {
             List<SCIMAttributeSchema> subAttributesSchemaList =
@@ -93,8 +105,10 @@ public class ResponseValidateTest {
                             if (attribute.getSubAttribute(subAttributeSchema.getName()) == null) {
                                 String error = "Required sub attribute: " + subAttributeSchema.getName()
                                         + " is missing in the SCIM Attribute: " + attribute.getName();
-                                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create SCIMUser",
-                                        error, ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
+                                throw new GeneralComplianceException
+                                        (new TestResult(TestResult.ERROR, "Create SCIMUser",
+                                        error, ComplianceUtils.getWire(method, responseString, headerString,
+                                        responseStatus, subTests)));
                             }
                         } else if (attribute instanceof MultiValuedAttribute) {
                             List<Attribute> values =
@@ -104,8 +118,10 @@ public class ResponseValidateTest {
                                     if (value.getSubAttribute(subAttributeSchema.getName()) == null) {
                                         String error = "Required sub attribute: " + subAttributeSchema.getName()
                                                 + ", is missing in the SCIM Attribute: " + attribute.getName();
-                                        throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create SCIMUser",
-                                                error, ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
+                                        throw new GeneralComplianceException
+                                                (new TestResult(TestResult.ERROR, "Create SCIMUser",
+                                                error, ComplianceUtils.getWire(method, responseString,
+                                                headerString, responseStatus, subTests)));
                                     }
                                 }
                             }
@@ -127,7 +143,8 @@ public class ResponseValidateTest {
                     List<SCIMAttributeSchema> subSubAttributesSchemaList =
                             ((SCIMAttributeSchema) subAttributeSchema).getSubAttributeSchemas();
                     if (subSubAttributesSchemaList != null) {
-                        validateSCIMObjectForRequiredSubAttributes(subAttribute, subAttributeSchema, method, responseString, headerString, responseStatus);
+                        validateSCIMObjectForRequiredSubAttributes(subAttribute, subAttributeSchema,
+                                method, responseString, headerString, responseStatus, subTests);
                     }
                 }
             }
@@ -142,8 +159,11 @@ public class ResponseValidateTest {
      */
     public static void validateSchemaList(SCIMObject scimObject,
                                           SCIMResourceTypeSchema resourceSchema,
-                                          HttpPost method, String responseString,
-                                          String headerString, String responseStatus)
+                                          HttpRequestBase method,
+                                          String responseString,
+                                          String headerString,
+                                          String responseStatus,
+                                          ArrayList<String> subTests)
             throws  GeneralComplianceException {
 
         //get resource schema list
@@ -155,7 +175,8 @@ public class ResponseValidateTest {
             //check for schema.
             if (!objectSchemaList.contains(schema)) {
                 throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create SCIMUser",
-                        "Not all schemas are set", ComplianceUtils.getWire(method, responseString, headerString, responseStatus)));
+                        "Not all schemas are set", ComplianceUtils.getWire(method,
+                        responseString, headerString, responseStatus, subTests)));
             }
         }
     }

@@ -16,11 +16,6 @@ public class ComplianceConstants {
         public static final String HTTPS = "https";
     }
 
-    public static class ResponseCodeConstants {
-        public static final int CODE_BAD_REQUEST = 400;
-
-    }
-
     public static class TestConstants {
         public static final String LABEL_IMPORTANT =  "label-important";
         public static final String LABEL_SUCCESS =  "label-success";
@@ -33,5 +28,29 @@ public class ComplianceConstants {
         public static final String SERVICE_PROVIDER_ENDPOINT = "/ServiceProviderConfig";
         public static final String USERS_ENDPOINT = "/Users";
 
+        public static final String SCHEMA_LIST_TEST = "Schema List Test";
+        public static final String REQUIRED_ATTRIBUTE_TEST = "Required Attribute Test";
+        public static final String ATTRIBUTE_MUTABILITY_TEST = "Attribute Mutability Test";
     }
+
+    public static class DefinedInstances {
+        public static String DEFINED_USER =
+                        "{\n" +
+                        "  \"password\": \"7019asd84\",\n" +
+                        "  \"userName\": \"bjensenexamplecom\",\n" +
+                        "  \"emails\": [\n" +
+                        "    {\n" +
+                        "      \"value\": \"bjensen@example.com\",\n" +
+                        "      \"type\": \"work\",\n" +
+                        "      \"primary\": true\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "      \"value\": \"babs@jensen.org\",\n" +
+                        "      \"type\": \"home\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "}";
+
+    }
+
 }
