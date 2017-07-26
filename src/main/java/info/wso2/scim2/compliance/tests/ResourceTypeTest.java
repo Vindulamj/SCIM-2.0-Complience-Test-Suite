@@ -1,13 +1,15 @@
 package info.wso2.scim2.compliance.tests;
 
-import info.wso2.scim2.compliance.exception.ComplianceException;
-import info.wso2.scim2.compliance.exception.GeneralComplianceException;
-import info.wso2.scim2.compliance.protocol.ComplianceUtils;
+
 import info.wso2.scim2.compliance.entities.TestResult;
+import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
+import info.wso2.scim2.compliance.exception.GeneralComplianceException;
 import info.wso2.scim2.compliance.httpclient.HTTPClient;
-import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
+import info.wso2.scim2.compliance.objects.SCIMResourceType;
 import info.wso2.scim2.compliance.objects.SCIMServiceProviderConfig;
+import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
+import info.wso2.scim2.compliance.protocol.ComplianceUtils;
 import info.wso2.scim2.compliance.tests.common.ResponseValidateTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.http.Header;
@@ -15,40 +17,34 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.wso2.charon3.core.encoder.JSONDecoder;
 import org.wso2.charon3.core.exceptions.BadRequestException;
 import org.wso2.charon3.core.exceptions.CharonException;
 import org.wso2.charon3.core.exceptions.InternalErrorException;
-import org.wso2.charon3.core.objects.User;
 import org.wso2.charon3.core.schema.SCIMResourceSchemaManager;
 import org.wso2.charon3.core.schema.SCIMResourceTypeSchema;
 
 import java.util.ArrayList;
 
-/*
-This Class is to test the /ServiceProviderConfig Endpoint.
- */
-public class ConfigTest {
+public class ResourceTypeTest {
 
     private ComplianceTestMetaDataHolder complianceTestMetaDataHolder;
-    private SCIMServiceProviderConfig scimServiceProviderConfig = null;
+    SCIMResourceType scimResourceType = null;
 
-    public ConfigTest(ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
-            this.complianceTestMetaDataHolder = complianceTestMetaDataHolder;
+    public ResourceTypeTest(ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
+        this.complianceTestMetaDataHolder = complianceTestMetaDataHolder;
     }
 
-    // Test is to get the service provider configurations from service provider
-    public TestResult performTest() throws CriticalComplianceException, ComplianceException{
-        return getServiceProviderConfigTest();
+    // Test is to get the resource types from service provider
+    public TestResult performTest() throws CriticalComplianceException, ComplianceException {
+        return getResourceTypeTest();
     }
 
-    private TestResult getServiceProviderConfigTest () throws CriticalComplianceException, ComplianceException {
+    private TestResult getResourceTypeTest () throws CriticalComplianceException, ComplianceException {
         // Construct the endpoint url
         String url = complianceTestMetaDataHolder.getUrl() +
                 complianceTestMetaDataHolder.getVersion() +
-                ComplianceConstants.TestConstants.SERVICE_PROVIDER_ENDPOINT;
+                ComplianceConstants.TestConstants.RESOURCE_TYPE_ENDPOINT;
 
         // specify the get request
         HttpGet method = new HttpGet(url);
@@ -57,7 +53,6 @@ public class ConfigTest {
 
         method = (HttpGet) HTTPClient.setAuthorizationHeader(complianceTestMetaDataHolder, method);
         method.setHeader("Accept", "application/json");
-        method.setHeader("Content-Type", "application/json");
 
         HttpResponse response = null;
         String responseString = "";
@@ -66,7 +61,7 @@ public class ConfigTest {
         ArrayList<String> subTests =  new ArrayList<>();
 
         try {
-            //get the service provider configs
+            //get the resource types
             response = client.execute(method);
             // Read the response body.
             responseString = new BasicResponseHandler().handleResponse(response);
@@ -79,52 +74,55 @@ public class ConfigTest {
                     + response.getStatusLine().getReasonPhrase();
 
         } catch (Exception e) {
-                Header[] headers = response.getAllHeaders();
-                for (Header header : headers) {
-                    headerString += header.getName() + " : " + header.getValue() + "\n";
-                }
-                responseStatus = response.getStatusLine().getStatusCode() + " "
-                        + response.getStatusLine().getReasonPhrase();
+            Header[] headers = response.getAllHeaders();
+            for (Header header : headers) {
+                headerString += header.getName() + " : " + header.getValue() + "\n";
+            }
+            responseStatus = response.getStatusLine().getStatusCode() + " "
+                    + response.getStatusLine().getReasonPhrase();
 
-                throw new CriticalComplianceException(new TestResult
-                        (TestResult.ERROR, "Get ServiceProviderConfig",
-                                "Could not get ServiceProviderConfig at url " + url,
-                                ComplianceUtils.getWire(method, responseString,
-                                        headerString, responseStatus, subTests)));
+            throw new CriticalComplianceException(new TestResult
+                    (TestResult.ERROR, "Get ResourceType",
+                            "Could not get ResourceType at url " + url,
+                            ComplianceUtils.getWire(method, responseString,
+                                    headerString, responseStatus, subTests)));
         }
         if (response.getStatusLine().getStatusCode() == 200) {
-            //obtain the schema corresponding to serviceProviderConfig
+            //obtain the schema corresponding to resourceType
             SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.
-                    getInstance().getServiceProviderConfigResourceSchema();
+                    getInstance().getResourceTypeResourceSchema();
 
             JSONDecoder jsonDecoder = new JSONDecoder();
             try {
-                scimServiceProviderConfig =
-                        (SCIMServiceProviderConfig)
-                                jsonDecoder.decodeResource(responseString, schema,
-                                        new SCIMServiceProviderConfig());
-                complianceTestMetaDataHolder.setScimServiceProviderConfig(scimServiceProviderConfig);
+                scimResourceType =
+                        (SCIMResourceType) jsonDecoder.decodeResource(responseString, schema,
+                                        new SCIMResourceType());
+                complianceTestMetaDataHolder.setScimResourceType(scimResourceType);
 
             } catch (BadRequestException | CharonException | InternalErrorException e) {
-                throw new CriticalComplianceException(new TestResult(TestResult.ERROR, "Get ServiceProviderConfig",
+                throw new CriticalComplianceException(new TestResult(TestResult.ERROR,
+                        "Get ResourceType",
                         "Could not decode the server response",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(scimServiceProviderConfig, schema, null, null, method,
+                ResponseValidateTest.runValidateTests(scimResourceType, schema, null,
+                        null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
-                throw new CriticalComplianceException(new TestResult(TestResult.ERROR, "Get ServiceProviderConfig",
+                throw new CriticalComplianceException(new TestResult(TestResult.ERROR,
+                        "Get ResourceType",
                         "Response Validation Error",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             } catch (GeneralComplianceException e) {
-                throw new CriticalComplianceException(new TestResult(TestResult.ERROR, "Get ServiceProviderConfig",
+                throw new CriticalComplianceException(new TestResult(TestResult.ERROR,
+                        "Get ResourceType",
                         e.getResult().getMessage(), ComplianceUtils.getWire(method,
                         responseString, headerString, responseStatus, subTests)));
             }
             return new TestResult
-                    (TestResult.SUCCESS, "Get ServiceProviderConfig",
+                    (TestResult.SUCCESS, "Get ResourceType",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         } else {

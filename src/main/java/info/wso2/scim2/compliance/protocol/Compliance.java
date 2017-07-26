@@ -7,6 +7,7 @@ import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.tests.ConfigTest;
 import info.wso2.scim2.compliance.tests.GroupTest;
+import info.wso2.scim2.compliance.tests.ResourceTypeTest;
 import info.wso2.scim2.compliance.tests.UserTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -79,16 +80,19 @@ public class Compliance extends HttpServlet {
         complianceTestMetaDataHolder.setClient_id(clientId);
         complianceTestMetaDataHolder.setClient_secret(clientSecret);
 
-
-        /***************** Start of critical tests **************/
         try {
+            /***************** Start of critical tests **************/
             // start with the critical tests (will throw exception and test will stop if fails)
-            // 1. /Objects Test
+            // 1. /ServiceProviderConfig Test
             // 2. /Schemas Test
+            // 3. /ResourceType Test
 
-            // /Objects Test
+            // /ServiceProviderConfig Test
             ConfigTest configTest = new ConfigTest(complianceTestMetaDataHolder);
             results.add(configTest.performTest());
+
+            /***************** End of critical tests **************/
+            //TODO : All the other test should come here
 
         } catch (CriticalComplianceException e) {
             // failing critical test
@@ -97,8 +101,6 @@ public class Compliance extends HttpServlet {
             //TODO :This need to be displyed in UI
             return (new Result(e.getMessage()));
         }
-
-        /***************** End of critical tests **************/
 
         /***************** Start of SCIMUser tests **************/
         //SCIMUser Test
@@ -127,6 +129,21 @@ public class Compliance extends HttpServlet {
         for (TestResult testResult : groupTestResults) {
             results.add(testResult);
         }
+        /***************** End of SCIMGroup tests **************/
+
+        /***************** Start of other tests **************/
+
+        // /ResourceType Test
+        ResourceTypeTest resourceTypeTest = new ResourceTypeTest(complianceTestMetaDataHolder);
+        try {
+            results.add(resourceTypeTest.performTest());
+        } catch (CriticalComplianceException e) {
+            results.add(e.getResult());
+        } catch (ComplianceException e) {
+            //TODO :This need to be displyed in UI
+            return (new Result(e.getMessage()));
+        }
+        /***************** End of other tests **************/
 
         Statistics statistics = new Statistics();
         for (TestResult result : results) {

@@ -26,6 +26,7 @@ public class ComplianceConstants {
         public static final String SKIPPED = "Skipped";
 
         public static final String SERVICE_PROVIDER_ENDPOINT = "/ServiceProviderConfig";
+        public static final String RESOURCE_TYPE_ENDPOINT = "/ResourceType";
         public static final String USERS_ENDPOINT = "/Users";
         public static final String GROUPS_ENDPOINT = "/Groups";
 
