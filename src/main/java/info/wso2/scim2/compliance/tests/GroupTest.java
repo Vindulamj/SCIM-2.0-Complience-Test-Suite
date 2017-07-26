@@ -1,5 +1,6 @@
 package info.wso2.scim2.compliance.tests;
 
+
 import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.GeneralComplianceException;
@@ -19,63 +20,78 @@ import org.wso2.charon3.core.encoder.JSONDecoder;
 import org.wso2.charon3.core.exceptions.BadRequestException;
 import org.wso2.charon3.core.exceptions.CharonException;
 import org.wso2.charon3.core.exceptions.InternalErrorException;
+import org.wso2.charon3.core.objects.Group;
 import org.wso2.charon3.core.objects.User;
 import org.wso2.charon3.core.schema.SCIMResourceSchemaManager;
 import org.wso2.charon3.core.schema.SCIMResourceTypeSchema;
 
 import java.util.ArrayList;
 
-public class UserTest{
+public class GroupTest {
 
     private ComplianceTestMetaDataHolder complianceTestMetaDataHolder;
     private String url;
-    private User user = null;
+    private Group group = null;
+    private UserTest userTest = null;
 
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public UserTest(ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
+    public GroupTest(ComplianceTestMetaDataHolder complianceTestMetaDataHolder) {
 
         this.complianceTestMetaDataHolder = complianceTestMetaDataHolder;
 
         url = complianceTestMetaDataHolder.getUrl() +
                 complianceTestMetaDataHolder.getVersion() +
-                ComplianceConstants.TestConstants.USERS_ENDPOINT;
+                ComplianceConstants.TestConstants.GROUPS_ENDPOINT;
     }
 
     public ArrayList<TestResult> performTest() throws ComplianceException {
         ArrayList<TestResult> testResults = new ArrayList<>();
         try {
-            //perform create user test
-            testResults.add(CreateUserTest());
-            //perform get user test
-            testResults.add(GetUserTest());
-            //perform update user test
-            testResults.add(UpdateUserTest());
+            //perform create group test
+            testResults.add(CreateGroupTest());
+            //perform get group test
+            testResults.add(GetGroupTest());
+            //perform update group test
+            testResults.add(UpdateGroupTest());
 
             if (complianceTestMetaDataHolder.getScimServiceProviderConfig().getPatchSupported()){
-                //perform patch user test if and only if it is supported by the SCIM service provider
-                testResults.add(PatchUserTest());
+                //perform patch group test if and only if it is supported by the SCIM service provider
+                testResults.add(PatchGroupTest());
             }
-            //perform delete user test
-            testResults.add(DeleteUserTest());
+            //perform delete group test
+            testResults.add(DeleteGroupTest());
 
         } catch (GeneralComplianceException e) {
             testResults.add(e.getResult());
         } catch (CharonException e) {
-           throw  new ComplianceException(500, "Error in getting the Patch attribute");
+            throw  new ComplianceException(500, "Error in getting the Patch attribute");
+        } finally {
+            //run clean up task
+            RunCleanUpTask();
         }
         return testResults;
     }
 
-    public TestResult CreateUserTest () throws GeneralComplianceException, ComplianceException {
+    private void RunCleanUpTask() throws ComplianceException {
+        try {
+            userTest.DeleteUserTest();
+        } catch (GeneralComplianceException | ComplianceException e) {
+           throw new ComplianceException(500, "Group Clean up task failed");
+        }
+    }
 
+    private TestResult CreateGroupTest () throws GeneralComplianceException, ComplianceException {
+        String definedGroup = null;
+        userTest = new UserTest(complianceTestMetaDataHolder);
+        try {
+            userTest.CreateUserTest();
+            definedGroup = "{\"displayName\": \"engineer\", " +
+                            "\"members\": " +
+                                "[{\"value\":\""+ userTest.getUser().getId() +"\"," +
+                                "\"display\": \""+ userTest.getUser().getUserName() +"\"}" +
+                            "]}";
+        } catch (Exception e) {
+            throw new ComplianceException(500, "Error while creating the user to add to group");
+        }
         HttpPost method = new HttpPost(url);
         //create user test
         HttpClient client = HTTPClient.getHttpClientWithBasicAuth();
@@ -90,9 +106,8 @@ public class UserTest{
         String responseStatus = "";
         ArrayList<String> subTests =  new ArrayList<>();
         try {
-            //create the user
-            HttpEntity entity = new ByteArrayEntity
-                    (ComplianceConstants.DefinedInstances.DEFINED_USER.getBytes("UTF-8"));
+            //create the group
+            HttpEntity entity = new ByteArrayEntity(definedGroup.getBytes("UTF-8"));
             method.setEntity(entity);
             response = client.execute(method);
             // Read the response body.
@@ -113,54 +128,53 @@ public class UserTest{
             }
             responseStatus = response.getStatusLine().getStatusCode() + " "
                     + response.getStatusLine().getReasonPhrase();
-            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create User",
+            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create Group",
                     "Could not create default user at url " + url,
                     ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
         }
 
         if (response.getStatusLine().getStatusCode() == 201) {
-            //obtain the schema corresponding to user
-            // unless configured returns core-user schema or else returns extended user schema
-            SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
+            //obtain the schema corresponding to group
+            SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getGroupResourceSchema();
 
             JSONDecoder jsonDecoder = new JSONDecoder();
             try {
-                user = (User)jsonDecoder.decodeResource(responseString, schema, new User());
+                group = (Group)jsonDecoder.decodeResource(responseString, schema, new Group());
             } catch (BadRequestException | CharonException | InternalErrorException e) {
-                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create User",
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create Group",
                         "Could not decode the server response",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema,null, null, method,
+                ResponseValidateTest.runValidateTests(group, schema,null, null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
-                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create User",
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Create Group",
                         "Response Validation Error",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             return new TestResult
-                    (TestResult.SUCCESS, "Create User",
+                    (TestResult.SUCCESS, "Create Group",
                             "", ComplianceUtils.getWire(method, responseString,
                             headerString, responseStatus, subTests));
         } else {
             return new TestResult
-                    (TestResult.ERROR, "Create User",
+                    (TestResult.ERROR, "Create Group",
                             "", ComplianceUtils.getWire(method, responseString,
                             headerString, responseStatus, subTests));
         }
     }
 
-    public TestResult GetUserTest () throws GeneralComplianceException, ComplianceException {
+    public TestResult GetGroupTest () throws GeneralComplianceException, ComplianceException {
 
-        String getUserURL = null;
+        String getGroupURL = null;
         try {
-            getUserURL = url + "/" + user.getId();
+            getGroupURL = url + "/" + group.getId();
         } catch (CharonException e) {
-            throw new ComplianceException(e.getStatus(),"Error in reading the id of the created user.");
+            throw new ComplianceException(e.getStatus(),"Error in reading the id of the created group.");
         }
-        HttpGet method = new HttpGet(getUserURL);
+        HttpGet method = new HttpGet(getGroupURL);
 
         HttpClient client = HTTPClient.getHttpClientWithBasicAuth();
 
@@ -185,61 +199,70 @@ public class UserTest{
                     + response.getStatusLine().getReasonPhrase();
 
         } catch (Exception e) {
-            // Read the response body.
-            //get all headers
+           // get all headers
             Header[] headers = response.getAllHeaders();
             for (Header header : headers) {
                 headerString += header.getName() + " : " + header.getValue() + "\n";
             }
             responseStatus = response.getStatusLine().getStatusCode() + " "
                     + response.getStatusLine().getReasonPhrase();
-            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Get User",
-                    "Could not get the default user from url " + url,
+            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Get Group",
+                    "Could not get the default group from url " + url,
                     ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
         }
 
         if (response.getStatusLine().getStatusCode() == 200) {
-            //obtain the schema corresponding to user
-            // unless configured returns core-user schema or else returns extended user schema)
-            SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
+            //obtain the schema corresponding to group
+            SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getGroupResourceSchema();
 
             JSONDecoder jsonDecoder = new JSONDecoder();
             try {
-                user = (User)jsonDecoder.decodeResource(responseString, schema, new User());
+                group = (Group) jsonDecoder.decodeResource(responseString, schema, new Group());
 
             } catch (BadRequestException | CharonException | InternalErrorException e) {
-                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Get User",
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Get Group",
                         "Could not decode the server response",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, null, null, method,
+                ResponseValidateTest.runValidateTests(group, schema, null,
+                        null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
-                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Get User",
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Get Group",
                         "Response Validation Error",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             return new TestResult
-                    (TestResult.SUCCESS, "Get User",
+                    (TestResult.SUCCESS, "Get Group",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         } else {
             return new TestResult
-                    (TestResult.ERROR, "Get User",
+                    (TestResult.ERROR, "Get Group",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         }
     }
 
-    public TestResult UpdateUserTest () throws GeneralComplianceException, ComplianceException {
+    public TestResult UpdateGroupTest () throws GeneralComplianceException, ComplianceException {
 
         String updateUserURL = null;
+        String definedUpdatedGroup = null;
         try {
-            updateUserURL = url + "/" + user.getId();
+            definedUpdatedGroup = "{\"displayName\": \"Doctors\", " +
+                    "\"members\": " +
+                    "[{\"value\":\""+ userTest.getUser().getId() +"\"," +
+                    "\"display\": \""+ userTest.getUser().getUserName() +"\"}" +
+                    "]}";
+        } catch (Exception e) {
+            throw new ComplianceException(500, "Error while getting the user to add to group");
+        }
+        try {
+            updateUserURL = url + "/" + group.getId();
         } catch (CharonException e) {
-            throw new ComplianceException(e.getStatus(),"Error in reading the id of the created user.");
+            throw new ComplianceException(e.getStatus(),"Error in reading the id of the created group.");
         }
         HttpPut method = new HttpPut(updateUserURL);
 
@@ -254,8 +277,7 @@ public class UserTest{
         ArrayList<String> subTests =  new ArrayList<>();
         try {
             //update the user
-            HttpEntity entity = new ByteArrayEntity
-                    (ComplianceConstants.DefinedInstances.DEFINED_UPDATED_USER.getBytes("UTF-8"));
+            HttpEntity entity = new ByteArrayEntity(definedUpdatedGroup.getBytes("UTF-8"));
             method.setEntity(entity);
             method.setHeader("Accept", "application/json");
             method.setHeader("Content-Type", "application/json");
@@ -273,7 +295,6 @@ public class UserTest{
                     + response.getStatusLine().getReasonPhrase();
 
         } catch (Exception e) {
-            // Read the response body.
             //get all headers
             Header[] headers = response.getAllHeaders();
             for (Header header : headers) {
@@ -281,57 +302,64 @@ public class UserTest{
             }
             responseStatus = response.getStatusLine().getStatusCode() + " "
                     + response.getStatusLine().getReasonPhrase();
-            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Update User",
-                    "Could not update the default user at url " + url,
+            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Update Group",
+                    "Could not update the default group at url " + url,
                     ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
         }
 
         if (response.getStatusLine().getStatusCode() == 200) {
             //obtain the schema corresponding to user
             // unless configured returns core-user schema or else returns extended user schema)
-            SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
+            SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getGroupResourceSchema();
 
             JSONDecoder jsonDecoder = new JSONDecoder();
             try {
-                user = (User)jsonDecoder.decodeResource(responseString, schema, new User());
+                group = (Group) jsonDecoder.decodeResource(responseString, schema, new Group());
 
             } catch (BadRequestException | CharonException | InternalErrorException e) {
-                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Update User",
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Update Group",
                         "Could not decode the server response",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, null,
+                ResponseValidateTest.runValidateTests(group, schema, null,
                         null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
-                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Update User",
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Update Group",
                         "Response Validation Error",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             return new TestResult
-                    (TestResult.SUCCESS, "Update User",
+                    (TestResult.SUCCESS, "Update Group",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         } else {
             return new TestResult
-                    (TestResult.ERROR, "Update User",
+                    (TestResult.ERROR, "Update Group",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         }
     }
 
-    public TestResult PatchUserTest () throws GeneralComplianceException, ComplianceException {
+    public TestResult PatchGroupTest () throws GeneralComplianceException, ComplianceException {
 
-        String patchUserURL = null;
+        String patchGroupURL = null;
+        String definedPatchedGroup = null;
         try {
-            patchUserURL = url + "/" + user.getId();
-        } catch (CharonException e) {
-            throw new ComplianceException(e.getStatus(),"Error in reading the id of the created user.");
+            definedPatchedGroup = "{\"schemas\":[\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]," +
+                    "\"Operations\":[{\"op\":\"add\",\"value\":{\"displayName\": \"Actors\"}}]}";
+        } catch (Exception e) {
+            throw new ComplianceException(500, "Error while getting the user to add to group");
         }
-        HttpPatch method = new HttpPatch(patchUserURL);
-        //create user test
+        try {
+            patchGroupURL = url + "/" + group.getId();
+        } catch (CharonException e) {
+            throw new ComplianceException(e.getStatus(),"Error in reading the id of the created group.");
+        }
+        HttpPatch method = new HttpPatch(patchGroupURL);
+
         HttpClient client = HTTPClient.getHttpClientWithBasicAuth();
 
         method = (HttpPatch) HTTPClient.setAuthorizationHeader(complianceTestMetaDataHolder, method);
@@ -342,9 +370,8 @@ public class UserTest{
         String responseStatus = "";
         ArrayList<String> subTests =  new ArrayList<>();
         try {
-            //patch the user
-            HttpEntity entity = new ByteArrayEntity
-                    (ComplianceConstants.DefinedInstances.DEFINED_PATCH_USER_PAYLOAD.getBytes("UTF-8"));
+            //update the user
+            HttpEntity entity = new ByteArrayEntity(definedPatchedGroup.getBytes("UTF-8"));
             method.setEntity(entity);
             method.setHeader("Accept", "application/json");
             method.setHeader("Content-Type", "application/json");
@@ -362,7 +389,6 @@ public class UserTest{
                     + response.getStatusLine().getReasonPhrase();
 
         } catch (Exception e) {
-            // Read the response body.
             //get all headers
             Header[] headers = response.getAllHeaders();
             for (Header header : headers) {
@@ -370,56 +396,56 @@ public class UserTest{
             }
             responseStatus = response.getStatusLine().getStatusCode() + " "
                     + response.getStatusLine().getReasonPhrase();
-            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Patch User",
-                    "Could not patch the default user at url " + url,
+            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Patch Group",
+                    "Could not patch the default group at url " + url,
                     ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
         }
 
         if (response.getStatusLine().getStatusCode() == 200) {
             //obtain the schema corresponding to user
             // unless configured returns core-user schema or else returns extended user schema)
-            SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
+            SCIMResourceTypeSchema schema = SCIMResourceSchemaManager.getInstance().getGroupResourceSchema();
 
             JSONDecoder jsonDecoder = new JSONDecoder();
             try {
-                user = (User)jsonDecoder.decodeResource(responseString, schema, new User());
+                group = (Group) jsonDecoder.decodeResource(responseString, schema, new Group());
 
             } catch (BadRequestException | CharonException | InternalErrorException e) {
-                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Patch User",
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Patch Group",
                         "Could not decode the server response",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, null,
+                ResponseValidateTest.runValidateTests(group, schema, null,
                         null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
-                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Patch User",
+                throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Patch Group",
                         "Response Validation Error",
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             return new TestResult
-                    (TestResult.SUCCESS, "Patch User",
+                    (TestResult.SUCCESS, "Patch Group",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         } else {
             return new TestResult
-                    (TestResult.ERROR, "Patch User",
+                    (TestResult.ERROR, "Patch Group",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         }
     }
 
-    public TestResult DeleteUserTest () throws GeneralComplianceException, ComplianceException {
+    public TestResult DeleteGroupTest () throws GeneralComplianceException, ComplianceException {
 
-        String deleteUserURL = null;
+        String deleteGroupURL = null;
         try {
-            deleteUserURL = url + "/" + user.getId();
+            deleteGroupURL = url + "/" + group.getId();
         } catch (CharonException e) {
-            throw new ComplianceException(e.getStatus(),"Error in reading the id of the created user.");
+            throw new ComplianceException(e.getStatus(),"Error in reading the id of the created group.");
         }
-        HttpDelete method = new HttpDelete(deleteUserURL);
+        HttpDelete method = new HttpDelete(deleteGroupURL);
 
         HttpClient client = HTTPClient.getHttpClientWithBasicAuth();
 
@@ -453,22 +479,23 @@ public class UserTest{
             }
             responseStatus = response.getStatusLine().getStatusCode() + " "
                     + response.getStatusLine().getReasonPhrase();
-            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Delete User",
-                    "Could not delete the default user at url " + url,
+            throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Delete Group",
+                    "Could not delete the default group at url " + url,
                     ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
         }
 
         if (response.getStatusLine().getStatusCode() == 204) {
             return new TestResult
-                    (TestResult.SUCCESS, "Delete User",
+                    (TestResult.SUCCESS, "Delete Group",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         } else {
             return new TestResult
-                    (TestResult.ERROR, "Delete User",
+                    (TestResult.ERROR, "Delete Group",
                             "", ComplianceUtils.getWire(method, responseString, headerString,
                             responseStatus, subTests));
         }
     }
-}
 
+
+}

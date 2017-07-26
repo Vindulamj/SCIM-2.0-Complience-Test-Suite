@@ -6,6 +6,7 @@ import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.tests.ConfigTest;
+import info.wso2.scim2.compliance.tests.GroupTest;
 import info.wso2.scim2.compliance.tests.UserTest;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -109,6 +110,21 @@ public class Compliance extends HttpServlet {
             return (new Result(e.getMessage()));
         }
         for (TestResult testResult : userTestResults) {
+            results.add(testResult);
+        }
+        /***************** End of SCIMUser tests **************/
+
+
+        /***************** Start of SCIMGroup tests **************/
+        //SCIMGroup Test
+        GroupTest groupTest = new GroupTest(complianceTestMetaDataHolder);
+        ArrayList<TestResult> groupTestResults = null;
+        try {
+            groupTestResults = groupTest.performTest();
+        } catch (ComplianceException e) {
+            return (new Result(e.getMessage()));
+        }
+        for (TestResult testResult : groupTestResults) {
             results.add(testResult);
         }
 

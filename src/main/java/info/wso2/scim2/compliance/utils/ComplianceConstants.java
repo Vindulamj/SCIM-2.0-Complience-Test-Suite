@@ -27,6 +27,7 @@ public class ComplianceConstants {
 
         public static final String SERVICE_PROVIDER_ENDPOINT = "/ServiceProviderConfig";
         public static final String USERS_ENDPOINT = "/Users";
+        public static final String GROUPS_ENDPOINT = "/Groups";
 
         public static final String SCHEMA_LIST_TEST = "Schema List Test";
         public static final String REQUIRED_ATTRIBUTE_TEST = "Required Attribute Test";
