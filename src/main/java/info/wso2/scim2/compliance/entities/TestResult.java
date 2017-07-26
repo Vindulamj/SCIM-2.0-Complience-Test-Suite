@@ -64,4 +64,7 @@ public class TestResult {
         return this.status;
     }
 
+    public String getMessage() {
+        return message;
+    }
 }

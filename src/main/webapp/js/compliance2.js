@@ -61,7 +61,6 @@ $(document).ready(
                 $("#compliance-result-container2").html(html);
                 $(".label-info").click(toggleWire);
                 $("[rel=tooltip]").tooltip();
-
                 var success = parseInt(data.statistics.success);
                 var failed = parseInt(data.statistics.failed);
                 var skipped = parseInt(data.statistics.skipped);
@@ -103,7 +102,7 @@ $(document).ready(
             });
         };
 
-        var sendRequest = function() {
+        var sendRequest2 = function() {
             if (!checked) {
                 var data = {
                     url: $("#complianceUrl2").val(),
@@ -142,9 +141,8 @@ $(document).ready(
                 return false;
             }
         };
-
         $("#toggleAddImplementation2").click(function(){toggleWire({currentTarget:$("#toggleAddImplementation2")})});
         $("#toggleSettings2").click(function(){toggleWire({currentTarget:$("#toggleSettings2")})});
-        $("#sendCompliance2").click(sendRequest);
+        $("#sendCompliance2").click(sendRequest2);
         $("#authMethod2").change(authMethodChanged).change();
     });

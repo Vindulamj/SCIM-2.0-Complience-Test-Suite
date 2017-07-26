@@ -1,6 +1,7 @@
 package info.wso2.scim2.compliance.tests.common;
 
 import info.wso2.scim2.compliance.entities.TestResult;
+import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.GeneralComplianceException;
 import info.wso2.scim2.compliance.protocol.ComplianceUtils;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
@@ -34,18 +35,21 @@ public class ResponseValidateTest {
                                         String headerString,
                                         String responseStatus,
                                         ArrayList<String> subTests)
-            throws BadRequestException, CharonException, GeneralComplianceException {
+            throws BadRequestException, CharonException, GeneralComplianceException, ComplianceException {
         //Check for required attributes
+        subTests.add(ComplianceConstants.TestConstants.REQUIRED_ATTRIBUTE_TEST);
         validateSCIMObjectForRequiredAttributes(scimObject, schema,
                 method, responseString, headerString, responseStatus, subTests);
-        subTests.add(ComplianceConstants.TestConstants.REQUIRED_ATTRIBUTE_TEST);
+
         //validate schema list
-        validateSchemaList(scimObject, schema, method, responseString, headerString, responseStatus, subTests);
         subTests.add(ComplianceConstants.TestConstants.SCHEMA_LIST_TEST);
+        validateSchemaList(scimObject, schema, method, responseString, headerString, responseStatus, subTests);
+
+        subTests.add(ComplianceConstants.TestConstants.ATTRIBUTE_MUTABILITY_TEST);
         validateReturnedAttributes((AbstractSCIMObject) scimObject, requestedAttributes,
                 requestedExcludingAttributes, method,
                 responseString, headerString, responseStatus, subTests);
-        subTests.add(ComplianceConstants.TestConstants.ATTRIBUTE_MUTABILITY_TEST);
+
     }
 
     /*
@@ -61,7 +65,7 @@ public class ResponseValidateTest {
                                                                 String headerString,
                                                                 String responseStatus,
                                                                 ArrayList<String> subTests)
-            throws BadRequestException, CharonException, GeneralComplianceException {
+            throws BadRequestException, CharonException, GeneralComplianceException, ComplianceException {
         //get attributes from schema.
         List<AttributeSchema> attributeSchemaList = resourceSchema.getAttributesList();
         //get attribute list from scim object.
@@ -100,7 +104,7 @@ public class ResponseValidateTest {
                                                                    String headerString,
                                                                    String responseStatus,
                                                                    ArrayList<String> subTests)
-            throws GeneralComplianceException, CharonException {
+            throws GeneralComplianceException, CharonException, ComplianceException {
         if (attribute != null) {
             List<SCIMAttributeSchema> subAttributesSchemaList =
                     ((SCIMAttributeSchema) attributeSchema).getSubAttributeSchemas();
@@ -172,7 +176,7 @@ public class ResponseValidateTest {
                                           String headerString,
                                           String responseStatus,
                                           ArrayList<String> subTests)
-            throws  GeneralComplianceException {
+            throws GeneralComplianceException, ComplianceException {
 
         //get resource schema list
         List<String> resourceSchemaList = resourceSchema.getSchemasList();
@@ -204,7 +208,7 @@ public class ResponseValidateTest {
                                                   String responseString,
                                                   String headerString,
                                                   String responseStatus,
-                                                  ArrayList<String> subTests) throws GeneralComplianceException {
+                                                  ArrayList<String> subTests) throws GeneralComplianceException, ComplianceException {
         List<String> requestedAttributesList = null;
         List<String> requestedExcludingAttributesList = null;
 
@@ -466,7 +470,7 @@ public class ResponseValidateTest {
                                                          String responseString,
                                                          String headerString,
                                                          String responseStatus,
-                                                         ArrayList<String> subTests) throws GeneralComplianceException {
+                                                         ArrayList<String> subTests) throws GeneralComplianceException, ComplianceException {
 
         if (subSimpleAttribute.getReturned().equals(SCIMDefinitions.Returned.NEVER)) {
             throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Attribute Mutability Test",
@@ -548,7 +552,7 @@ public class ResponseValidateTest {
                                                             String responseString,
                                                             String headerString,
                                                             String responseStatus,
-                                                            ArrayList<String> subTests) throws GeneralComplianceException {
+                                                            ArrayList<String> subTests) throws GeneralComplianceException, ComplianceException {
 
 
         if (subSimpleAttribute.getReturned().equals(SCIMDefinitions.Returned.NEVER)) {
@@ -629,7 +633,7 @@ public class ResponseValidateTest {
                                                        String responseString,
                                                        String headerString,
                                                        String responseStatus,
-                                                       ArrayList<String> subTests) throws GeneralComplianceException {
+                                                       ArrayList<String> subTests) throws GeneralComplianceException, ComplianceException {
         //check for never/request attributes.
         if (subSubAttribute.getReturned().equals(SCIMDefinitions.Returned.NEVER)) {
             throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Attribute Mutability Test",
@@ -708,7 +712,7 @@ public class ResponseValidateTest {
                                                     String responseString,
                                                     String headerString,
                                                     String responseStatus,
-                                                    ArrayList<String> subTests) throws GeneralComplianceException {
+                                                    ArrayList<String> subTests) throws GeneralComplianceException, ComplianceException {
         //check for never/request attributes.
         if (subAttribute.getReturned().equals(SCIMDefinitions.Returned.NEVER)) {
             throw new GeneralComplianceException(new TestResult(TestResult.ERROR, "Attribute Mutability Test",

@@ -35,7 +35,7 @@ public class ComplianceConstants {
 
     public static class DefinedInstances {
         public static String DEFINED_USER =
-                        "{\n" +
+                "{\n" +
                         "  \"password\": \"7019asd84\",\n" +
                         "  \"userName\": \"bjensenexamplecom\",\n" +
                         "  \"emails\": [\n" +
@@ -51,6 +51,27 @@ public class ComplianceConstants {
                         "  ],\n" +
                         "}";
 
+        public static String DEFINED_UPDATED_USER =
+                "{\n" +
+                        "  \"password\": \"7019asd84\",\n" +
+                        "  \"userName\": \"bjensenexamplecom\",\n" +
+                        "  \"emails\": [\n" +
+                        "    {\n" +
+                        "      \"value\": \"bjensen@wso2.com\",\n" +
+                        "      \"type\": \"work\",\n" +
+                        "      \"primary\": true\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "      \"value\": \"babs@wso2.org\",\n" +
+                        "      \"type\": \"home\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "}";
+
+
+        public static String DEFINED_PATCH_USER_PAYLOAD =
+                "{\"schemas\":[\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]," +
+                        "\"Operations\":[{\"op\":\"add\",\"value\":{\"nickName\":\"shaggy\"}}]}";
     }
 
 }

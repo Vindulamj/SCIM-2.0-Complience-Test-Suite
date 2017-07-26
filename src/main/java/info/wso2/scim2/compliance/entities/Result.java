@@ -32,9 +32,8 @@ public class Result {
         this.results = results;
     }
 
-    public Result(List<AuthMetod> authMethods) {
-        this.authRequired = true;
-        this.authMethods = authMethods;
+    public Result(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
 }

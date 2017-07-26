@@ -92,6 +92,9 @@ public class Compliance extends HttpServlet {
         } catch (CriticalComplianceException e) {
             // failing critical test
             results.add(e.getResult());
+        } catch (ComplianceException e) {
+            //TODO :This need to be displyed in UI
+            return (new Result(e.getMessage()));
         }
 
         /***************** End of critical tests **************/
@@ -103,8 +106,7 @@ public class Compliance extends HttpServlet {
         try {
             userTestResults = userTest.performTest();
         } catch (ComplianceException e) {
-            //TODO : capture this.
-            e.printStackTrace();
+            return (new Result(e.getMessage()));
         }
         for (TestResult testResult : userTestResults) {
             results.add(testResult);

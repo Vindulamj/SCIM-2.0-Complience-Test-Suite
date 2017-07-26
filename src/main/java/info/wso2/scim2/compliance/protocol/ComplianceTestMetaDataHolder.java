@@ -1,6 +1,8 @@
 package info.wso2.scim2.compliance.protocol;
 
 
+import info.wso2.scim2.compliance.objects.SCIMServiceProviderConfig;
+
 public class ComplianceTestMetaDataHolder {
 
     private String url;
@@ -12,6 +14,15 @@ public class ComplianceTestMetaDataHolder {
     private String authorization_server;
     private String authorization_header;
     private String authorization_method;
+    private SCIMServiceProviderConfig scimServiceProviderConfig;
+
+    public SCIMServiceProviderConfig getScimServiceProviderConfig() {
+        return scimServiceProviderConfig;
+    }
+
+    public void setScimServiceProviderConfig(SCIMServiceProviderConfig scimServiceProviderConfig) {
+        this.scimServiceProviderConfig = scimServiceProviderConfig;
+    }
 
     public String getVersion() {
         return version;
