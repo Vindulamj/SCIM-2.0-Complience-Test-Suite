@@ -8,20 +8,17 @@ import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.httpclient.HTTPClient;
 import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
 import info.wso2.scim2.compliance.objects.SCIMServiceProviderConfig;
-import info.wso2.scim2.compliance.tests.common.ResponseValidateTest;
+import info.wso2.scim2.compliance.tests.common.ResponseValidateTests;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.wso2.charon3.core.encoder.JSONDecoder;
 import org.wso2.charon3.core.exceptions.BadRequestException;
 import org.wso2.charon3.core.exceptions.CharonException;
 import org.wso2.charon3.core.exceptions.InternalErrorException;
-import org.wso2.charon3.core.objects.User;
 import org.wso2.charon3.core.schema.SCIMResourceSchemaManager;
 import org.wso2.charon3.core.schema.SCIMResourceTypeSchema;
 
@@ -111,7 +108,7 @@ public class ConfigTest {
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(scimServiceProviderConfig, schema, null, null, method,
+                ResponseValidateTests.runValidateTests(scimServiceProviderConfig, schema, null, null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {

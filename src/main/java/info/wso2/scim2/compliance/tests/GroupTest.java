@@ -7,7 +7,7 @@ import info.wso2.scim2.compliance.exception.GeneralComplianceException;
 import info.wso2.scim2.compliance.httpclient.HTTPClient;
 import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
 import info.wso2.scim2.compliance.protocol.ComplianceUtils;
-import info.wso2.scim2.compliance.tests.common.ResponseValidateTest;
+import info.wso2.scim2.compliance.tests.common.ResponseValidateTests;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -21,7 +21,6 @@ import org.wso2.charon3.core.exceptions.BadRequestException;
 import org.wso2.charon3.core.exceptions.CharonException;
 import org.wso2.charon3.core.exceptions.InternalErrorException;
 import org.wso2.charon3.core.objects.Group;
-import org.wso2.charon3.core.objects.User;
 import org.wso2.charon3.core.schema.SCIMResourceSchemaManager;
 import org.wso2.charon3.core.schema.SCIMResourceTypeSchema;
 
@@ -71,7 +70,7 @@ public class GroupTest {
         return testResults;
     }
 
-    private void RunCleanUpTask() throws ComplianceException {
+    public void RunCleanUpTask() throws ComplianceException {
         try {
             userTest.DeleteUserTest();
         } catch (GeneralComplianceException | ComplianceException e) {
@@ -79,7 +78,7 @@ public class GroupTest {
         }
     }
 
-    private TestResult CreateGroupTest () throws GeneralComplianceException, ComplianceException {
+    public TestResult CreateGroupTest () throws GeneralComplianceException, ComplianceException {
         String definedGroup = null;
         userTest = new UserTest(complianceTestMetaDataHolder);
         try {
@@ -93,7 +92,7 @@ public class GroupTest {
             throw new ComplianceException(500, "Error while creating the user to add to group");
         }
         HttpPost method = new HttpPost(url);
-        //create user test
+        //create group test
         HttpClient client = HTTPClient.getHttpClientWithBasicAuth();
 
         method = (HttpPost) HTTPClient.setAuthorizationHeader(complianceTestMetaDataHolder, method);
@@ -146,7 +145,7 @@ public class GroupTest {
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(group, schema,null, null, method,
+                ResponseValidateTests.runValidateTests(group, schema,null, null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
@@ -225,7 +224,7 @@ public class GroupTest {
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(group, schema, null,
+                ResponseValidateTests.runValidateTests(group, schema, null,
                         null, method,
                         responseString, headerString, responseStatus, subTests);
 
@@ -322,7 +321,7 @@ public class GroupTest {
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(group, schema, null,
+                ResponseValidateTests.runValidateTests(group, schema, null,
                         null, method,
                         responseString, headerString, responseStatus, subTests);
 
@@ -416,7 +415,7 @@ public class GroupTest {
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(group, schema, null,
+                ResponseValidateTests.runValidateTests(group, schema, null,
                         null, method,
                         responseString, headerString, responseStatus, subTests);
 

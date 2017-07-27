@@ -33,41 +33,43 @@ public class ComplianceConstants {
         public static final String SCHEMA_LIST_TEST = "Schema List Test";
         public static final String REQUIRED_ATTRIBUTE_TEST = "Required Attribute Test";
         public static final String ATTRIBUTE_MUTABILITY_TEST = "Attribute Mutability Test";
+        public static final String ALL_GROUPS_IN_TEST = "All Groups In Test";
+        public static final String ALL_USERS_IN_TEST = "All Users In Test";
     }
 
     public static class DefinedInstances {
         public static String DEFINED_USER =
-                "{\n" +
-                        "  \"password\": \"7019asd84\",\n" +
-                        "  \"userName\": \"bjensenexamplecom\",\n" +
+                        "{" +
+                        "  \"password\": \"7019asd84\"," +
+                        "  \"userName\": \"bjensenexamplecom\"," +
                         "  \"emails\": [\n" +
                         "    {\n" +
-                        "      \"value\": \"bjensen@example.com\",\n" +
-                        "      \"type\": \"work\",\n" +
-                        "      \"primary\": true\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "      \"value\": \"babs@jensen.org\",\n" +
-                        "      \"type\": \"home\"\n" +
-                        "    }\n" +
-                        "  ],\n" +
+                        "      \"value\": \"bjensen@example.com\"," +
+                        "      \"type\": \"work\"," +
+                        "      \"primary\": true" +
+                        "    }," +
+                        "    {" +
+                        "      \"value\": \"babs@jensen.org\"," +
+                        "      \"type\": \"home\"" +
+                        "    }" +
+                        "  ]," +
                         "}";
 
         public static String DEFINED_UPDATED_USER =
-                "{\n" +
-                        "  \"password\": \"7019asd84\",\n" +
-                        "  \"userName\": \"bjensenexamplecom\",\n" +
-                        "  \"emails\": [\n" +
-                        "    {\n" +
-                        "      \"value\": \"bjensen@wso2.com\",\n" +
-                        "      \"type\": \"work\",\n" +
-                        "      \"primary\": true\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "      \"value\": \"babs@wso2.org\",\n" +
-                        "      \"type\": \"home\"\n" +
-                        "    }\n" +
-                        "  ],\n" +
+                        "{" +
+                        "  \"password\": \"7019asd84\"," +
+                        "  \"userName\": \"bjensenexamplecom\"," +
+                        "  \"emails\": [" +
+                        "    {" +
+                        "      \"value\": \"bjensen@wso2.com\"," +
+                        "      \"type\": \"work\"," +
+                        "      \"primary\": true" +
+                        "    }," +
+                        "    {" +
+                        "      \"value\": \"babs@wso2.org\"," +
+                        "      \"type\": \"home\"" +
+                        "    }" +
+                        "  ]," +
                         "}";
 
 

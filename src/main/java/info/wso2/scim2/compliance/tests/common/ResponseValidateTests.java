@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class ResponseValidateTest {
+public class ResponseValidateTests {
 
     public static void runValidateTests(SCIMObject scimObject,
                                         SCIMResourceTypeSchema schema,
@@ -37,15 +37,21 @@ public class ResponseValidateTest {
                                         ArrayList<String> subTests)
             throws BadRequestException, CharonException, GeneralComplianceException, ComplianceException {
         //Check for required attributes
-        subTests.add(ComplianceConstants.TestConstants.REQUIRED_ATTRIBUTE_TEST);
+        if (!subTests.contains(ComplianceConstants.TestConstants.REQUIRED_ATTRIBUTE_TEST)) {
+            subTests.add(ComplianceConstants.TestConstants.REQUIRED_ATTRIBUTE_TEST);
+        }
         validateSCIMObjectForRequiredAttributes(scimObject, schema,
                 method, responseString, headerString, responseStatus, subTests);
 
         //validate schema list
-        subTests.add(ComplianceConstants.TestConstants.SCHEMA_LIST_TEST);
+        if (!subTests.contains(ComplianceConstants.TestConstants.SCHEMA_LIST_TEST)) {
+            subTests.add(ComplianceConstants.TestConstants.SCHEMA_LIST_TEST);
+        }
         validateSchemaList(scimObject, schema, method, responseString, headerString, responseStatus, subTests);
 
-        subTests.add(ComplianceConstants.TestConstants.ATTRIBUTE_MUTABILITY_TEST);
+        if (!subTests.contains(ComplianceConstants.TestConstants.ATTRIBUTE_MUTABILITY_TEST)) {
+            subTests.add(ComplianceConstants.TestConstants.ATTRIBUTE_MUTABILITY_TEST);
+        }
         validateReturnedAttributes((AbstractSCIMObject) scimObject, requestedAttributes,
                 requestedExcludingAttributes, method,
                 responseString, headerString, responseStatus, subTests);

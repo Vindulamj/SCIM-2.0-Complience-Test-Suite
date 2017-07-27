@@ -5,10 +5,8 @@ import info.wso2.scim2.compliance.entities.Statistics;
 import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
-import info.wso2.scim2.compliance.tests.ConfigTest;
-import info.wso2.scim2.compliance.tests.GroupTest;
-import info.wso2.scim2.compliance.tests.ResourceTypeTest;
-import info.wso2.scim2.compliance.tests.UserTest;
+import info.wso2.scim2.compliance.exception.GeneralComplianceException;
+import info.wso2.scim2.compliance.tests.*;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.validator.routines.UrlValidator;
 
@@ -142,6 +140,19 @@ public class Compliance extends HttpServlet {
         } catch (ComplianceException e) {
             //TODO :This need to be displyed in UI
             return (new Result(e.getMessage()));
+        }
+
+        ListTest listTest = new ListTest(complianceTestMetaDataHolder);
+        ArrayList<TestResult> listTestResults = null;
+        try {
+            listTestResults = listTest.performTest();
+        } catch (ComplianceException e) {
+            return (new Result(e.getMessage()));
+        } catch (GeneralComplianceException e) {
+            results.add(e.getResult());
+        }
+        for (TestResult testResult : listTestResults) {
+            results.add(testResult);
         }
         /***************** End of other tests **************/
 

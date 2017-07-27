@@ -7,10 +7,9 @@ import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.exception.GeneralComplianceException;
 import info.wso2.scim2.compliance.httpclient.HTTPClient;
 import info.wso2.scim2.compliance.objects.SCIMResourceType;
-import info.wso2.scim2.compliance.objects.SCIMServiceProviderConfig;
 import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
 import info.wso2.scim2.compliance.protocol.ComplianceUtils;
-import info.wso2.scim2.compliance.tests.common.ResponseValidateTest;
+import info.wso2.scim2.compliance.tests.common.ResponseValidateTests;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -106,7 +105,7 @@ public class ResourceTypeTest {
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(scimResourceType, schema, null,
+                ResponseValidateTests.runValidateTests(scimResourceType, schema, null,
                         null, method,
                         responseString, headerString, responseStatus, subTests);
 

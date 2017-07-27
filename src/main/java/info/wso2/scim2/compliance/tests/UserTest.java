@@ -6,7 +6,7 @@ import info.wso2.scim2.compliance.exception.GeneralComplianceException;
 import info.wso2.scim2.compliance.httpclient.HTTPClient;
 import info.wso2.scim2.compliance.protocol.ComplianceTestMetaDataHolder;
 import info.wso2.scim2.compliance.protocol.ComplianceUtils;
-import info.wso2.scim2.compliance.tests.common.ResponseValidateTest;
+import info.wso2.scim2.compliance.tests.common.ResponseValidateTests;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -132,7 +132,7 @@ public class UserTest{
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema,null, null, method,
+                ResponseValidateTests.runValidateTests(user, schema,null, null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
@@ -213,7 +213,7 @@ public class UserTest{
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, null, null, method,
+                ResponseValidateTests.runValidateTests(user, schema, null, null, method,
                         responseString, headerString, responseStatus, subTests);
 
             } catch (BadRequestException | CharonException e) {
@@ -301,7 +301,7 @@ public class UserTest{
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, null,
+                ResponseValidateTests.runValidateTests(user, schema, null,
                         null, method,
                         responseString, headerString, responseStatus, subTests);
 
@@ -390,7 +390,7 @@ public class UserTest{
                         ComplianceUtils.getWire(method, responseString, headerString, responseStatus, subTests)));
             }
             try {
-                ResponseValidateTest.runValidateTests(user, schema, null,
+                ResponseValidateTests.runValidateTests(user, schema, null,
                         null, method,
                         responseString, headerString, responseStatus, subTests);
 
