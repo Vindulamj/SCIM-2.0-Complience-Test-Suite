@@ -67,4 +67,8 @@ public class TestResult {
     public String getMessage() {
         return message;
     }
+
+    public Wire getWire() {
+        return wire;
+    }
 }

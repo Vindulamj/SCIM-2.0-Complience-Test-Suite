@@ -25,4 +25,16 @@ public class Wire {
         this.tests = tests;
     }
 
+
+    public String getToServer() {
+        return toServer;
+    }
+
+    public String getFromServer() {
+        return fromServer;
+    }
+
+    public String getTests() {
+        return tests;
+    }
 }

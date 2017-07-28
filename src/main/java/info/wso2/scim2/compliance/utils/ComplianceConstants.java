@@ -35,6 +35,7 @@ public class ComplianceConstants {
         public static final String ATTRIBUTE_MUTABILITY_TEST = "Attribute Mutability Test";
         public static final String ALL_GROUPS_IN_TEST = "All Groups In Test";
         public static final String ALL_USERS_IN_TEST = "All Users In Test";
+        public static final String FILTER_CONTENT_TEST = "Filter Content Test";
     }
 
     public static class DefinedInstances {
@@ -42,8 +43,8 @@ public class ComplianceConstants {
                         "{" +
                         "  \"password\": \"7019asd84\"," +
                         "  \"userName\": \"bjensenexamplecom\"," +
-                        "  \"emails\": [\n" +
-                        "    {\n" +
+                        "  \"emails\": [" +
+                        "    {" +
                         "      \"value\": \"bjensen@example.com\"," +
                         "      \"type\": \"work\"," +
                         "      \"primary\": true" +

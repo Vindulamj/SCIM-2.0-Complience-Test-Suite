@@ -6,6 +6,7 @@ import info.wso2.scim2.compliance.entities.TestResult;
 import info.wso2.scim2.compliance.exception.ComplianceException;
 import info.wso2.scim2.compliance.exception.CriticalComplianceException;
 import info.wso2.scim2.compliance.exception.GeneralComplianceException;
+import info.wso2.scim2.compliance.pdf.PDFGenerator;
 import info.wso2.scim2.compliance.tests.*;
 import info.wso2.scim2.compliance.utils.ComplianceConstants;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -17,6 +18,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.ArrayList;
 
 @Path("/test2")
@@ -141,17 +143,27 @@ public class Compliance extends HttpServlet {
             //TODO :This need to be displyed in UI
             return (new Result(e.getMessage()));
         }
-
+        //List Test
         ListTest listTest = new ListTest(complianceTestMetaDataHolder);
-        ArrayList<TestResult> listTestResults = null;
+        ArrayList<TestResult> listTestResults = new ArrayList<>();
         try {
             listTestResults = listTest.performTest();
         } catch (ComplianceException e) {
             return (new Result(e.getMessage()));
-        } catch (GeneralComplianceException e) {
-            results.add(e.getResult());
         }
         for (TestResult testResult : listTestResults) {
+            results.add(testResult);
+        }
+
+        // Filter Test
+        FilterTest filterTest = new FilterTest(complianceTestMetaDataHolder);
+        ArrayList<TestResult> filterTestResults = new ArrayList<>();
+        try {
+            filterTestResults = filterTest.performTest();
+        } catch (ComplianceException e) {
+            return (new Result(e.getMessage()));
+        }
+        for (TestResult testResult : filterTestResults) {
             results.add(testResult);
         }
         /***************** End of other tests **************/
@@ -171,6 +183,13 @@ public class Compliance extends HttpServlet {
                     break;
             }
         }
-        return new Result(statistics, results);
+        Result finalResults = new Result(statistics, results);
+        //generate pdf results sheet
+        try {
+            PDFGenerator.GeneratePDFResults(finalResults);
+        } catch (IOException e) {
+            return (new Result(e.getMessage()));
+        }
+        return finalResults;
     }
 }

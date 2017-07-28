@@ -36,4 +36,15 @@ public class Result {
         this.errorMessage = errorMessage;
     }
 
+    public List<TestResult> getResults() {
+        return results;
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }

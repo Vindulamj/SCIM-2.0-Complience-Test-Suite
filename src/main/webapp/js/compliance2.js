@@ -40,7 +40,7 @@ $(document).ready(
             $("#compliance-error-container2").show();
         };
 
-        var handleResponse2 = function(data) {
+        var handleResponse = function(data) {
 
             $("#spinner-container2").empty();
 
@@ -79,9 +79,9 @@ $(document).ready(
                         width : "100%",
                         height : "100%"
                     },
-                    colors : [ "#F2391E", "#26F016", "#31AAF7"  ],
+                    colors : [ "#f2dede", "#dff0d8", "#d9edf7"  ],
                     backgroundColor : "whiteSmoke",
-                    pieSliceTextStyle : {color:"#DEDB1C"}
+                    pieSliceTextStyle : {color:"#999999"}
                 };
 
                 var chartData = google.visualization.arrayToDataTable([
@@ -137,7 +137,7 @@ $(document).ready(
                     left: 'auto'
                 });
                 checked = true;
-                $.post("/compliance2/test2", data, handleResponse2).error(handleError);
+                $.post("/compliance2/test2", data, handleResponse).error(handleError);
                 return false;
             }
         };
