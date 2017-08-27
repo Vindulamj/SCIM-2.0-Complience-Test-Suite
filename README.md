@@ -1,4 +1,4 @@
-This repo is deprecated. Please check this [repo](https://github.com/wso2-incubator/scim2-compliance-test-suite) for the test suite.
+# This repo is deprecated. Please check [here](https://github.com/wso2-incubator/scim2-compliance-test-suite) for the final test suite.
 
 # SCIM 2.0 Complience Test Suite
 
