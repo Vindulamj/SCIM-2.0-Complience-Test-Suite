@@ -1,3 +1,5 @@
+This repo is deprecated. Please check this [repo](https://github.com/wso2-incubator/scim2-compliance-test-suite) for the test suite.
+
 # SCIM 2.0 Complience Test Suite
 
 Developer : Vindula Jayawardana
